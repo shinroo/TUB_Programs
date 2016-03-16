@@ -1,0 +1,14 @@
+﻿Aufgabe 1: Binäre Heaps
+	1.1 Heap-Kriterien.
+		*
+		(a) Baum 1: Ist kein Heap.
+		(b) Baum 2: Ist ein Max-Heap, denn jede Kindknote kleiner als die Wurzel ist.
+		(c) Baum 3: Ist ein Min-Heap, denn jede Kindknote größer als die Wurzel ist.
+		(d) Baum 4: Ist ein Min-Heap, denn jede Kindknote größer als die Wurzel ist.
+		(e) Baum 5: Ist kein Heap.
+		**
+		(a) Baum 2: [20,12,16,4,9,15]
+		(e) Baum 3: [1,2,5,3,4,6,7]
+		***
+		Der Baum 1 ist kein Heap, weil das "Links voll" Kriterium nicht erfüllt ist.
+		Der Baum 5 ist kein Heap, weil es nicht gilt, dass A[Parent(i)] >= A[i] oder A[Parent(i)] <= A[i]

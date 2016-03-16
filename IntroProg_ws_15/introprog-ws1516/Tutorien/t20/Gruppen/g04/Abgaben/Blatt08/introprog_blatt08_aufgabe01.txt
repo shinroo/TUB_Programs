@@ -1,0 +1,51 @@
+﻿							Korrektheit Bubblesort
+							
+	1 BubbleSort (Array A)
+	2 	for j ← length(A) downto 2 do
+	3 		for i ← 1 to j−1 do
+	4 			if A[i] > A[i+1] then swap (A,i,i+1)										
+
+Für beide Schleifen wird jeweils eine Schleifeninvariante benötigt.
+	- A-1 Für die äußere Schleife (Zeilen 2-4) gilt:
+		(a)[1, . . . ,j] ist aufsteigend sortiert sowie
+		(b)(length(A) > 1 und 1 < j <  length(A) ==> (A[j] >= A[k])) für alle k ∈ {1,…,j}
+	- B-1 Für die innere Schleife (Zeile 3-4) gilt:
+		(a) Bis i >= 1 und i < j - 1 ist, tritt die "if"-Bedingung ein.
+		(b) A[i] >=  A[k] für alle k ∈ {1,…,i}
+
+*Beweis der inneren Schleifeninvariante
+	- Die Aussage (a) gilt, da i zwischen 1 und j - 1 durch die Grenzen der for-Schleifen
+	  begrenzt wird.
+	- B-2: Initiale Gültigkeit
+		Beim Eintritt in die Schleife gilt 2 <= j <= length(A) (Zeile 2). Nach der Initialisierung von i = 1, gilt immer die Aussage (b) der inneren Schleifeninvariante: es ist A[i] >= A[k] für alle k ∈ {1,…,i}, 
+		da A ein einzigelementiger Array ist.
+	- B-3: Erhaltung der Gültigkeit
+		Wir nehmen an, dass die Schleifeninvariante für ein festes i’ ∈ {1,…,j-1} in der Zeile 3 gilt.
+		Wir benutzen die folgende Fallunterscheidung:
+			#1. Fall: A[i'] <= A[i'+1]
+			* Gemäß der Annahme, dass die Schleifeninvariante für i’ gilt, wissen wir, dass A[i'] >= A[k] für alle k ∈ {1,…,i'} gilt.
+			* Gemäß des aktuellen Falles in der Fallunterscheidung gilt A[i’]<=A[i’+1] und Zeile 4. wird nicht ausgeführt. Somit gilt A[i'+1] >= A[k] für alle k ∈ {1,…,i'+1}.
+			* Dies beweist, dass die Aussage auch für i'+1 im Falle A[i+1] >= A[i] gilt. Die Invariante bleibt somit nach Inkrementierung der Variable i erhalten.
+			#2. Fall: A[i'] > A[i'+1]
+				* In diesem Fall wird die swap Funktion in Zeile 4. ausgeführt und damit A[i'] und A[i'+1] gewechselt. 
+				* Gemäß der Annahme, dass die Schleifeninvariante für i' gegolten hat, folgt A[i'] >= A[k] für alle k ∈ {1,…,i'}.
+				* Im betrachteten Fall folgt mit A[i'] > A[i'+i] nun, dass A[i'] <= A[i'], nach dem Wechseln von A[i'] und A[i'+1], und auch A[i'+1] >= A[k] für alle k ∈ {1,…i'+1} gilt.
+				* Dies beweist, dass die Aussage auch für i'+1 im Falle A[i+1] < A[i] gilt.
+
+**Beweis der äußeren Schleifeninvariante
+	- A-2: Initiale Gültigkeit
+			Beim erstmaligen Eintritt in die Schleife - also für j = length(A), gilt (a), da A[j,length(A)] ein einelementiges Array ist und somit bereits aufsteigend sortiert ist. 
+			Weiterhin gilt (b), da die Prämisse (j < length(A)) nicht erfüllt ist.
+	- A-3: Erhaltung der Gültigkeit
+			* Wir nehmen an, dass die äußere Schleifeninvariante zu Beginn der j'-ten Iteration für ein festes j' ∈ {2,...,length(A)} gilt. Es bleibt zu zeigen, dass die Schleifeninvariante auch für j'-1 gilt, 
+			Gemäß der Gültigkeit der inneren Schleifenvariante gilt A[i] >= A[k] für alle k ∈ {1,...,i} nach Ausführung der inneren Schleife. Dies folgt daraus, dass die innere Schleife bei i = j - 1 verlassen wird und der Aussage (b) der inneren Schleifeninvariante für diesen spezifischen Wert von i gilt.
+			* Da beim Verlassen der inneren Schleife i = j-1 und die Gültigkeit der inneren Schleife schon geprüft ist, d.h., alle Elemente von j' bis length(A) sicherlich sortiert sind, folgt daraus, 
+			dass für jeden j' ∈ {2,...,length(A)} gilt die Aussage A[j'] >= A[k] für alle k ∈ {1,...,j'} (Aussage (a)).
+			* Daraus folgt, dass beim letzten Ausführen des Schleifes, d.h. j = 2, auch der letzte Array-Element schon sortiert ist, weil die innere Schleife sortiert die letzte zwei Elemente.
+
+***Beweis der Korrektheit (C-1)
+		* Sollte length(A) < 2 sein, wird die äußere for-Schleife nicht ausgeführt. In diesen Fällen ist das Array A entweder leer - d.h. hat kein Element - oder es besteht nur aus einem Element. 
+		Das Array ist somit per Definition sortiert.
+		* Betrachten wir nun, den Fall dass length(A) >= 2 gilt. Wir betrachten den Zustand des Arrays A nach dem Verlassen der äußeren Schleife. Die äußere Schleife wird bei dem Wert j = 2 verlassen. 
+		Die äußere Schleifeninvariante besagt für j = 2, dass A[j, ..., length(A)] aufsteigend sortiert ist, sowohl auch, dass A[j] >= A[k] für k € [1,...,j]. Daraus folgt, dass A[1,...,length(A)] aufsteigend sortiert ist, was zu beweisen war.
+beweisen war.

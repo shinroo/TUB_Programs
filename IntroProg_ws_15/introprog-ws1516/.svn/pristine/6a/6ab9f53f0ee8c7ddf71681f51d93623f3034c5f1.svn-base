@@ -1,0 +1,30 @@
+Merge(A,p,q,r)
+	B ← A(r-p + 1)
+	k ← p
+	m ← q + 1
+	i ← 1
+
+	while( k ≤ q ) and ( m ≤ r )
+		if A[k] ≤ A[m] then
+			B[i] ← A[k]
+			k ← k+1
+		else
+			B[i] ← A[m]
+			m ← m + 1
+		i ← i + 1
+
+	while( k ≤ q )
+		B[i] ← A[k]
+		k ← k+1
+		i ← i+1
+
+	while( m ≤ r )
+		B[i] ← A[m]
+		m ← m+1
+		i ← i+1
+
+	j ← 1
+
+	while ( j < i)
+		A[p + j - 1] ← B[j]
+		j ← j+1

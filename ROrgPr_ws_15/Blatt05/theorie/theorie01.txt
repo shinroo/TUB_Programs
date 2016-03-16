@@ -1,0 +1,39 @@
+# Aufgabe 1: VHDL Attribute (2 Punkte)
+1. Wie greifen Sie auf das Attribut eines Signals zu? Geben Sie die Syntax anhand eines Beispiels an.
+ZB: wir haben ein Signal definiert:
+signal i: in std_logic_vector(3 downto 0);
+
+Ein Attribut kann zB die L�nge von i sein. Dann sieht es so aus:
+[ein anderes Signal oder Variable] = i'length;
+Also wenn man <'> (Apostroph) nach einem Signal eintippt, kann man auf seine Attribute zugreifen.
+
+2. Nennen Sie drei der im Standard vordefinierten Attribute und erklären Sie kurz, was sie repräsentieren.
+signal'event - wahr oder falsch; wahr, wenn signal sich gerade geaendert hat
+signal'last_value - gibt den Wert des Signals vor der letzten Signalaenderung
+signal'length - gibt die laenge eines Signals (zB fuer std_logic_vector {100001} gaebe es 6)
+
+3. Ueber welche Attribute erhaelt man den Bereich fuer Signale des Typs std_logic_vector?
+signal'range - Bereich von signal.LEFT to signal.RIGHT oder  signal'LEFT downto signal'RIGHT
+signal'reverse_range umgekehrt (von hinten nach vorn)
+
+4. Wie kann man in VHDL mit Hilfe von Attributen eine positive bzw. negative Flanke eines Signals detektieren? Geben Sie die entsprechenden VHDL-Anweisungen an
+
+-- Beispiel (kopiert aus dem Buch "VHDL Kurzbeschreibung" von A. Maeder), 
+entity DFLOP is D-Type FF
+ port ( CLK, D: in std logic;
+	Q: out std logic)
+end DFLOP;
+
+architecture BEHAV of DFLOP is
+begin
+	process (CLK)
+	begin
+		if (CLK = '1') and (CLK'event) and (CLK'last_value = '0')  --CLK ist 1 und der Wert hat sich geaendert ('event) und der letzte Wert war 0 => steigende Flanke 
+			then Q <= D;
+		end if;
+	end process;
+end BEHAV;
+-- Ende von str+c, str+v
+
+-- das Folgende habe ich schon nicht kopiert!
+-- fuer fallende Flanke ersetzt man if so:  if (CLK = '0') and (CLK'event) and (CLK'last_value = '1') - clk ist 0, hat sich geaendert und sein letzter Wert war 1

@@ -1,0 +1,27 @@
+Aufgabe02_2: Queue
+
+Gegeben:
+
+15, 3, 6, 10, 11
+
+leere Queue:
+Head->NULL<-Tail
+
+*(-> NULL) soll zeigen, dass "next" vom letzten Element der Queue auf NULL zeigt
+
+Schritte:
+1.)	Enqueue(15)
+	Head-> 15 <-Tail (-> NULL)
+2.)	Enqueue(3)
+	Head-> 15 -> 3 <-Tail (-> NULL)
+3.)	Enqueue(6)
+	Head-> 15 ->  3 -> 6 <-Tail (-> NULL)
+4.)	Enqueue(10)
+	Head-> 15 ->  3 -> 6 -> 10 <-Tail (-> NULL)
+5.)	Enqueue(11)
+	Head-> 15 -> 3 -> 6 -> 10 -> 11 <-Tail (-> NULL)
+
+Resultierende Queue:
+Head-> 15 -> 3 -> 6 -> 10 -> 11 <-Tail (-> NULL)
+
+

@@ -1,0 +1,21 @@
+# vsim -c -wlf vsim/reg_tb.wlf -novopt reg_tb 
+# //  ModelSim SE-64 6.6d Nov  1 2010 Linux 3.13.0-71-generic
+# //
+# //  Copyright 1991-2010 Mentor Graphics Corporation
+# //              All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND 
+# //  PROPRIETARY INFORMATION WHICH IS THE PROPERTY
+# //  OF MENTOR GRAPHICS CORPORATION OR ITS LICENSORS
+# //  AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading std.standard
+# Loading ieee.std_logic_1164(body)
+# Loading std.textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.reg_tb(behavioral)
+# Loading work.reg(behavioral)
+vcd file vsim/reg_tb.vcd; vcd add -r /reg_tb/*; run -all;
+# 60 ns (0) | Note | reg_tb.vhd | /reg_tb/testbench | Process | Das Register funktioniert einwandfrei! (reg: 2/2 Punkte)
+# 
+# <EOF> 

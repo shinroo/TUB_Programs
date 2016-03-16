@@ -1,0 +1,4 @@
+character *
+width 40
+height 20
+message "Frohe Festtage!"

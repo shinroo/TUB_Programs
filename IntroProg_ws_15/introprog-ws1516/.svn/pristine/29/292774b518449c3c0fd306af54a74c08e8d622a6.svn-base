@@ -1,0 +1,9 @@
+Am 14.01.2016 hat Niklas das Tutorium anstelle von Wen-Long gegeben.
+
+Dabei ist mir folgender Fehler unterlaufen. Ich habe erwähnt, dass die
+Heap-Eigenschaft für die einzelnen Leveln des Heaps gelten muss. (Also die Werte
+aller Knoten in Höhe i müssen, im Falle eines Min-Heap, kleiner gleich der Werte
+aller Knoten in der Höhe i+1) sein.
+
+Das ist falsch. Die Heapeigenschaft gilt für die einzelnen Unterbäume und nicht
+die Ebenen. Auf den Slides wird es richtig erklärt. 

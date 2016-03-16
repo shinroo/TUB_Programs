@@ -1,0 +1,71 @@
+1. Was ist ein endlicher Zustandsautomat?
+Ein Zustandsautomat wird durch vorherige und momentane Eingaben bestimmt. Er besteht aus einer endlichen Anzahl an Zuständen. Diese Zustände ergeben sich aus bisherigen Eingaben, die das Ergebnis von weiteren Eingaben bestimmen.
+
+Es gibt vier Typen von Aktionen
+Eingangsaktion
+Ausgabe wird beim Eintreten in einen Zustand generiert
+Ausgangsaktion
+Ausgabe wird beim Verlassen eines Zustandes generiert
+Eingabeaktion
+Ausgabe wird abhängig vom aktuellen Zustand und der Eingabe generiert
+Übergangsaktion
+Ausgabe wird abhängig von einem Zustandsübergang generiert [1]
+2. Wie unterscheiden sich Moore- und Mealy-Automaten voneinander? Nennen Sie für beide Varianten jeweils einen Vorteil!
+
+Moore-Automat:
+Aktionen oder Ausgaben hängen vom aktuellen Zustand ab. Der Folgezustand ist von der Eingabe im aktuellen Zustand abhängig. Vorteil: Sie beginnen, wenn der Zustand eintritt und enden, wann er wieder verlassen wird. (Gut für eine Alarmanlage. Eine Stoppuhr würde nicht funktionieren.)
+
+Mealy-Automat: Aktionen oder Ausgaben geschehen bei Zustandsübergängen. Vorteil: Sie finden zu Zeitpunkten statt und haben einen unabhängigen Zeitintervall.
+3. In VHDL lassen sich Automaten über ein bis mehrere Prozesse realisieren. Wonach wird bei einer Mehrprozessimplementierung die Logik aufgeteilt? Wie viele sinnvolle Varianten gibt es und welche Vorteile ergeben sich?
+
+manuelle Synthese: Tabelle aufstellen und als Schaltnetz mit Datenflussbeschreinung modellieren. Nachteil: Bei großen und Komplexen Automaten sehr aufwendig.
+
+Drei-Prozess Beschreibung mit taktsynchronen Prozessen:
+Vorteil: Leicht erweiterbar und übersichtlicher.
+-ein taktsynchroner Prozess für die Realisierung von D-Flip-Flops
+-zwei komb. Prozesse zur getrennten Realisierung von Ausgabe- und Übergangsschaltnetz [2]
+
+Beispiel: Moore-Automat mit Drei-Prozess Beschreibung [2]
+
+library ieee;use ieee . std_logic_1164 . all;
+entity moore isport( clk , reset , enable : in std_logic ;	i : in std_logic ; 
+	o: out std_logic);end moore;
+architecture behavior of moore is
+−− a two bit vector is required for the realization 
+−− of three states (for the example before)
+
+signal state , next_state : std_logic_vector(1 downto 0);begin
+
+—- Taktsynchroner Prozess zur Realisierung der DFFs
+
+STATE_MEM: process(clk , reset) 
+begin	if reset = ’1’ then 
+		state <= "00";	elsif clk’event and clk = ’1’ then 
+		if enable = ’1’ then			state <= next_state; 
+		end if;	end if; 
+end process;
+
+—- Kombinatorischer Prozess zur Realisierung der Ausgabe−− Ausgabe Moore nur vom Zustand abhaengig OUTPUT_DECODE: process (state)begin	if state = "00" then		o<= ’0’;	elsif state = "01" then		o<= ’0’;	elsif state = "10" then		o<= ’1’;	else		o<= ’0’; end if;end process;
+
+
+—- Kombinatorischer Prozess zur Realisierung der Zustandsübergänge
+
+
+TRANSITION_LOGIC: process (state, i) 
+begin	next_state <= state; −− default to avoid latchescase (state) is 
+	when "00" =>	if i = ’1’ then 
+		next_state <= "01";	else		next_state <= "00"; 
+	end if;	when "01" =>		if i = ’1’ then			next_state <= "10";		else			next_state <= "00"; 
+		end if;                     
+
+	when "10" =>		if i = ’1’ then			next_state <= "10";		else			next_state <= "00"; 
+		end if;	when others => 
+		next_state <= "00";end case; 
+end process;
+end behavior;
+
+
+
+Quellen:
+[1] https://de.wikipedia.org/wiki/Endlicher_Automat
+[2] https://www3.informatik.uni-erlangen.de/DE/Lehre/VHDL-RA/SS2014/folien/09-fsm.pdf

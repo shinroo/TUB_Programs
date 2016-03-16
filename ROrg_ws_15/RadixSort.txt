@@ -1,0 +1,143 @@
+Summary:
+
+Commands:		5514	
+Cycles (single):	5514
+Cycles (multi):		21449
+
+Total amount of instructions: 5514 for our input (where m=6)
+Else: (865*m)+324, where m is length of longest element of array 
+
+Cycles needed by single cycle processor: same as number of commands (1 command executed per cycle)
+
+Cycles needed by multi cycle processor: 
+
+according to wikipedia the following commands take:
+Load 	(5 cycles)
+Store 	(4 cycles)
+R-type 	(4 cycles)
+Branch 	(3 cycles)
+Jump 	(3 cycles)
+
+Our program has:
+Loads: 		54 + m(141)
+Stores:		50 + m(94)	
+R-Types:	117 + m(396)
+Branches:	53 + m(139)
+Jumps:		50 + m(95)
+
+where m is length of longest element of array 
+
+(if m = 6, as in our program)
+900 	* loads		= 4500 Cycles
+614 	* stores	= 2456 Cycles
+2493 	* r-types	= 9972 Cycles 
+887 	* branches	= 2661 Cycles
+620 	* jumps		= 1860 Cycles
+
+Total on multi cycle	= 21449 Cycles assuming m = 6
+
+
+Count of Instructions:
+(we assume length of array is always 4)
+
+2 * la 		= 4 (2 * R-Type + 2 * Load)
+
+forPoison * 40 + 2 (final comparison) = 242
+{
+	1 * bge 	= 2 (1 * Branch + 1 * Load)
+	1 * add 	= 1 (1 * R-Type)
+	1 * sw 		= 1 (1 * Store)
+	1 * addi 	= 1 (1 * R-Type)
+	1 * j 		= 1 (1 * Jump)
+
+	total 		= 6
+}
+
+2 * addi 	= 2 (2 * R-Type)
+
+forVacant * 10 + 2 (final comparison) = 72
+{
+	1 * bge 	= 2 (1 * Branch + 1 * Load)
+	1 * sll 	= 1 (1 * R-Type)
+	1 * add 	= 1 (1 * R-Type)
+	1 * sw 		= 1 (1 * Store)
+	1 * addi 	= 1 (1 * R-Type)
+	1 * j 		= 1 (1 * Jump)
+
+	total 		= 7
+}
+
+3 * addi 	= 3 (3 * R-Type)
+
+sort * m + 1 (final comparison) = 4945
+{
+	1 * beq 	= 1 (1 * Branch)
+	2 * add 	= 2 (2 * R-Type)
+	1 * addi 	= 1 (1 * R-Type)
+
+	bucket_fill * 4 + 1 (final comparison) = 93
+	{
+		1 * beq 	= 1 (1 * Branch)
+		4 * sll 	= 4 (4 * R-Type)
+		5 * add 	= 5 (5 * R-Type)
+		2 * addi 	= 2 (2 * R-Type)
+		2 * lw 		= 2 (2 * Load)
+		3 * div 	= 3 (3 * R-Type)
+		1 * mfhi 	= 1 (1 * R-Type)
+		3 * mflo 	= 3 (3 * R-Type)
+		1 * sw 		= 1 (1 * Store)
+		1 * j 		= 1 (1 * Jump)
+
+		total 		= 23
+	}
+
+	2 * add 	= 2 (2 * R-Type)
+	2 * addi 	= 2 (2 * R-Type)
+
+	bucket_empty * 40 + 2 (final comparison) = 442
+	{
+		1 * bge 	= 2 (1 * Branch + 1 * Load)
+		2 * add 	= 2 (2 * R-Type)
+		1 * lw 		= 1 (1 * Load)
+		1 * beq 	= 1 (1 * Branch)
+		1 * sll 	= 1 (1 * R-Type)
+		1 * sw 		= 1 (1 * Store)
+		2 * addi 	= 2 (2 * R-Type)
+		1 * j 		= 1 (1 * Jump)
+
+		total		= 11
+	}
+
+	3 * addi 	= 3 (3 * R-Type)
+
+	repoison = 242
+	{
+		1 * bge 	= 2 (1 * Branch + 1 * Load)
+		1 * add 	= 1 (1 * R-Type)
+		1 * sw 		= 1 (1 * Store)
+		1 * addi 	= 1 (1 * R-Type)
+		1 * j 		= 1 (1 * Jump)
+
+		total 		= 6
+	}
+
+	2 * addi 	= 2 (2 * R-Type)
+
+	revacant = 72
+	{
+		1 * bge 	= 2 (1 * Branch + 1 * Load)
+		1 * sll 	= 1 (1 * R-Type)
+		1 * add 	= 1 (1 * R-Type)
+		1 * sw 		= 1 (1 * Store)
+		1 * addi 	= 1 (1 * R-Type)
+		1 * j 		= 1 (1 * Jump)
+
+		total 		= 7
+	}
+
+	1 * mult 	= 1 (1 * R-Type)
+	1 * mflo 	= 1 (1 * R-Type)
+	1 * j 		= 1 (1 * Jump)
+
+	total 		= 865
+}

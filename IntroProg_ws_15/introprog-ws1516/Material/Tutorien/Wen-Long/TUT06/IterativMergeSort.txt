@@ -1,0 +1,12 @@
+IterativMergeSort(Array A, s, n)
+	step ← 1
+	while (step < n) do
+		left ← 1
+		while (left ≤ n-step) do
+			middle ← left + step - 1
+			middle ← min(middle, n)
+			right ← left + 2 * step - 1
+			right ← min(right, n)
+			Merge(A, left, middle, right)
+			left ← left + step * 2
+		step ← step * 2

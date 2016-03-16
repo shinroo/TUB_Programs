@@ -1,0 +1,60 @@
+1.)
+
+Frage:
+
+Welcher Algorithmus ist bei welchen Eingaben schneller?
+
+Antwort:
+
+Insertionsort ist bei fast sortierte Eingaben sehr schnell.
+Countsort ist schnell, wenn die eingegebene Zahlen nicht eine große Bereich bilden. Also wenn die Zahlen relativ nah an einander liegen.
+
+2.)
+
+Frage:
+
+Inwieweit stehen die Anzahl der gezählten Befehle und die (empirisch gemessene) Laufzeit in Beziehung zueinander?
+
+Antwort:
+
+Eine Beziehung zwischen die Laufzeit und die Befehle besteht zwar, aber es ist klar, dass manche Befehle länger dauern als andere. Die Anzahl der Befehle und die Laufzeit scheinen proportional zueinander zu sein, d.h. wenn je mehr Befehle, desto länger Laufzeit. Zum Beispiel wenn man MAX_VALUE sehr klein stellt (= 100), dann bekommt man für Countsort eine ganz niedrige Laufzeit (70k Befehle ~ 0.274 Laufzeit) und für Insertionsort eine sehr große Laufzeit (70M Befehle ~ 194.989 Laufzeit). 
+
+3.)
+
+Frage:
+
+Teste die Algorithmen für verschiedene Werte der Konstanten MAX_VALUE. Bei welchen Kombinationen von MAX_VALUE und Größen des Arrays n ist Insertionsort und wann Countsort vorzuziehen?
+
+Antwort:
+
+Wenn MAX_VALUE sehr klein ist (~100-500) dann ist Countsort sehr schnell.
+
+	Beispiel:
+
+	(MAX_VALUE = 100)
+
+	                        Countsort                              Insertionsort 
+	       n 	          Befehle         Laufzeit 	         Befehle.         Laufzeit 
+	   10000 	            70606           0.2740 	         74768656         194.9890 	 
+	   20000 	           140606           0.2710 	        298089189         471.9000 	 
+	   30000 	           210606           0.3330 	        673023230        1047.7490 	 
+	   40000 	           280606           0.4430 	       1192138678        1854.1540 	 
+	   50000 	           350606           0.5630 	       1853728614        2884.7990 
+
+Countsort ist also sehr schnell wenn die Zahlen sich in einer sehr kleine Bereich finden.
+
+Wenn MAX_VALUE aber sehr groß ist, dann ist Insertionsort schneller wenn die Größe des Arrays klein (n=10000 oder 20000) ist.
+
+	Beispiel:
+
+	(MAX_VALUE = 100000000)
+
+				Countsort                              Insertionsort 
+	       n 	          Befehle         Laufzeit 	         Befehle.         Laufzeit 
+	   10000 	        600070006        1041.6470 	         74775229         115.8630 	 
+	   20000 	        600140006         955.6590 	        301536795         468.4560 	 
+	   30000 	        600210006         959.6690 	        675061586        1049.8750 	 
+	   40000 	        600280006         962.0180 	       1201126561        1961.8260 	 
+	   50000 	        600350006         956.7760 	       1881447258        2924.8480 	
+
+Hier sieht man das die zwei Algorithmen umgekehrt proportional zueinander bei diesem MAX_VALUE sind. Insertionsort ist hier schnell wenn die Größe des Arrays klein ist aber je größer das Array wird, desto langsamer wird Insertionsort. Im Gegensatz dazu ist Countsort hier ein bisschen schneller bei kleinere Größen von dem Array.	

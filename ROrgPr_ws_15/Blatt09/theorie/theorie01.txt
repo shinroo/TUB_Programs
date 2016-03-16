@@ -1,0 +1,6 @@
+1. (1 Punkt) Was ist ein endlicher Zustandsautomat?
+2. (2 Punkte) Wie unterscheiden sich Moore- und Mealy-Automaten voneinander?
+Nennen Sie für beide Varianten jeweils einen Vorteil!
+3. (2 Punkte) In VHDL lassen sich Automaten über ein bis mehrere Prozesse realisieren.
+Wonach wird bei einer Mehrprozessimplementierung die Logik aufgeteilt?
+Wie viele sinnvolle Varianten gibt es und welche Vorteile ergeben sich?

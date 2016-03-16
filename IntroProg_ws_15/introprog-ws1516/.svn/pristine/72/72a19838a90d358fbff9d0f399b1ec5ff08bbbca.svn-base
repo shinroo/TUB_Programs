@@ -1,0 +1,11 @@
+blah OK
+  blah    NOT OK
+test haha
+  TEST not good
+test good
+   html_tag  <HEAD>
+  html_tag   <BODY>
+    html_tag <STRANGE TAG>
+
+    html_tag <a b c d e f g>
+blah END

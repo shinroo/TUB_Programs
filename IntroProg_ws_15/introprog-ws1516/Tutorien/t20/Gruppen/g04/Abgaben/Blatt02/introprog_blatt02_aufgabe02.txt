@@ -1,0 +1,32 @@
+1.) 
+
+Frage:
+
+Ist das lineare, quadratische bzw. das kubische Wachstum der Funktionen for_linear,
+for_quadratisch bzw. for_kubisch klar zu erkennen?
+
+	Unsere Ausgabe:
+
+	 			linear 	                 quadratisch 	                     kubisch
+	  n 	  Wert    Befehle   Laufzeit	  Wert    Befehle   Laufzeit	  Wert    Befehle   Laufzeit
+	  5 	     5         19    16.9700 	    25         99    69.8750 	   125        499   217.7400 	 
+	  6 	     6         22     8.4900 	    36        136    51.5750 	   216        820   306.3560 	 
+	  7 	     7         25     9.9610 	    49        179    69.9990 	   343       1257   486.2690 	 
+	  8 	     8         28    11.4750 	    64        228    91.2890 	   512       1828   724.8850 	 
+	  9 	     9         31    13.0370 	    81        283   115.5860 	   729       2551  1032.2500 	 
+	 10 	    10         34    14.4480 	   100        344   141.9540 	  1000       3444  1416.6500
+
+Antwort:
+
+Ja das Wachstum ist leicht zu erkennen, die lineare Funktion wächst viel langsamer als die quadratische und die quadratische viel langsamer als die kubische.
+
+2.)
+
+Frage: 
+
+Hast Du immer die gleiche Ausgabe (bzgl. der Anzahl an ausgeführten Befehlen bzw. der Laufzeit)
+erhalten?
+
+Antwort:
+
+Die Anzahl von Befehle war immer gleich, aber die Lauzeit hat sich normalerweise mit +-1.00 unterscheidet.

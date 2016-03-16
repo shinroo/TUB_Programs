@@ -1,0 +1,17 @@
+preorder(node) {
+	visit(node)
+	preorder(node->left)
+	preorder(node->right)
+}
+
+postorder (node) {
+	postorder(node->left)
+	postorder(node->right)
+	visit(node)
+}
+
+inorder (node) {
+	inorder(node->left)
+	visit(node)
+	inorder(node->right)
+}

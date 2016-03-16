@@ -1,0 +1,22 @@
+Aufgabe02_1: In_order_tree_walk
+
+Gegeben:
+
+Baum
+	 15
+   /   \
+  9	    20
+ / \    /	
+4  12  16
+
+Benutzter Algorithmus:
+
+In_order_tree_walk(x)
+	if x =/= nil then
+		In_order_tree_walk(lc(x))
+		Ausgabe (key(x))
+		In_order_tree_walk(rc(x))
+
+Reihenfolge in der die Knoten bearbeitet werden nach In_order_tree_walk(root(Baum)):
+
+4->9->12->15->16->20.
