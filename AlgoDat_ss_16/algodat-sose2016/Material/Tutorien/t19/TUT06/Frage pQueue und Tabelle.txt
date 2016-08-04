@@ -1,0 +1,11 @@
+Obwohl ich mir die Frage mehr oder minder aufgeschrieben habe, bekomme ich keinen Sinn mehr in die Frage. 
+
+Kann derjenige der sie gestellt hat mir vll. nochmal per mail Senden, dann kann ich sie für alle beantworten.
+
+Es ging irgentwie im den Zusammenhang von pQueue und der Tabelle mit den Distanzen und bezüglich bereits 
+abgearbeitete Knoten. 
+
+Die pQueue braucht ihr damit ihr immer den kürzesten Pfad weitergeht. In der Tabelle werden die Entfernungen 
+und der Vorgänger gesaved. Ein bereits abgearbeiteter Knoten kann sich nie wieder verändern, da dies der Grundannahme 
+von Dijkstra wiedersprechen würde.
+

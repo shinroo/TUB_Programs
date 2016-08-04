@@ -1,0 +1,8 @@
+#da data/da1.wav
+da data/da2.wav
+#dort data/dort1.wav
+dort data/dort2.wav
+#fast data/fast1.wav
+fast data/fast2.wav
+#hallo data/hallo1.wav
+hallo data/hallo2.wav

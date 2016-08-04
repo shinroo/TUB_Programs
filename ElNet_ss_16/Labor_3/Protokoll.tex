@@ -1,0 +1,368 @@
+\documentclass[
+	12pt,								% Schriftgröße
+	DIV10,
+	a4paper,         		% Papierformat
+	oneside,						% einseitiges Dokument
+%	titlepage,					% es wird eine Titelseite verwendet
+	parskip=half,				% Abstand zwischen Absätzen (halbe Zeile)
+	headings=normal,			% Größe der Überschriften verkleinern
+	listof=totoc,					% Verzeichnisse im Inhaltsverzeichnis aufführen
+	bibliography=totoc,						% Literaturverzeichnis im Inhaltsverzeichnis aufführen
+	index=totoc,						% Index im Inhaltsverzeichnis aufführen
+%	caption=tableheading,	% Beschriftung von Tabellen unterhalb ausgeben
+	final								% Status des Dokuments (final/draft)
+]{scrartcl}
+
+%--------------------------------------------------------------------------------
+% Ab hier werden Packages geladen
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{color}
+\usepackage{graphicx}
+\graphicspath{{./Bilder/}}
+
+\usepackage{float}
+\usepackage{amsmath,amsfonts}
+\usepackage{amssymb}
+\usepackage{exscale}
+\usepackage{subfig} 					
+\usepackage{booktabs}
+\usepackage{ulem}
+\usepackage{setspace}
+\usepackage[a4paper,lmargin={25mm},rmargin={25mm},tmargin={25mm},bmargin= {25mm}]{geometry}
+\addtolength{\footskip}{-0.8cm}		%Fussbereich 0.8cm höher, sodass die Seitennummierung höher ist
+
+\usepackage{tabularx}
+\usepackage{tabulary}
+\newcolumntype{w}[1]{>{\raggedleft\hspace{0pt}}p{#1}}
+
+\usepackage{siunitx}
+\sisetup{exponent-product= \cdot ,output-decimal-marker = {,},detect-family,detect-display-math = true,per-mode = symbol-or-fraction}
+
+%--------------------------------------------------------------------------------
+% Hier wird die Titelseite bearbeitet. Im folgenden kommen die zu ändernden Daten
+\newcommand{\nameOfTitel}{Laborversuch Ausgleichsvorgang}
+\newcommand{\untertitel}{3. Labortermin}	% wird nicht verwendet
+\newcommand{\art}{Protokoll zum Praktikum "elektrische Netzwerke"}
+\newcommand{\autor}{Robert Focke}
+\newcommand{\matrikelnr}{369264}
+\newcommand{\betreuer}{Michael Smirnov}
+\newcommand{\labortermin}{Mittwoch 14:00-16:00}
+\newcommand{\datum}{\today}				% hier Abgabedatum einfügen
+
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+% Ab hier wird die Titelseite zusammengesetzt. Es ist keine Änderung mehr notwendig!
+\thispagestyle{plain}
+\begin{titlepage}
+
+~\vspace{0.5cm} 
+\begin{center}
+\includegraphics[width=2.5cm]{Bilder/tu-logo_rot}\hspace{7cm}
+  		\includegraphics[width=2.5cm]{Bilder/sense}\hspace{1cm}\\[1cm]
+		\Large{TECHNISCHE UNIVERSITÄT BERLIN}\\
+			Fakultät IV - Institut für Energie- und Automatisierungstechnik\\
+			Fachgebiet Energieversorgungsnetze und Integration Erneuerbarer Energien
+\end{center}
+\vspace{1.2cm}
+\begin{center}
+\LARGE{\textbf{\textsc{\nameOfTitel}}}\\
+\LARGE{\textbf{\untertitel}}\\[2ex]
+\Large{\textbf{\art}}\\[8ex]
+
+\normalsize
+\begin{tabular}{w{5.4cm}p{8cm}}\\
+ vorgelegt von:	 & \quad \autor\\[1.2ex]
+ Matrikelnummer: & \quad \matrikelnr\\[1.2ex]
+ Betreuer: & \quad \betreuer\\[1.2ex]
+ Labortermin: & \quad \labortermin\\[1.2ex]
+ eingereicht am: &  \quad \datum\\[3ex]
+\end{tabular}
+\end{center}
+
+\end{titlepage}
+\newpage
+
+%-----------------------------------------------------------------------------
+\pagenumbering{roman}
+
+%-----------------------------------------------------------------------------
+% Eidesstattliche Versicherung der selbstständigen Arbeit
+\section*{Eidesstattliche Erklärung}
+Ich, \autor, versichere hiermit an Eides statt, dass ich mein \art \ mit dem Thema
+\begin{quote}
+\textit{\textsc{\nameOfTitel}} - \textit{\untertitel}
+\end{quote}
+selbständig und eigenhändig angefertigt und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.
+
+\bigskip
+\bigskip
+\bigskip
+
+Berlin, den \datum
+
+
+\rule[-0.2cm]{5cm}{0.5pt}
+
+\textsc{\autor} 
+
+\newpage
+%-----------------------------------------------------------------------------
+
+\tableofcontents % Inhaltsverzeichnis
+\newpage
+\pagenumbering{arabic}
+
+%---------------------------------------------------------------------
+% Ab hier fängt der eigenständige Teil an!
+
+\section{Theorie}
+\subsection{Resonanz}
+
+Vorgänge, bei denen ein schwingfähiges System mit seiner Eigenfrequenz angeregt wird, werden als Resonanz bezeichnet.
+
+Beispiele:
+\begin{itemize}
+	\item Schaukeln verläuft sinusförmig, und diese kann deshalb optimiert werden durch Resonanz. Dann kann man z.B. statt jedes Mal die Schaukel anzuschubsen, nur jedes zweite Mal.
+	\item Die Tonerzeugung von Musikinstrumente
+	\item Ebben und Wellen im Meer 
+\end{itemize}
+
+\subsection{Eingangsstrom und Gesamtimpedanz}
+
+Das Verhalten von den Eingangstrom und Gesamtimpedanz bei verschiedenen Netzwerktopologien unter Anregung von der Resonanzfrequenz:
+
+\begin{itemize}
+	\item Reihenschaltung
+			\begin{itemize}
+				\item $ I_E $ wird maximal
+				\item $ \underline{Z}_{GES} $ wird minimal 
+			\end{itemize}
+	\item Parallelschaltung
+			\begin{itemize}
+				\item $ I_E $ wird minimal
+				\item $ \underline{Z}_{GES} $ wird maximal 
+			\end{itemize}
+\end{itemize}
+
+\subsection{Resonanzfrequenz}
+
+Berechnung der Resonanzfrequenz der Schaltung:
+
+Gesamtimpedanz der Schaltung:
+\begin{equation}
+	\begin{split}
+		\underline{Z} & = R + j({\omega}L - \frac{1}{{\omega}C})
+	\end{split}
+\end{equation}
+
+Wir untersuchen nun den Fall wo $ {\omega}L - \frac{1}{{\omega}C} = 0 $ 
+also:
+
+\begin{equation}
+	\begin{split}
+		{\omega}_0L - \frac{1}{{\omega}_0C} & = 0 \\
+		\implies {\omega}_0 & = \frac{1}{\sqrt{LC}} \\
+		{\omega}_0 & = 461265.60
+	\end{split}
+\end{equation}
+
+Wir wissen auch, dass:
+
+\begin{equation}
+	\begin{split}
+		{\omega}_0 & = f_02\pi \\
+		\implies f_0 & = \frac{{\omega}_0}{2\pi} \\
+		f_0 & \approx \SI{73}{\kilo\hertz}
+	\end{split}
+\end{equation}
+
+\subsection{Logarithmische Darstellung}
+
+Die logarithmische Darstellung ist eine Achsenbeschriftung, bei der in einer linearen Teilung nicht der Zahlenwert einer darzustellenden Größe aufgetragen wird, sondern der Logarithmus ihres Zahlenwertes.
+
+\begin{itemize}
+	\item Vorteile:
+		\begin{itemize}
+			\item Wenn eine sehr große Wertebereich vorhanden ist, werden Zusammenhänge bei kleinen Zahlenwerte in der logarithmischen Darstellung überschaulicher sein als bei der linearen Darstellung.
+		\end{itemize}
+	\item Nachteile:
+		\begin{itemize}
+			\item Null und negative Werte können nicht dargestellt werden
+			\item Die logarithmische Darstellung ist weniger intuitiv als die lineare Darstellung.
+		\end{itemize}
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{Durchführung}
+
+Die folgende Schaltung würde im Labor gebaut:
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\textwidth]{schaltung}
+\caption{Die im Labor gebaute Schaltung \cite{en_ue5}}
+\label{figure_schaltung}
+\end{figure}
+
+Die Spannung am Widerstand würde dann für verschiedene Frequenzen gemessen. Die Eingansspannung würde im Bereich \SI{9.5}{\volt} bis \SI{10.5}{\volt} gestellt, da bei Änderungen von der Frequenz die Eingangsspannung sich ändert.
+
+Danach würde die Schaltung in LTSpice simuliert, und die simulierte Ergebnisse gespeichert.
+
+
+%---------------------------------------------------------------------
+
+\section{Mess- und Rechenergebnisse}
+
+Tabellen 1 un 2 stellen die Mess- und Rechenergebnisse aus dem Labor dar.
+Die foldende Formeln würden benutzt:
+
+\begin{itemize}
+	\item $ I = \frac{U_R}{R} $
+	\item $ |\underline{Z}| = \frac{U_E}{I} $
+\end{itemize}
+
+\begin{table}[h]
+	\centering
+	\caption{Gemessene und berechnete Werte}
+	\label{my-label}
+	\begin{tabulary}{\textwidth}{|C|C|C|C|C|C|}
+		\hline
+		F \SI{}{\kilo\hertz}    & $ U_E $ \SI{}{\volt}  & $ U_R $ \SI{}{\milli\volt}  & $ U_R $ \SI{}{\volt}  & I \SI{}{\ampere}  & \underline{Z} \SI{}{\ohm} \\ \hline
+		1    & 10   & 60   & 0.06  & 0.0012  & 8333.3333333333 \\ \hline
+		2    & 10.2 & 100  & 0.1   & 0.002   & 5100            \\ \hline
+		3    & 10.2 & 140  & 0.14  & 0.0028  & 3642.8571428572 \\ \hline
+		4    & 10.2 & 180  & 0.18  & 0.0036  & 2833.3333333333 \\ \hline
+		5    & 10.2 & 216  & 0.216 & 0.00432 & 2361.1111111111 \\ \hline
+		6    & 10.2 & 252  & 0.252 & 0.00504 & 2023.8095238095 \\ \hline
+		7    & 10.2 & 288  & 0.288 & 0.00576 & 1770.8333333333 \\ \hline
+		8    & 10.2 & 320  & 0.32  & 0.0064  & 1593.75         \\ \hline
+		9    & 10.2 & 352  & 0.352 & 0.00704 & 1448.8636363636 \\ \hline
+		10   & 10.2 & 384  & 0.384 & 0.00768 & 1328.125        \\ \hline
+		15   & 10.2 & 576  & 0.576 & 0.01152 & 885.4166666667  \\ \hline
+		20   & 10   & 768  & 0.768 & 0.01536 & 651.0416666667  \\ \hline
+		25   & 10   & 980  & 0.98  & 0.0196  & 510.2040816327  \\ \hline
+		30   & 9.8  & 1201 & 1.201 & 0.02402 & 407.9933388843  \\ \hline
+		35   & 10.2 & 1521 & 1.521 & 0.03042 & 335.3057199211  \\ \hline
+		40   & 9.8  & 1921 & 1.921 & 0.03842 & 255.07548152    \\ \hline
+		45   & 9.8  & 2321 & 2.321 & 0.04642 & 211.1158983197  \\ \hline
+		50   & 9.8  & 2881 & 2.881 & 0.05762 & 170.0798333912  \\ \hline
+		55   & 10   & 3761 & 3.761 & 0.07522 & 132.943366126   \\ \hline
+		60   & 10   & 4801 & 4.801 & 0.09602 & 104.144969798   \\ \hline
+		65   & 10   & 6321 & 6.321 & 0.12642 & 79.1014080051   \\ \hline
+		66   & 9.8  & 6481 & 6.481 & 0.12962 & 75.6056164172   \\ \hline
+		67   & 9.8  & 6801 & 6.801 & 0.13602 & 72.0482282017   \\ \hline
+		68   & 10   & 7401 & 7.401 & 0.14802 & 67.5584380489   \\ \hline
+		69   & 10   & 7601 & 7.601 & 0.15202 & 65.7808183134   \\ \hline
+		70   & 10   & 8001 & 8.001 & 0.16002 & 62.4921884764   \\ \hline
+		71   & 10   & 8201 & 8.201 & 0.16402 & 60.9681746129   \\ \hline
+		72   & 10   & 8601 & 8.601 & 0.17202 & 58.1327752587   \\ \hline
+		73   & 9.8  & 8801 & 8.801 & 0.17602 & 55.6754914214   \\ \hline
+		74   & 9.8  & 8801 & 8.801 & 0.17602 & 55.6754914214   \\ \hline
+		75   & 10   & 9001 & 9.001 & 0.18002 & 55.5493834018   \\ \hline
+		76   & 10   & 9201 & 9.201 & 0.18402 & 54.3419193566   \\ \hline
+	\end{tabulary}
+\end{table}
+
+\begin{table}[h]
+	\centering
+	\caption{Gemessene und berechnete Werte}
+	\label{my-label}
+	\begin{tabulary}{\textwidth}{|C|C|C|C|C|C|}
+		\hline
+		F \SI{}{\kilo\hertz}    & $ U_E $ \SI{}{\volt}  & $ U_R $ \SI{}{\milli\volt}  & $ U_R $ \SI{}{\volt}  & I \SI{}{\ampere}  & \underline{Z} \SI{}{\ohm} \\ \hline
+		77   & 10.2 & 9201 & 9.201 & 0.18402 & 55.4287577437   \\ \hline
+		78   & 10.2 & 9001 & 9.001 & 0.18002 & 56.6603710699   \\ \hline
+		79   & 10   & 8801 & 8.801 & 0.17602 & 56.8117259402   \\ \hline
+		80   & 10.2 & 8801 & 8.801 & 0.17602 & 57.947960459    \\ \hline
+		85   & 10   & 7201 & 7.201 & 0.14402 & 69.4348007221   \\ \hline
+		90   & 10.2 & 6201 & 6.201 & 0.12402 & 82.2447992259   \\ \hline
+		95   & 10.2 & 5001 & 5.001 & 0.10002 & 101.9796040792  \\ \hline
+		100  & 10.2 & 4401 & 4.401 & 0.08802 & 115.8827539196  \\ \hline
+		105  & 10   & 3801 & 3.801 & 0.07602 & 131.5443304394  \\ \hline
+		110  & 10   & 3201 & 3.201 & 0.06402 & 156.201187129   \\ \hline
+		120  & 10.2 & 2801 & 2.801 & 0.05602 & 182.0778293467  \\ \hline
+		130  & 10.2 & 2401 & 2.401 & 0.04802 & 212.4114952103  \\ \hline
+		140  & 10.2 & 2201 & 2.201 & 0.04402 & 231.7128577919  \\ \hline
+		150  & 10.2 & 1841 & 1.841 & 0.03682 & 277.0233568713  \\ \hline
+		160  & 10   & 1641 & 1.641 & 0.03282 & 304.6922608166  \\ \hline
+		170  & 10   & 1481 & 1.481 & 0.02962 & 337.60972316    \\ \hline
+		180  & 10.2 & 1361 & 1.361 & 0.02722 & 374.7244673035  \\ \hline
+		190  & 10.2 & 1281 & 1.281 & 0.02562 & 398.1264637002  \\ \hline
+		200  & 10   & 1161 & 1.161 & 0.02322 & 430.6632213609  \\ \hline
+		250  & 10.2 & 920  & 0.92  & 0.0184  & 554.347826087   \\ \hline
+		300  & 10.2 & 720  & 0.72  & 0.0144  & 708.3333333333  \\ \hline
+		350  & 10.2 & 600  & 0.6   & 0.012   & 850             \\ \hline
+		400  & 10   & 520  & 0.52  & 0.0104  & 961.5384615385  \\ \hline
+		450  & 10   & 440  & 0.44  & 0.0088  & 1136.3636363636 \\ \hline
+		500  & 10   & 440  & 0.44  & 0.0088  & 1136.3636363636 \\ \hline
+		600  & 10   & 360  & 0.36  & 0.0072  & 1388.8888888889 \\ \hline
+		700  & 10   & 320  & 0.32  & 0.0064  & 1562.5          \\ \hline
+		800  & 10   & 280  & 0.28  & 0.0056  & 1785.7142857143 \\ \hline
+		900  & 10   & 240  & 0.24  & 0.0048  & 2083.3333333333 \\ \hline
+		1000 & 10   & 200  & 0.2   & 0.004   & 2500            \\ \hline
+	\end{tabulary}
+\end{table}
+
+%---------------------------------------------------------------------
+\section{Simulationsergebnisse}\label{sec:sim}
+
+Die folgende Graphen vergleichen die Simulationsergebnisse und die berechnete Ergebnisse aus dem Labor.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{impedanz}
+	\caption{Vergleich der Impedanzen \cite{en_ue5}}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{strom}
+	\caption{Vergleich der Ströme \cite{en_ue5}}
+	\label{figure_schaltung}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Interpretation}
+
+Die in diesem Laborversuch untersuchte Schaltung, ist eine Reihe RCL Schaltung. Aus der Theorie, wissen wir, dass Reihenschaltungen bei der Resonanzfrequenz ihren maximalen Strom und minimale Impedanz erreichen. Das ist in den Graphen ganz leicht zu sehen. Bei ungefähr \SI{75}{\kilo\hertz} hat der Impedanzgraph seinen Tiefstpunkt und der Stromgraph seinen Höchstpunkt.
+
+Die simulierte Ergebnisse und die Ergebnisse aus dem Labor sind sehr ähnlich zu einander. Die Ursache der Unterschiede ist wahrscheinlich ungenaue Messungen und imperfekte Bauelemente.
+
+%--------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%literatur
+% Abschließend sind die Quellen von Bildern und Zitaten nicht zu vergessen.
+\begin{thebibliography}{}   
+\bibitem{en_ue5}          % Hier beginnt das Literaturverzeichnis
+Abbildung 1: Peter Teske, Christian Gornig,                            % Autoren
+\newblock {\textit{Laborpraktikum 3: Resonanz am RLC-Schwingkreis,}}
+\newblock TU Berlin, 2016.
+
+\bibitem{DIN1338}
+Normenausschuss Technische Grundlagen (NATG) im DIN,                         % Autoren
+\newblock {\textit{DIN 1338:2011-03, Formelschreibweise und Formelsatz, }}
+\newblock DIN Deutsches Institut für Normung e. V., Berlin, 2011-03.
+
+\bibitem{Resonanz}
+Resonanz Wikipedia,                         % Autoren
+\newblock {\textit{https://de.wikipedia.org/wiki/Resonanz, }}
+\newblock Wikipedia, 15.06.2016.
+
+%\bibitem{Abbildung_2}
+%Abbildung 2:	Erika Musterfrau, Dörte Shakira Wagner,
+%\newblock {\it  Anzugsmomente von Kolbenrückholfedervorspannungsschrauben,}
+%\newblock TU Berlin, 2014.
+
+%\bibitem{Informationen}
+%Claire Grube, Rainer Wahnsinn und Kurt Zschluß 
+%\newblock {\it Praktikumsbeschreibung Kurbelwelleninnenrandbeleuchtung,}
+%\newblock TU Berlin, 2014.
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------------------------------------
+\end{document}\grid

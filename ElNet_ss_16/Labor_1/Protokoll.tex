@@ -1,0 +1,325 @@
+\documentclass[
+	12pt,								% Schriftgröße
+	DIV10,
+	a4paper,         		% Papierformat
+	oneside,						% einseitiges Dokument
+%	titlepage,					% es wird eine Titelseite verwendet
+	parskip=half,				% Abstand zwischen Absätzen (halbe Zeile)
+	headings=normal,			% Größe der Überschriften verkleinern
+	listof=totoc,					% Verzeichnisse im Inhaltsverzeichnis aufführen
+	bibliography=totoc,						% Literaturverzeichnis im Inhaltsverzeichnis aufführen
+	index=totoc,						% Index im Inhaltsverzeichnis aufführen
+%	caption=tableheading,	% Beschriftung von Tabellen unterhalb ausgeben
+	final								% Status des Dokuments (final/draft)
+]{scrartcl}
+
+%--------------------------------------------------------------------------------
+% Ab hier werden Packages geladen
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{color}
+\usepackage{graphicx}
+\graphicspath{{./Bilder/}}
+
+\usepackage{float}
+\usepackage{amsmath,amsfonts}
+\usepackage{amssymb}
+\usepackage{exscale}
+\usepackage{subfig} 					
+\usepackage{booktabs}
+\usepackage{ulem}
+\usepackage{setspace}
+\usepackage[a4paper,lmargin={25mm},rmargin={25mm},tmargin={25mm},bmargin= {25mm}]{geometry}
+\addtolength{\footskip}{-0.8cm}		%Fussbereich 0.8cm höher, sodass die Seitennummierung höher ist
+
+\usepackage{tabularx}
+\usepackage{tabulary}
+\newcolumntype{w}[1]{>{\raggedleft\hspace{0pt}}p{#1}}
+
+\usepackage{siunitx}
+\sisetup{exponent-product= \cdot ,output-decimal-marker = {,},detect-family,detect-display-math = true,per-mode = symbol-or-fraction}
+
+%--------------------------------------------------------------------------------
+% Hier wird die Titelseite bearbeitet. Im folgenden kommen die zu ändernden Daten
+\newcommand{\nameOfTitel}{Laborversuch Ortskurve}
+\newcommand{\untertitel}{1. Labortermin}	% wird nicht verwendet
+\newcommand{\art}{Protokoll zum Praktikum "elektrische Netzwerke"}
+\newcommand{\autor}{Robert Focke}
+\newcommand{\matrikelnr}{369264}
+\newcommand{\betreuer}{Michael Smirnov}
+\newcommand{\labortermin}{Mittwoch 14:00-16:00}
+\newcommand{\datum}{\today}				% hier Abgabedatum einfügen
+
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+% Ab hier wird die Titelseite zusammengesetzt. Es ist keine Änderung mehr notwendig!
+\thispagestyle{plain}
+\begin{titlepage}
+
+~\vspace{0.5cm} 
+\begin{center}
+\includegraphics[width=2.5cm]{Bilder/tu-logo_rot}\hspace{7cm}
+  		\includegraphics[width=2.5cm]{Bilder/sense}\hspace{1cm}\\[1cm]
+		\Large{TECHNISCHE UNIVERSITÄT BERLIN}\\
+			Fakultät IV - Institut für Energie- und Automatisierungstechnik\\
+			Fachgebiet Energieversorgungsnetze und Integration Erneuerbarer Energien
+\end{center}
+\vspace{1.2cm}
+\begin{center}
+\LARGE{\textbf{\textsc{\nameOfTitel}}}\\
+\LARGE{\textbf{\untertitel}}\\[2ex]
+\Large{\textbf{\art}}\\[8ex]
+
+\normalsize
+\begin{tabular}{w{5.4cm}p{8cm}}\\
+ vorgelegt von:	 & \quad \autor\\[1.2ex]
+ Matrikelnummer: & \quad \matrikelnr\\[1.2ex]
+ Betreuer: & \quad \betreuer\\[1.2ex]
+ Labortermin: & \quad \labortermin\\[1.2ex]
+ eingereicht am: &  \quad \datum\\[3ex]
+\end{tabular}
+\end{center}
+
+\end{titlepage}
+\newpage
+
+%-----------------------------------------------------------------------------
+\pagenumbering{roman}
+
+%-----------------------------------------------------------------------------
+% Eidesstattliche Versicherung der selbstständigen Arbeit
+\section*{Eidesstattliche Erklärung}
+Ich, \autor, versichere hiermit an Eides statt, dass ich mein \art \ mit dem Thema
+\begin{quote}
+\textit{\textsc{\nameOfTitel}} - \textit{\untertitel}
+\end{quote}
+selbständig und eigenhändig angefertigt und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.
+
+\bigskip
+\bigskip
+\bigskip
+
+Berlin, den \datum
+
+
+\rule[-0.2cm]{5cm}{0.5pt}
+
+\textsc{\autor} 
+
+\newpage
+%-----------------------------------------------------------------------------
+
+\tableofcontents % Inhaltsverzeichnis
+\newpage
+\pagenumbering{arabic}
+
+%---------------------------------------------------------------------
+% Ab hier fängt der eigenständige Teil an!
+
+\section{Theorie}
+\subsection{Das Ohmsche Gesetz für Wechselgrößen}
+
+Mit der Einführung von Wechselgrößen, werden auch komplexe Zahlen benutzt da zum Teil auch komplexe Teilen von Größen bestehen. 
+
+Für Wechselgrößen reicht zum Beispiel Widerstand alleine nicht für die Beschreibung von Schaltungen, da bei Wechselgrößen auch eine komplexe Größe (Reaktanz) besteht. Aus diesem Grund führt man den Begriff Impedanz ein.
+
+$ \underline{Z} = {R} + {jX} $\\
+
+In der obigen Gleichung beschreibt $ \underline{Z} $ die Impedanz, $ R $ den Widerstand und $ X $ die Reaktanz. $ j $ ist die imaginäre Einheit.
+
+Das Ohmsche Gesetz für Wechselgrößen benutzt also die Impedanz und nicht Widerstand und lautet deshalb:
+
+$ \underline{u} = \underline{iZ} $\\
+
+\subsection{Real- und Imaginärteil von komplexen Zahlen}
+
+Da bei Wechselgrößen komplexe Zahlen benutzt werden, ist es hilfreich (vor allem bei) zu wissen wie man den Real- und Imaginärteil bestimmen kann. Sei eine komplexe Zahl $Z = |Z|e^{i\varphi}$ gegeben.
+
+Der Realteil lässt sich als Produkt aus den Betrag der komplexen Zahl und cosinus von der Phasenverschiebung beschreiben.
+
+$ Re(Z) = |Z|cos(\varphi) $\\
+
+Analog dazu lässt sich den Imaginärteil als Produkt aus den Betrag der komplexen Zahl und sinus von der Phasenverschiebung beschreiben.
+
+$ Im(Z) = |Z|sin(\varphi) $\\
+
+\subsection{Impedanz und Admittanz}
+
+Die Impedanz beschreibt änhlich zu dem Widerstand das Verhältnis von der Spannung zur Stromstärke an einem Verbraucher.
+
+$ \underline{Z} = R + \frac{1}{jC\omega} $\\
+
+wobei
+$ Re(\underline{Z}) = R $\\
+und
+$ Im(\underline{Z}) = \frac{-1}{C\omega} $\\
+
+Der Kehrwert von der Impedanz ist die Admittanz.
+
+$ \underline{Y} = \frac{1}{\underline{Z}} = \frac{R}{R^2 + X^2} + j\frac{-X}{R^2 + X^2} $\\
+
+wobei
+$ Re(\underline{Y}) = \frac{R}{R^2 + X^2} $\\
+und
+$ Im(\underline{Y}) = \frac{-X}{R^2 + X^2} $\\
+
+\subsection{Ortskurve}
+
+Unter den Begriff Ortskurve versteht man einer von einem reelen Parameter abhängigen komplexen Systemgröße. Ortskurven werden benutzt in der Analyse von Wechselgrößen, wie zum Beispiel Admittanz und Impedanz.
+
+%---------------------------------------------------------------------
+\section{Durchführung}
+
+Im ersten Teil des Labors würde eine RC-Schaltung, die aus einen \SI{680}{\nano\farad} Kondensator, einen \SI{470}{\ohm} Widerstand und eine Quelle besteht, auf einem Steckbrett aufgebaut. 
+
+Die benutzte Quelle war einen Funktionsgenerator. Die Quelle lieferte eine sinusformige Funktion mit einer Amplitude von \SI{7}{\volt}. 
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{Schaltung}
+\caption{Die im Labor gebaute Schaltung \cite{en_ue5}}
+\label{figure_schaltung}
+\end{figure}
+
+Danach würde die Frequenz variiert und die resultierende Messergebnisse (Phasenverschiebung, Eingangsspannung und Spannung am Widerstand) notiert.
+
+Im zweiten Teil würde die Schaltung in LTSpice simuliert und die dazugehörigen Impendanz- und Admittanzortskurven dargestellt. 
+%---------------------------------------------------------------------
+
+\section{Messergebnisse}
+
+Die Messergebnisse vom Labor sind in der unterliegenden Tabelle dargestellt.
+
+\begin{table}[ht]
+    \centering
+    \caption{Messergebnisse}	
+    \label{tab_mess}  		
+		\begin{tabulary}{\textwidth}{|C|C|C|C|C|}\hline
+     Frequenz $f$ & Spannung $U_\mathrm{E,pp}$ & Spannung $U_\mathrm{A,pp}$ & Phasenversch. $\Delta t$ & Strom $I$ \tabularnewline \hline \hline
+		\SI{200}{\hertz} & \SI{7.2}{\volt} & \SI{2.68}{\volt} & \SI{900}{\micro\second} & \SI{5.70}{\nano\ampere} \tabularnewline \hline
+		\SI{300}{\hertz} & \SI{7.04}{\volt} & \SI{3.6}{\volt} & \SI{540}{\micro\second} & \SI{7.65}{\nano\ampere} \tabularnewline \hline
+		\SI{400}{\hertz} & \SI{6.96}{\volt} & \SI{4.32}{\volt} & \SI{360}{\micro\second} & \SI{9.20}{\nano\ampere} \tabularnewline \hline
+		\SI{500}{\hertz} & \SI{6.8}{\volt} & \SI{4.8}{\volt} & \SI{245}{\micro\second} & \SI{10.21}{\nano\ampere} \tabularnewline \hline
+		\SI{600}{\hertz} & \SI{6.72}{\volt} & \SI{5.16}{\volt} & \SI{180}{\micro\second} & \SI{10.98}{\nano\ampere} \tabularnewline \hline
+		\SI{700}{\hertz} & \SI{6.64}{\volt} & \SI{5.4}{\volt} & \SI{140}{\micro\second} & \SI{11.14}{\nano\ampere} \tabularnewline \hline
+		\SI{800}{\hertz} & \SI{6.64}{\volt} & \SI{5.6}{\volt} & \SI{110}{\micro\second} & \SI{11.49}{\nano\ampere} \tabularnewline \hline
+		\SI{900}{\hertz} & \SI{6.64}{\volt} & \SI{5.76}{\volt} & \SI{90}{\micro\second} & \SI{12.26}{\nano\ampere} \tabularnewline \hline
+		\SI{1000}{\hertz} & \SI{6.64}{\volt} & \SI{5.84}{\volt} & \SI{76}{\micro\second} & \SI{12.42}{\nano\ampere} \tabularnewline \hline
+		\SI{1100}{\hertz} & \SI{6.64}{\volt} & \SI{5.92}{\volt} & \SI{62}{\micro\second} & \SI{12.60}{\nano\ampere} \tabularnewline \hline
+	\end{tabulary}
+\end{table}	
+
+%---------------------------------------------------------------------
+\section{Simulationsergebnisse}\label{sec:sim}
+
+Bei der Simulation würden einige werte anders eingestellt, nähmlich würde die Phasenverschiebung auf \SI{0}{\second} gesetzt und die Spannung auf \SI{10}{\volt}. Die Frequenz würde auch von \SI{100}{\hertz} bis \SI{100}{\kilo\hertz} variiert mit 100 Schritte pro Decade. Die resultierende Ortskurven würden dann mithilfe von LTSpice dargestellt.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Impedanz_sim}
+	\caption{Die simulierte Impedanzortskurve}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Admitannz_sim}
+	\caption{Die simulierte Admittanzorskurve}
+	\label{figure_schaltung}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Interpretation}
+
+Die simulierte Ergebnisse entsprechen die ideale Werte von Admittanz und Impedanz für die Schaltung laut Theorie. In der Realität treten Fehler in den Bauteilen und Messgeräte auf und diese Fehler führen zu ungenaue Messungen. 
+
+\begin{table}[ht]
+	\centering
+	\caption{Berechnete Real- und Imaginärteile von Impedanz und Admittanz}	
+	\label{tab_mess}  		
+	\begin{tabulary}{\textwidth}{|C|C|C|C|C|}\hline
+		Frequenz $f$ & Realteil $\underline{Z}$ & Imaginärteil $\underline{Z}$ & Realteail $\underline{Y}$ & Imaginärteil $\underline{Y}$
+		\tabularnewline \hline \hline
+		\SI{200}{\hertz} & \SI{537.63}{\ohm} & \SI{-1142.51}{\ohm} & \SI{0.34}{\milli\siemens} & \SI{0.72}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{300}{\hertz} & \SI{482.69}{\ohm} & \SI{-782.16}{\ohm} & \SI{0.57}{\milli\siemens} & \SI{0.93}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{400}{\hertz} & \SI{467.86}{\ohm} & \SI{-595.40}{\ohm} & \SI{0.81}{\milli\siemens} & \SI{1.04}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{500}{\hertz} & \SI{478.15}{\ohm} & \SI{-463.36}{\ohm} & \SI{1.08}{\milli\siemens} & \SI{1.05}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{600}{\hertz} & \SI{476.49}{\ohm} & \SI{-384.21}{\ohm} & \SI{1.27}{\milli\siemens} & \SI{1.03}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{700}{\hertz} & \SI{471.78}{\ohm} & \SI{-333.79}{\ohm} & \SI{1.41}{\milli\siemens} & \SI{0.99}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{800}{\hertz} & \SI{474.25}{\ohm} & \SI{-292.67}{\ohm} & \SI{1.53}{\milli\siemens} & \SI{0.94}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{900}{\hertz} & \SI{473.14}{\ohm} & \SI{-263.99}{\ohm} & \SI{1.61}{\milli\siemens} & \SI{0.90}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{1000}{\hertz} & \SI{474.61}{\ohm} & \SI{-245.59}{\ohm} & \SI{1.66}{\milli\siemens} & \SI{0.86}{\milli\siemens} \tabularnewline \hline
+		
+		\SI{1100}{\hertz} & \SI{479.50}{\ohm} & \SI{-219.05}{\ohm} & \SI{1.73}{\milli\siemens} & \SI{0.79}{\milli\siemens} \tabularnewline \hline
+		
+	\end{tabulary}
+\end{table}
+
+Für die Impedanz und Admittanz können die simulierte Ortskurven als Ausgleichsgeraden (oder Graphen) für die gemessene Werte bezeichnet werden, da diese Geraden in etwa die algemeine verlauf von den Werte entsprechen.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Admittanz_vergleich}
+	\caption{Vergleich zwischen gemessene und simulierte Admittanzortskurven}
+	\label{figure_admv}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Impedanz_vergleich}
+	\caption{Vergleich zwischen gemessene und simulierte Impedanzortskurven}
+	\label{figure_impv}
+\end{figure}
+
+   
+%--------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%literatur
+% Abschließend sind die Quellen von Bildern und Zitaten nicht zu vergessen.
+\begin{thebibliography}{}   
+\bibitem{en_ue5}          % Hier beginnt das Literaturverzeichnis
+Abbildung 1: Peter Teske, Christian Gornig,                            % Autoren
+\newblock {\textit{Laborpraktikum 1: Ortskurven,}}
+\newblock TU Berlin, 2016.
+
+\bibitem{DIN1338}
+Normenausschuss Technische Grundlagen (NATG) im DIN,                         % Autoren
+\newblock {\textit{DIN 1338:2011-03, Formelschreibweise und Formelsatz, }}
+\newblock DIN Deutsches Institut für Normung e. V., Berlin, 2011-03.
+
+\bibitem{Impedanz}
+Wikipedia,                         % Autoren
+\newblock {\textit{https://de.wikipedia.org/wiki/Impedanz, }}
+\newblock am 17.5.2016 aufgerufen.
+
+\bibitem{Admittanz}
+Wikipedia,                         % Autoren
+\newblock {\textit{https://de.wikipedia.org/wiki/Admittanz, }}
+\newblock am 17.5.2016 aufgerufen.
+
+
+%\bibitem{Abbildung_2}
+%Abbildung 2:	Erika Musterfrau, Dörte Shakira Wagner,
+%\newblock {\it  Anzugsmomente von Kolbenrückholfedervorspannungsschrauben,}
+%\newblock TU Berlin, 2014.
+
+%\bibitem{Informationen}
+%Claire Grube, Rainer Wahnsinn und Kurt Zschluß 
+%\newblock {\it Praktikumsbeschreibung Kurbelwelleninnenrandbeleuchtung,}
+%\newblock TU Berlin, 2014.
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------------------------------------
+\end{document}\grid

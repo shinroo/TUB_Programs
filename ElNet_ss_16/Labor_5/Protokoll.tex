@@ -1,0 +1,333 @@
+
+
+\documentclass[
+	12pt,								% Schriftgröße
+	DIV10,
+	a4paper,         		% Papierformat
+	oneside,						% einseitiges Dokument
+%	titlepage,					% es wird eine Titelseite verwendet
+	parskip=half,				% Abstand zwischen Absätzen (halbe Zeile)
+	headings=normal,			% Größe der Überschriften verkleinern
+	listof=totoc,					% Verzeichnisse im Inhaltsverzeichnis aufführen
+	bibliography=totoc,						% Literaturverzeichnis im Inhaltsverzeichnis aufführen
+	index=totoc,						% Index im Inhaltsverzeichnis aufführen
+%	caption=tableheading,	% Beschriftung von Tabellen unterhalb ausgeben
+	final								% Status des Dokuments (final/draft)
+]{scrartcl}
+
+%--------------------------------------------------------------------------------
+% Ab hier werden Packages geladen
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{color}
+\usepackage{graphicx}
+\graphicspath{{./Bilder/}}
+
+\usepackage{float}
+\usepackage{amsmath,amsfonts}
+\usepackage{amssymb}
+\usepackage{exscale}
+\usepackage{subfig} 					
+\usepackage{booktabs}
+\usepackage{ulem}
+\usepackage{setspace}
+\usepackage[a4paper,lmargin={25mm},rmargin={25mm},tmargin={25mm},bmargin= {25mm}]{geometry}
+\addtolength{\footskip}{-0.8cm}		%Fussbereich 0.8cm höher, sodass die Seitennummierung höher ist
+
+\usepackage{tabularx}
+\usepackage{tabulary}
+\newcolumntype{w}[1]{>{\raggedleft\hspace{0pt}}p{#1}}
+
+\usepackage{siunitx}
+\sisetup{exponent-product= \cdot ,output-decimal-marker = {,},detect-family,detect-display-math = true,per-mode = symbol-or-fraction}
+
+%--------------------------------------------------------------------------------
+% Hier wird die Titelseite bearbeitet. Im folgenden kommen die zu ändernden Daten
+\newcommand{\nameOfTitel}{Laborversuch Frequenzverhalten, Bodediagramm}
+\newcommand{\untertitel}{5. Labortermin}	% wird nicht verwendet
+\newcommand{\art}{Protokoll zum Praktikum "elektrische Netzwerke"}
+\newcommand{\autor}{Robert Focke}
+\newcommand{\matrikelnr}{369264}
+\newcommand{\betreuer}{Michael Smirnov}
+\newcommand{\labortermin}{Mittwoch 14:00-16:00}
+\newcommand{\datum}{\today}				% hier Abgabedatum einfügen
+
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+% Ab hier wird die Titelseite zusammengesetzt. Es ist keine Änderung mehr notwendig!
+\thispagestyle{plain}
+\begin{titlepage}
+
+~\vspace{0.5cm} 
+\begin{center}
+\includegraphics[width=2.5cm]{Bilder/tu-logo_rot}\hspace{7cm}
+  		\includegraphics[width=2.5cm]{Bilder/sense}\hspace{1cm}\\[1cm]
+		\Large{TECHNISCHE UNIVERSITÄT BERLIN}\\
+			Fakultät IV - Institut für Energie- und Automatisierungstechnik\\
+			Fachgebiet Energieversorgungsnetze und Integration Erneuerbarer Energien
+\end{center}
+\vspace{1.2cm}
+\begin{center}
+\LARGE{\textbf{\textsc{\nameOfTitel}}}\\
+\LARGE{\textbf{\untertitel}}\\[2ex]
+\Large{\textbf{\art}}\\[8ex]
+
+\normalsize
+\begin{tabular}{w{5.4cm}p{8cm}}\\
+ vorgelegt von:	 & \quad \autor\\[1.2ex]
+ Matrikelnummer: & \quad \matrikelnr\\[1.2ex]
+ Betreuer: & \quad \betreuer\\[1.2ex]
+ Labortermin: & \quad \labortermin\\[1.2ex]
+ eingereicht am: &  \quad \datum\\[3ex]
+\end{tabular}
+\end{center}
+
+\end{titlepage}
+\newpage
+
+%-----------------------------------------------------------------------------
+\pagenumbering{roman}
+
+%-----------------------------------------------------------------------------
+% Eidesstattliche Versicherung der selbstständigen Arbeit
+\section*{Eidesstattliche Erklärung}
+Ich, \autor, versichere hiermit an Eides statt, dass ich mein \art \ mit dem Thema
+\begin{quote}
+\textit{\textsc{\nameOfTitel}} - \textit{\untertitel}
+\end{quote}
+selbständig und eigenhändig angefertigt und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.
+
+\bigskip
+\bigskip
+\bigskip
+
+Berlin, den \datum
+
+
+\rule[-0.2cm]{5cm}{0.5pt}
+
+\textsc{\autor} 
+
+\newpage
+%-----------------------------------------------------------------------------
+
+\tableofcontents % Inhaltsverzeichnis
+\newpage
+\pagenumbering{arabic}
+
+%---------------------------------------------------------------------
+% Ab hier fängt der eigenständige Teil an!
+
+\section{Theorie}
+\subsection{Bodediagramm}
+
+Ein vollständiges Bodediagramm besteht aus 2 Graphen: Betrag und Argument in Abhängigkeit der Kreisfrequenz dargestellt.
+
+Auf den jeweiligen x-Achsen wird die Kreisfrequenz logarithmisch dargestellt. 
+Auf der y-Achse des ersten Graphen wird die Verstärkung logarithmisch und auf der y-Achse des zweiten Graphen die Phasenvershiebung linear aufgetragen.
+
+Wichtige Formeln:
+
+\begin{itemize}
+	\item $ H = \frac{U_A}{U_E} $
+	\item $ {|H|}_{db} = 20 log_{10} (|H|) $
+	\item $ arg(H) = arctan(\frac{Im(H)}{Re(H)}) $
+\end{itemize} 
+
+
+\subsection{Potentiometer}
+
+Ein Potentiometer ist ein Widerstandsbauelement dessen Widerstandswerte mechanisch veränderbar sind.
+
+\begin{equation}
+	\begin{split}
+		\alpha & \in [0,1] \\
+		R_{ges} & = R_1 + R_2 \\
+		R_1 & = \alpha * R \\
+		R_2 & = (1 - \alpha) * R
+	\end{split}
+\end{equation}
+
+\subsection{Verhalten der Schaltung}
+
+Verhalten des Netzwerks: Hochpass, Tiefe Frequenzen werden blockiert und hohe Frequenzen werden durchgelassen.
+
+Rechnerische Beweis:
+		
+\begin{equation}
+	\begin{split}
+	 \omega & \rightarrow 0: \\
+	 & |H| = \frac{C_1}{C_1 + C_2} \\ 
+	 & arg(H)  = 0 \\
+	 \omega & \rightarrow \infty: \\
+	 & |H| = 1  \\
+	 & arg(H) = 0 
+	\end{split}
+\end{equation}
+
+
+%---------------------------------------------------------------------
+\section{Durchführung}
+
+Die in Abbildung 1 dargestellte Schaltung würde im Labor untersucht. Die Frequenz würde im Bereich $ \SI{10}{\hertz} \leq f \leq \SI{100}{\kilo\hertz} $
+ variiert, mit 9 äquidistante Messpunkte pro Dekade. Eine sinusförmige Eingangsspannung von $ U_{E,PP} = \SI{10}{\volt} $ würde benutzt.
+ 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{schaltung}
+	\caption{Die im Labor gebaute Schaltung \cite{en_ue5}}
+	\label{figure_schaltung}
+\end{figure}
+
+Danach würde die in Abbildung 2 dargestellte Schaltung in LTSpice simuliert. Die Schaltung würde für $ \alpha  = \{0,0.5,1\} $ simuliert, mit zwei verschiedenen Werte für R, nähmlich $ \SI{1}{\mega\ohm} $ und $ \SI{100}{\mega\ohm} $.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.6\textwidth]{schaltung1}
+	\caption{Die im Labor simulierte Schaltung \cite{en_ue5}}
+	\label{figure_schaltung}
+\end{figure}
+
+%---------------------------------------------------------------------
+
+\section{Mess- und Rechenergebnisse}
+
+Die Mess- und Rechenergebnisse aus dem Labor werden in Tabelle 1 und in Abbildungen 3 und 4 dargestellt.
+
+Die folgende formeln würden benutzt:
+
+\begin{itemize}
+	\item $ |H| = \frac{U_A}{U_E} $
+	\item $ H (\SI{}{\decibel}) = 20 log(|H|) $
+	\item $ \varphi = \SI{360}{\degree} * f * \triangle t $ 
+\end{itemize}
+
+\begin{table}[]
+	\centering
+	\caption{Mess- und Rechenergebnisse}
+	\label{my-label}
+	\begin{tabular}{llllllll}
+		$ U_E (\SI{}{\volt}) $ & f $ (\SI{}{\hertz}) $ & $ U_A (\SI{}{\milli\volt}) $ & $ U_A (\SI{}{\volt}) $ & $ \triangle t (\SI{}{\milli\second}) $ & |H|          & H $ (\SI{}{\decibel}) $         & $ \varphi (\SI{}{\second}) $    \\
+		6.68   & 10     & 430     & 0.43   & 16           & 0.0643712575 & -23.8261601379 & 57.6   \\
+		6.92   & 20     & 584     & 0.584  & 6.2          & 0.0843930636 & -21.4738649469 & 44.64  \\
+		6.96   & 30     & 640     & 0.64   & 3.5          & 0.091954023  & -20.7285853125 & 37.8   \\
+		7      & 40     & 664     & 0.664  & 2.3          & 0.0948571429 & -20.4585992129 & 33.12  \\
+		7.04   & 50     & 672     & 0.672  & 1.6          & 0.0954545455 & -20.4040677218 & 28.8   \\
+		7.2    & 60     & 696     & 0.696  & 1.4          & 0.0966666667 & -20.2944651364 & 30.24  \\
+		7.2    & 70     & 720     & 0.72   & 1.2          & 0.1          & -20            & 30.24  \\
+		7.2    & 80     & 736     & 0.736  & 1.2          & 0.1022222222 & -19.8090936419 & 34.56  \\
+		7.36   & 90     & 768     & 0.768  & 1.1          & 0.1043478261 & -19.6303318861 & 35.64  \\
+		7.36   & 100    & 784     & 0.784  & 1            & 0.1065217391 & -19.4512350331 & 36     \\
+		7.6    & 200    & 980     & 0.98   & 0.7          & 0.1289473684 & -17.7917503318 & 50.4   \\
+		7.4    & 300    & 1260    & 1.26   & 0.495        & 0.1702702703 & -15.3772234923 & 53.46  \\
+		7.4    & 400    & 1540    & 1.54   & 0.389        & 0.2081081081 & -13.6342199779 & 56.016 \\
+		7.2    & 500    & 1861    & 1.861  & 0.32         & 0.2584722222 & -11.751722466  & 57.6   \\
+		7.2    & 600    & 2101    & 2.101  & 0.29         & 0.2918055556 & -10.6981288805 & 62.64  \\
+		7.2    & 700    & 2421    & 2.421  & 0.23         & 0.33625      & -9.4667541398  & 57.96  \\
+		7.2    & 800    & 2681    & 2.681  & 0.19         & 0.3723611111 & -8.580713649   & 54.72  \\
+		7.2    & 900    & 2961    & 2.961  & 0.18         & 0.41125      & -7.7178817808  & 58.32  \\
+		7.2    & 1000   & 3161    & 3.161  & 0.16         & 0.4390277778 & -7.1501600118  & 57.6   \\
+		7.2    & 2000   & 4881    & 4.881  & 0.056        & 0.6779166667 & -3.3764737755  & 40.32  \\
+		7.2    & 3000   & 5841    & 5.841  & 0.029        & 0.81125      & -1.8169058038  & 31.32  \\
+		7.2    & 4000   & 6241    & 6.241  & 0.017        & 0.8668055556 & -1.241566277   & 24.48  \\
+		7.2    & 5000   & 6481    & 6.481  & 0.011        & 0.9001388889 & -0.9138094996  & 19.8   \\
+		7.2    & 6000   & 6641    & 6.641  & 0.008        & 0.9223611111 & -0.7019803238  & 17.28  \\
+		7.2    & 7000   & 6721    & 6.721  & 0.006        & 0.9334722222 & -0.5979720206  & 15.12  \\
+		7.2    & 8000   & 6801    & 6.801  & 0.0046       & 0.9445833333 & -0.4951944317  & 13.248 \\
+		7.2    & 9000   & 6801    & 6.801  & 0.0038       & 0.9445833333 & -0.4951944317  & 12.312 \\
+		7.2    & 10000  & 6801    & 6.801  & 0.0028       & 0.9445833333 & -0.4951944317  & 10.08  \\
+		7.2    & 20000  & 6881    & 6.881  & 0.00065      & 0.9556944444 & -0.3936187717  & 4.68   \\
+		7.2    & 30000  & 6961    & 6.961  & 0.00026      & 0.9668055556 & -0.2932172534  & 2.808  \\
+		6.96   & 40000  & 6561    & 6.561  & 0.00024      & 0.9426724138 & -0.5127840371  & 3.456  \\
+		7.2    & 50000  & 6721    & 6.721  & 0.0002       & 0.9334722222 & -0.5979720206  & 3.6    \\
+		7.2    & 60000  & 6721    & 6.721  & 0.0002       & 0.9334722222 & -0.5979720206  & 4.32   \\
+		7.04   & 70000  & 6761    & 6.761  & 0.0002       & 0.9603693182 & -0.3512344641  & 5.04   \\
+		7.04   & 80000  & 6721    & 6.721  & 0.0002       & 0.9546875    & -0.4027752748  & 5.76   \\
+		7.12   & 90000  & 6681    & 6.681  & 0.0002       & 0.9383426966 & -0.5527704377  & 6.48   \\
+		7.04   & 100000 & 6681    & 6.681  & 0.0002       & 0.9490056818 & -0.4546237478  & 7.2   
+	\end{tabular}
+\end{table}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{rob5messA}
+	\caption{Phasenwinkel für die im Labor gebaute Schaltung}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{rob5messH}
+	\caption{Verstärkung für die im Labor gebaute Schaltung}
+	\label{figure_schaltung}
+\end{figure}
+	
+%---------------------------------------------------------------------
+\section{Simulationsergebnisse}\label{sec:sim}
+
+Die Simulationsergebnisse werden in Abbildungen 5,6,7 und 8 dargestellt.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{rob5sim1A}
+	\caption{Phasenwinkel für $ \SI{1}{\mega\ohm} $ Schaltung}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{rob5sim100A}
+	\caption{Phasenwinkel für $ \SI{100}{\mega\ohm} $ Schaltung}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{rob5sim1H}
+	\caption{Verstärkung für $ \SI{1}{\mega\ohm} $ Schaltung}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{rob5sim100H}
+	\caption{Verstärkung für $ \SI{100}{\mega\ohm} $ Schaltung}
+	\label{figure_schaltung}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Interpretation}
+
+Die simulierte und gemessene Werte weichen ziemlich stark voneinander ab. Die Phasenverschiebung ist besonders abweichend. Diese Abweichung ist wahrscheinlich durch den Innenwiderstand des Oszilloskops verursacht. Bei den Simulationsergebnisse sehen wir (besonders bei den Verstärkundsgraphen Abbildungen 7 und 8), dass die Schaltungen mit $ \alpha = 0 $ und $ \alpha = 0.5 $  für $ \SI{1}{\mega\ohm} $ als auch für $ \SI{100}{\mega\ohm} $ sehr ähnlich sind und diese beiden verhalten sich als Hochpass, da die Verstärkung sich mit höheren Frequenzen auch erhöht. Für $ \alpha = 1 $ sehen die Ergebnisse anders aus. Für $ \alpha = 1 $ sind beide die $ \SI{1}{\mega\ohm} $ und die $ \SI{100}{\mega\ohm} $ Schaltungen Tiefpässe, da die Verstärkung mit steigenden Frequenzen abnimmt.
+
+%--------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%literatur
+% Abschließend sind die Quellen von Bildern und Zitaten nicht zu vergessen.
+\begin{thebibliography}{}   
+\bibitem{en_ue5}          % Hier beginnt das Literaturverzeichnis
+Abbildung 1: Peter Teske, Christian Gornig,                            % Autoren
+\newblock {\textit{Laborpraktikum 5: Frequenzverhalten, Bodediagramm,}}
+\newblock TU Berlin, 2016.
+
+\bibitem{DIN1338}
+Normenausschuss Technische Grundlagen (NATG) im DIN,                         % Autoren
+\newblock {\textit{DIN 1338:2011-03, Formelschreibweise und Formelsatz, }}
+\newblock DIN Deutsches Institut für Normung e. V., Berlin, 2011-03.
+
+%\bibitem{Abbildung_2}
+%Abbildung 2:	Erika Musterfrau, Dörte Shakira Wagner,
+%\newblock {\it  Anzugsmomente von Kolbenrückholfedervorspannungsschrauben,}
+%\newblock TU Berlin, 2014.
+
+%\bibitem{Informationen}
+%Claire Grube, Rainer Wahnsinn und Kurt Zschluß 
+%\newblock {\it Praktikumsbeschreibung Kurbelwelleninnenrandbeleuchtung,}
+%\newblock TU Berlin, 2014.
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------------------------------------
+\end{document}\grid

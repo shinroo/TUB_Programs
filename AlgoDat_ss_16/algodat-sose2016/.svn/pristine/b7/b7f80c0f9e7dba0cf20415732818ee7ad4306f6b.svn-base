@@ -1,0 +1,8 @@
+In der Hausaufgabe ist soweit ich das sehen konnte das Geldsystem fix.
+
+Die Bedinung für jeden Schein m mit (1/2)*m_i > m_{i-1} reicht nicht ganz aus.
+
+GgBsp: 1€,10€,36€ ausgabe 40€. Optimal 4 Scheine, algo. 5 Scheine.
+
+Im Paper findet ihr dann auch raus das das Geldscheinsystem ne komplizierte sache ist. Ist nur für
+interessierte.

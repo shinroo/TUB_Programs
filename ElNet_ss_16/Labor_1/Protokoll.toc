@@ -1,0 +1,11 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Theorie}{1}
+\contentsline {subsection}{\numberline {1.1}Das Ohmsche Gesetz f\"ur Wechselgr\"o\IeC {\ss }en}{1}
+\contentsline {subsection}{\numberline {1.2}Real- und Imagin\"arteil von komplexen Zahlen}{1}
+\contentsline {subsection}{\numberline {1.3}Impedanz und Admittanz}{1}
+\contentsline {subsection}{\numberline {1.4}Ortskurve}{2}
+\contentsline {section}{\numberline {2}Durchf\"uhrung}{2}
+\contentsline {section}{\numberline {3}Messergebnisse}{3}
+\contentsline {section}{\numberline {4}Simulationsergebnisse}{3}
+\contentsline {section}{\numberline {5}Interpretation}{4}
+\contentsline {section}{\nonumberline Literatur}{5}

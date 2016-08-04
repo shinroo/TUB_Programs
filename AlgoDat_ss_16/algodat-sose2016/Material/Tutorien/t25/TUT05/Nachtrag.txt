@@ -1,0 +1,20 @@
+Adjazenz: eine Relation zwischen zwei Knoten. Sie ist erfuellt wenn sie eine 
+Kante verbindet (streng genommen nur fuer ungerichtete Kanten definiert)
+
+Inzidenz: eine Relation zwischen Knoten und Kanten. Sie ist erfuellt wenn sie verbunden sind. 
+Fuer gerichtete Graphen gibt es negative bzw. positive Inzidenz
+
+###############
+
+Die Methoden die im Tut implementiert wurden sind in den veränderten Vorgaben bereits enthalten. 
+Änderungsdatum war glaub ich Montag.
+
+###############
+
+Zu Tiefen/Breitensuche: Sofern ihr es einheitlich Macht, spielt die Hinzufügereihenfolge keine Rolle.
+Also zu eurem eigenen Besten, bitte nicht RANDOM einsortieren^^
+
+Falls ihr unklarheiten bei Breiten/Tiefensuche habt, schaut mal bei YouTube rein. Gibt gute videos wo das
+Schritt für Schritt illustriert ist.
+
+###############

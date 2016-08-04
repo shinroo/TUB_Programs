@@ -1,0 +1,23 @@
+= 11. Mai 2016
+:hide-uri-scheme:
+:source-highlighter: highlight.js
+
+Tutorium 13, Mittwoch 8 Uhr, MAR 0.003, Alexander Elvers
+
+link:code[Java-Quelltext] aus diesem Tutorium
+
+Das vollständige Dokument und den Quelltext des anderen Tutoriums findet ihr link:../../t04/2016-05-09/README.html[hier].
+
+### Casting
+
+Da wir die `Tetrahedron`-Instanz in einer Variable vom Typ `Body` speichern, können wir nur auf Methoden von `Body` zugreifen. Wollen wir Methoden benutzen, die in `tetrahedron`, nicht aber in `Body` implementiert sind, müssen wir Casting benutzen. Beispiel: `((Tetrahedron) b).methodNotInBody()`. Allerdings muss der Typ, zu der man castet, mit dem Typ der Variable verwandt sein (_sinnvoll_ ist Casting nur, wenn `Tetrahedron` nur, wenn es eine Spezialisierung von `Body` ist).
+
+Wenn aber der Typ nicht der Klasse des Objekts entspricht und auch keine Parentklasse ist, wird eine Runtime Exception geworfen.
+
+.code/src/Tutorial.java:7-11
+[source,java]
+----
+include::code/src/Tutorial.java[lines=7..11,indent=0]
+----
+
+Hier würde es zu einem Fehler kommen, wenn nicht mit `instanceof` geprüft werden würde, ob das Objekt eine Instanz von `Cuboid` oder einer Unterklasse ist.

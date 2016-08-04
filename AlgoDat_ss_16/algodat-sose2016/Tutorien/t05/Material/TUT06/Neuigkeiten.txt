@@ -1,0 +1,3 @@
+Bei der Implementation von Belman-Ford muesst ihr keine verfrühte abbruchbedingung Implementieren.
+
+Es ist also vollkommen legitim den Algorythmus komme was da wolle V-1 schritte machen zu lassen.

@@ -1,0 +1,157 @@
+= 9. Mai 2016
+:hide-uri-scheme:
+:source-highlighter: highlight.js
+
+Tutorium 04, Montag 8 Uhr, MAR 0.015, Alexander Elvers
+
+Wie versprochen habe ich nach dem Fehler gesucht, der verhindert, dass die
+Hauptklasse von Eclipse gefunden wird. Eigentlich ist das recht einfach,
+denn in der Fehlerbeschreibung in Eclipse stand, dass der Ordner `tests`
+nicht gefunden wurde. Beheben kann man es folgendermaßen: +
+Rechtsklick auf das Projekt → Properties → Java Build Path → Source und dort
+den entsprechenden Ordner entfernen. +
+In eurem Hausaufgabenprojekt ist zum Glück alles richtig.
+
+
+Zu den anderen Dateien von heute: Ich habe die Quelltexte ausführlich
+kommentiert und ein wenig verändert. Falls euch noch etwas unklar sein
+sollte, könnt ihr mir eine E-Mail schreiben, nächste Woche fällt das
+Tutorium ja aus.
+
+== 1. Vererbung
+=== 1.1 Modifikatoren
+Definition: Member = Attribut, Methode oder Konstruktor
+
+Die erwähnte Sichtbarkeitstabelle:
+
+|===
+| Modifier | Class | Package | Subclass | World
+
+| *public* | Y | Y | Y | Y
+
+| *protected* | Y | Y | Y | N
+
+| *_(package-private)_* | Y | Y | N | N
+
+| *private* | Y | N | N | N
+|===
+
+Y = sichtbar, N = nicht sichtbar
+
+Quelle: https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html[Oracle]
+
+Als _package-private_ wird die Sichtbarkeit bezeichnet, die ohne Modifikator benutzt wird. Die Tabelle kann wie folgt gelesen werden:
+Ist ein Member public, protected, package-private oder private, kann in derselben Klasse, in demselben Paket, in einer Unterklasse oder in allen anderen Klassen darauf zugegriffen/nicht darauf zugegriffen werden.
+
+Für Klassen (die nicht innerhalb von anderen Klassen definiert sind) sind nicht alle Sichtbarkeiten sinnvoll und werden daher nicht unterstützt. Für diese gibt es lediglich die Unterscheidung zwischen public und package-private (siehe auch https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html[Oracle]).
+
+Ich habe die Klassen und Pakete noch mal wie im folgenden Bild nachgebaut. Beachtet, dass es egal ist, ob Beta eine Subklasse von Alpha ist oder nicht: Die Sichtbarkeit von Membern von Alpha ist in Beta immer gleich.
+
+.Quelle: https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html[Oracle]
+image::https://docs.oracle.com/javase/tutorial/figures/java/classes-access.gif[]
+
+
+.code/src/package1/Alpha.java
+[source,java]
+----
+include::code/src/package1/Alpha.java[]
+----
+
+.code/src/package1/Beta.java
+[source,java]
+----
+include::code/src/package1/Beta.java[]
+----
+
+.code/src/package2/AlphaSub.java
+[source,java]
+----
+include::code/src/package2/AlphaSub.java[]
+----
+
+.code/src/package2/Gamma.java
+[source,java]
+----
+include::code/src/package2/Gamma.java[]
+----
+
+
+Als Best Practice gilt, sämtliche Attribute private und Methoden je nach Anwendung public oder private zu machen.
+
+
+=== 1.2 Annotationen
+
+* @Deprecated: Die Methode ist veraltet und wird in einer späteren Version entfernt.
++
+
+Im Tutorium wurde gefragt, wie man auf die neue Methode hinweist:
++
+
+[source,java]
+----
+/**
+ * @deprecated use {@link #newMethod()} instead.
+ */
+@Deprecated
+public int oldMethod() {
+	return newMethod();
+}
+----
+
+* @Override: Methode wird überladen. Stellt sicher, dass die Methode in der Parentklasse existiert.
+
+
+=== 1.3 – 1.6 Vererbung
+
+Die Methoden in `Body` sind abstrakt, da für allgemeine dreidimensionale Körper kein Volumen und kein Oberflächeninhalt berechnet werden kann. Besitzt eine Klasse abstrakte Methoden, muss die Klasse selbst abstrakt sein. Das bedeutet, dass die Klasse nicht instanziiert werden kann. Wenn Klassen von einer abstrakten Klasse erben, müssen sie die Methoden implementieren oder ebenfalls als abstrakt deklariert werden.
+
+.code/src/Body.java
+[source,java]
+----
+include::code/src/Body.java[]
+----
+
+Die Klasse `Tetrahedron` erbt von `Body` und besitzt dadurch sämtliche Member, die auch `Body` besitzt.
+
+.code/src/Tetrahedron.java
+[source,java]
+----
+include::code/src/Tetrahedron.java[]
+----
+
+
+
+== 2. Bildreparatur
+
+=== 2.1 Arrays
+
+==== Array
+
+Die Größe von Arrays ist im Gegensatz zu Listen fest.
+
+Die for-Schleife und die for-each-Schleife iterieren genau gleich über die Einträge des Arrays.
+
+.code/src/Tutorial.java:14-26
+[source,java]
+----
+include::code/src/Tutorial.java[lines=14..26,indent=0]
+----
+
+vs. `ArrayList`:
+
+.code/src/Tutorial.java:29-47
+[source,java]
+----
+include::code/src/Tutorial.java[lines=29..47,indent=0]
+----
+
+
+=== 2.2 Bilderzeugung
+
+Das Array `imageMatrix` enthält Spalten, die `RGBColor`-Objekte enthalten. Nach dem Initialisieren des Arrays sind alle Pixel noch `null`. Wir setzen sie auf die Farbe Weiß (RGB 255,255,255).
+
+.code/src/Picture.java:93-101
+[source,java]
+----
+include::code/src/Picture.java[lines=93..101,indent=0]
+----

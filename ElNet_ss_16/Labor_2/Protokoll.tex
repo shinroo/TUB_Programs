@@ -1,0 +1,424 @@
+\documentclass[
+	12pt,								% Schriftgröße
+	DIV10,
+	a4paper,         		% Papierformat
+	oneside,						% einseitiges Dokument
+%	titlepage,					% es wird eine Titelseite verwendet
+	parskip=half,				% Abstand zwischen Absätzen (halbe Zeile)
+	headings=normal,			% Größe der Überschriften verkleinern
+	listof=totoc,					% Verzeichnisse im Inhaltsverzeichnis aufführen
+	bibliography=totoc,						% Literaturverzeichnis im Inhaltsverzeichnis aufführen
+	index=totoc,						% Index im Inhaltsverzeichnis aufführen
+%	caption=tableheading,	% Beschriftung von Tabellen unterhalb ausgeben
+	final								% Status des Dokuments (final/draft)
+]{scrartcl}
+
+%--------------------------------------------------------------------------------
+% Ab hier werden Packages geladen
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{color}
+\usepackage{graphicx}
+\graphicspath{{./Bilder/}}
+
+\usepackage{float}
+\usepackage{amsmath,amsfonts}
+\usepackage{amssymb}
+\usepackage{exscale}
+\usepackage{subfig} 					
+\usepackage{booktabs}
+\usepackage{ulem}
+\usepackage{setspace}
+\usepackage[a4paper,lmargin={25mm},rmargin={25mm},tmargin={25mm},bmargin= {25mm}]{geometry}
+\addtolength{\footskip}{-0.8cm}		%Fussbereich 0.8cm höher, sodass die Seitennummierung höher ist
+
+\usepackage{tabularx}
+\usepackage{tabulary}
+\newcolumntype{w}[1]{>{\raggedleft\hspace{0pt}}p{#1}}
+
+\usepackage{siunitx}
+\sisetup{exponent-product= \cdot ,output-decimal-marker = {,},detect-family,detect-display-math = true,per-mode = symbol-or-fraction}
+
+%--------------------------------------------------------------------------------
+% Hier wird die Titelseite bearbeitet. Im folgenden kommen die zu ändernden Daten
+\newcommand{\nameOfTitel}{Laborversuch Ausgleichsvorgang}
+\newcommand{\untertitel}{2. Labortermin}	% wird nicht verwendet
+\newcommand{\art}{Protokoll zum Praktikum "elektrische Netzwerke"}
+\newcommand{\autor}{Robert Focke}
+\newcommand{\matrikelnr}{369264}
+\newcommand{\betreuer}{Michael Smirnov}
+\newcommand{\labortermin}{Mittwoch 14:00-16:00}
+\newcommand{\datum}{\today}				% hier Abgabedatum einfügen
+
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+% Ab hier wird die Titelseite zusammengesetzt. Es ist keine Änderung mehr notwendig!
+\thispagestyle{plain}
+\begin{titlepage}
+
+~\vspace{0.5cm} 
+\begin{center}
+\includegraphics[width=2.5cm]{Bilder/tu-logo_rot}\hspace{7cm}
+  		\includegraphics[width=2.5cm]{Bilder/sense}\hspace{1cm}\\[1cm]
+		\Large{TECHNISCHE UNIVERSITÄT BERLIN}\\
+			Fakultät IV - Institut für Energie- und Automatisierungstechnik\\
+			Fachgebiet Energieversorgungsnetze und Integration Erneuerbarer Energien
+\end{center}
+\vspace{1.2cm}
+\begin{center}
+\LARGE{\textbf{\textsc{\nameOfTitel}}}\\
+\LARGE{\textbf{\untertitel}}\\[2ex]
+\Large{\textbf{\art}}\\[8ex]
+
+\normalsize
+\begin{tabular}{w{5.4cm}p{8cm}}\\
+ vorgelegt von:	 & \quad \autor\\[1.2ex]
+ Matrikelnummer: & \quad \matrikelnr\\[1.2ex]
+ Betreuer: & \quad \betreuer\\[1.2ex]
+ Labortermin: & \quad \labortermin\\[1.2ex]
+ eingereicht am: &  \quad \datum\\[3ex]
+\end{tabular}
+\end{center}
+
+\end{titlepage}
+\newpage
+
+%-----------------------------------------------------------------------------
+\pagenumbering{roman}
+
+%-----------------------------------------------------------------------------
+% Eidesstattliche Versicherung der selbstständigen Arbeit
+\section*{Eidesstattliche Erklärung}
+Ich, \autor, versichere hiermit an Eides statt, dass ich mein \art \ mit dem Thema
+\begin{quote}
+\textit{\textsc{\nameOfTitel}} - \textit{\untertitel}
+\end{quote}
+selbständig und eigenhändig angefertigt und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.
+
+\bigskip
+\bigskip
+\bigskip
+
+Berlin, den \datum
+
+
+\rule[-0.2cm]{5cm}{0.5pt}
+
+\textsc{\autor} 
+
+\newpage
+%-----------------------------------------------------------------------------
+
+\tableofcontents % Inhaltsverzeichnis
+\newpage
+\pagenumbering{arabic}
+
+%---------------------------------------------------------------------
+% Ab hier fängt der eigenständige Teil an!
+
+\section{Theorie}
+\subsection{Ausgleichsvorgänge}
+
+Ausgleichsvorgänge sind Übergänge eines Systems von einem stationären Zustand in einem anderen.
+
+\subsection{Ordnung eines Ausgleichvorgangs}
+
+Die Ordnung eines Ausgleichvorgangs beschreibt die Anzahl der vorhandenen unabhängigen Energiespeicher.
+
+\subsection{Oszilloskop}
+
+Die Strom kann nicht von einem Oszilloskop gemessen werden. Die Strom an einem Widerstand kann aber indirekt bestimmt werden, durch Messung der Spannung und einsetzen im Formel: $  I=\frac{U}{R} $.
+
+\subsection{Idealer Verlauf der Spannung am Kondesator}
+
+Wir möchten Gleichungen zur Beschreibung von dem idealen Verlauf der Spannung am Kondesator haben. 
+Von dem Kirchhoffschen Maschenregel wissen wir:
+\begin{equation}
+\label{Ansatz}
+\begin{split}
+	u_E = u_R + {u_C}(t)
+\end{split}
+\end{equation}
+
+wobei $ u_E $ die Eingangsspannung ist, $ u_R $ die Spannung am Widerstand und $ {u_C}(t) $ die zeitlich veränderliche Spannung am Kondesator ist.
+
+Wir wissen auch:
+\begin{itemize}
+	\item $ u_R = {i_C}R $
+	\item $ i_C = C\frac{{\delta}{u_C}(t)}{{\delta}t} $
+\end{itemize}
+$ \implies u_E = CR\frac{{\delta}{u_C}(t)}{{\delta}t} + {u_C}(t) $
+
+Diese Gleichung müss nun in Normalform gebracht werden:
+\begin{equation}
+\label{Normalform}
+\begin{split}
+	0 & = CR\frac{{\delta}{u_C}(t)}{{\delta}t} + {u_C}(t) \\
+	0 & = \frac{{\delta}{u_C}(t)}{{\delta}t} + \frac{{u_C}(t)}{CR}
+\end{split}
+\end{equation}
+
+Wir setzten nun $ {u_C}(t) = ke^{p(t-t0)} $ und bekommen:
+\begin{equation}
+\label{Einsetzen}
+\begin{split}
+	0 & = kpe^{p(t-t_0)} + \frac{1}{CR}ke^{p(t-t_0)} \\
+	\implies 0 & = p + \frac{1}{CR} \\
+	\implies p & = -\frac{1}{CR}
+\end{split}
+\end{equation}
+
+Wir haben jetz die homogene Lösung für $ {u_C}(t) $:
+\begin{equation}
+\label{Homogen}
+\begin{split}
+	{u_C}(t) = u_{C,h} = ke^{-\frac{1}{CR}(t-t_0)}	
+\end{split}
+\end{equation}
+
+Wir wissen aber, dass es auch partikuläre Teile von $ {u_C}(t) $ gibt. Die folgende Gleichung gilt:
+\begin{equation}
+\label{Ansatz2}
+\begin{split}
+	{u_C}(t) = u_{C,h} + u_{C,p}	
+\end{split}
+\end{equation}
+
+Wir müssen also $ u_{C,p} $ untersuchen für zwei verschiedene Fälle:
+\begin{enumerate}
+	\item 
+		Einschaltvorgang $ (\SI{0}{\nano\second} \leqslant t \leqslant \SI{0.5}{\milli\second}) $
+		\begin{itemize}
+			\item $ {u_C}(t=0) = \SI{0}{\volt} $
+			\item $ {u_C}(t{\rightarrow}{\infty}) = u_{C,p} = \SI{5}{\volt} $
+		\end{itemize} 
+		\begin{equation}
+		\label{Einschaltvorgang}
+		\begin{split}
+			{u_C}(t)_{(t=0)} & = u_{C,h} + u_{C,p} \\
+			0 & = ke^{-\frac{1}{CR}(t-t_0)} + u_{C,p}\\
+			0 & = k + u_{C,p} \\
+			\implies k & = -u_{C,p} = \SI{-5}{\volt}
+		\end{split}
+		\end{equation}
+		Also folgt:
+		\begin{equation}
+		\label{Einschaltvorgang2}
+		\begin{split}
+			{u_C}(t) & = {\SI{-5}{\volt}}(e^{-\frac{1}{CR}(t-0)}) + \SI{5}{\volt} \\
+			& = {\SI{-5}{\volt}}(e^{-\frac{1}{10^{-7}}(t)}) + \SI{5}{\volt}		
+		\end{split}
+		\end{equation}
+	\item
+		Ausschaltvorgang $ (\SI{0.5}{\milli\second} \leqslant t \leqslant \SI{1}{\milli\second}) $
+		\begin{itemize}
+			\item $ {u_C}(t=0) = \SI{5}{\volt} $
+			\item $ {u_C}(t{\rightarrow}{\infty}) = u_{C,p} = \SI{0}{\volt} $
+		\end{itemize}
+		\begin{equation}
+		\label{Ausschaltvorgang}
+		\begin{split}
+			{u_C}(t)_{(t=0)} & = u_{C,h} + u_{C,p} \\
+			\SI{5}{\volt} & = ke^{-\frac{1}{CR}(t-t_0)} + u_{C,p} \\
+			\SI{5}{\volt} & = k
+		\end{split}
+		\end{equation}
+		Also folgt:
+		\begin{equation}
+		\label{Ausschaltvorgang2}
+		\begin{split}
+			{u_C}(t) & = {\SI{5}{\volt}}(e^{-\frac{1}{CR}(t-\SI{0.5}{\milli\second})}) + \SI{0}{\volt} \\
+			& = {\SI{5}{\volt}}(e^{-\frac{1}{10^{-7}}(t-\SI{0.5}{\milli\second})})		
+		\end{split}
+		\end{equation}
+\end{enumerate}
+
+%---------------------------------------------------------------------
+\section{Durchführung}
+
+Die folgende Schaltung würde im Labor gebaut:
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\textwidth]{schaltung}
+\caption{Die im Labor gebaute Schaltung \cite{en_ue5}}
+\label{figure_schaltung}
+\end{figure}
+
+\begin{itemize}
+	\item $ R = \SI{1}{\kilo\ohm} $
+	\item $ C = \SI{100}{\nano\farad} $
+	\item $ u_E \leftrightarrow Funktionsgenerator $
+\end{itemize}
+
+Der Funktionsgenerator würde auf Rechtecksspannung eingestellt mit Frequenz $ \SI{1}{\kilo\Hz} $, Amplitude $ \SI{5}{\volt} $ und Offset $ \SI{2.5}{\volt} $
+
+Danach würde die Spannung am Kondensator $ (u_C) $ und die Eingangsspannung $ (u_E) $ zu bestimmten Zeitpunkten gemessen.
+
+Als letztes würde die folgende Schaltung (Abbildung 2) in LTSpice simuliert und die simulierte Ergebnisse gespeichert.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{schaltung_sim}
+	\caption{Die simulierte Schaltung \cite{en_ue5}}
+	\label{figure_schaltung_sim}
+\end{figure}
+
+%---------------------------------------------------------------------
+
+\section{Mess- und Rechenergebnisse}
+
+\begin{table}[!htb]
+    \centering
+    \caption{Messergebnisse}	
+    \label{tab_mess}  		
+	\begin{tabulary}{\textwidth}{|C|C|C|C|}\hline
+	    Zeit $s_{mess}$ & Zeit $s_{tat}$ & Spannung $U_\mathrm{E}$ & Spannung. $U_\mathrm{C}$ \\ \hline 
+		\SI{0.00}{\milli\second} & \SI{0.00}{\milli\second} & \SI{0.00}{\volt} & \SI{0.00}{\volt} \\ \hline 
+		\SI{0.04}{\milli\second} & \SI{0.04}{\milli\second} & \SI{4.84}{\volt} & \SI{1.56}{\volt} \\ \hline
+		\SI{0.08}{\milli\second} & \SI{0.08}{\milli\second} & \SI{4.92}{\volt} & \SI{2.68}{\volt} \\ \hline
+		\SI{0.12}{\milli\second} & \SI{0.12}{\milli\second} & \SI{4.96}{\volt} & \SI{3.44}{\volt} \\ \hline
+		\SI{0.16}{\milli\second} & \SI{0.16}{\milli\second} & \SI{5.00}{\volt} & \SI{3.88}{\volt} \\ \hline
+		\SI{0.20}{\milli\second} & \SI{0.20}{\milli\second} & \SI{5.00}{\volt} & \SI{4.24}{\volt} \\ \hline
+		\SI{0.24}{\milli\second} & \SI{0.24}{\milli\second} & \SI{5.00}{\volt} & \SI{4.48}{\volt} \\ \hline
+		\SI{0.28}{\milli\second} & \SI{0.28}{\milli\second} & \SI{5.04}{\volt} & \SI{4.64}{\volt} \\ \hline
+		\SI{0.32}{\milli\second} & \SI{0.32}{\milli\second} & \SI{5.00}{\volt} & \SI{4.80}{\volt} \\ \hline
+		\SI{0.36}{\milli\second} & \SI{0.36}{\milli\second} & \SI{5.00}{\volt} & \SI{4.88}{\volt} \\ \hline
+		\SI{0.40}{\milli\second} & \SI{0.40}{\milli\second} & \SI{5.04}{\volt} & \SI{4.92}{\volt} \\ \hline
+		\SI{0.44}{\milli\second} & \SI{0.44}{\milli\second} & \SI{5.04}{\volt} & \SI{4.96}{\volt} \\ \hline
+		\SI{0.48}{\milli\second} & \SI{0.48}{\milli\second} & \SI{5.04}{\volt} & \SI{5.00}{\volt} \\ \hline
+		\SI{0.00}{\milli\second} & \SI{0.50}{\milli\second} & \SI{5.00}{\volt} & \SI{5.00}{\volt} \\ \hline
+		\SI{0.04}{\milli\second} & \SI{0.54}{\milli\second} & \SI{0.12}{\volt} & \SI{3.52}{\volt} \\ \hline
+		\SI{0.08}{\milli\second} & \SI{0.58}{\milli\second} & \SI{0.08}{\volt} & \SI{2.40}{\volt} \\ \hline
+		\SI{0.12}{\milli\second} & \SI{0.62}{\milli\second} & \SI{0.04}{\volt} & \SI{1.64}{\volt} \\ \hline
+		\SI{0.16}{\milli\second} & \SI{0.66}{\milli\second} & \SI{0.00}{\volt} & \SI{1.04}{\volt} \\ \hline
+		\SI{0.20}{\milli\second} & \SI{0.70}{\milli\second} & \SI{0.00}{\volt} & \SI{0.76}{\volt} \\ \hline
+		\SI{0.24}{\milli\second} & \SI{0.74}{\milli\second} & \SI{0.00}{\volt} & \SI{0.52}{\volt} \\ \hline
+		\SI{0.28}{\milli\second} & \SI{0.78}{\milli\second} & \SI{0.00}{\volt} & \SI{0.32}{\volt} \\ \hline
+		\SI{0.32}{\milli\second} & \SI{0.82}{\milli\second} & \SI{0.00}{\volt} & \SI{0.20}{\volt} \\ \hline
+		\SI{0.36}{\milli\second} & \SI{0.86}{\milli\second} & \SI{0.00}{\volt} & \SI{0.16}{\volt} \\ \hline
+		\SI{0.40}{\milli\second} & \SI{0.90}{\milli\second} & \SI{0.00}{\volt} & \SI{0.12}{\volt} \\ \hline
+		\SI{0.44}{\milli\second} & \SI{0.94}{\milli\second} & \SI{0.00}{\volt} & \SI{0.04}{\volt} \\ \hline
+		\SI{0.48}{\milli\second} & \SI{0.98}{\milli\second} & \SI{0.00}{\volt} & \SI{0.04}{\volt} \\ \hline
+	\end{tabulary}
+\end{table}	
+
+\begin{table}[!htb]
+	\centering
+	\caption{Berechnete Werte}	
+	\label{tab_ber}  		
+	\begin{tabulary}{\textwidth}{|C|C|C|}\hline
+		Zeit $s_{tat}$ & Spannung $U_{r}$ & Strom $I$ \\ \hline 
+		\SI{0.00}{\milli\second} & \SI{0.00}{\volt} & \SI{0.00}{\milli\ampere} \\ \hline
+		\SI{0.04}{\milli\second} & \SI{3.28}{\volt} & \SI{3.28}{\milli\ampere} \\ \hline
+		\SI{0.08}{\milli\second} & \SI{2.24}{\volt} & \SI{2.24}{\milli\ampere} \\ \hline
+		\SI{0.12}{\milli\second} & \SI{1.52}{\volt} & \SI{1.52}{\milli\ampere} \\ \hline
+		\SI{0.16}{\milli\second} & \SI{1.12}{\volt} & \SI{1.12}{\milli\ampere} \\ \hline
+		\SI{0.20}{\milli\second} & \SI{0.76}{\volt} & \SI{0.76}{\milli\ampere} \\ \hline
+		\SI{0.24}{\milli\second} & \SI{0.52}{\volt} & \SI{0.52}{\milli\ampere} \\ \hline
+		\SI{0.28}{\milli\second} & \SI{0.40}{\volt} & \SI{0.40}{\milli\ampere} \\ \hline
+		\SI{0.32}{\milli\second} & \SI{0.20}{\volt} & \SI{0.20}{\milli\ampere} \\ \hline
+		\SI{0.36}{\milli\second} & \SI{0.12}{\volt} & \SI{0.12}{\milli\ampere} \\ \hline
+		\SI{0.40}{\milli\second} & \SI{0.12}{\volt} & \SI{0.12}{\milli\ampere} \\ \hline
+		\SI{0.44}{\milli\second} & \SI{0.08}{\volt} & \SI{0.08}{\milli\ampere} \\ \hline
+		\SI{0.48}{\milli\second} & \SI{0.04}{\volt} & \SI{0.04}{\milli\ampere} \\ \hline
+		\SI{0.50}{\milli\second} & \SI{0.00}{\volt} & \SI{0.00}{\milli\ampere} \\ \hline
+		\SI{0.54}{\milli\second} & \SI{-3.40}{\volt} & \SI{-3.40}{\milli\ampere} \\ \hline
+		\SI{0.58}{\milli\second} & \SI{-2.32}{\volt} & \SI{-2.32}{\milli\ampere} \\ \hline
+		\SI{0.62}{\milli\second} & \SI{-1.60}{\volt} & \SI{-1.60}{\milli\ampere} \\ \hline
+		\SI{0.66}{\milli\second} & \SI{-1.04}{\volt} & \SI{-1.04}{\milli\ampere} \\ \hline
+		\SI{0.70}{\milli\second} & \SI{-0.76}{\volt} & \SI{-0.76}{\milli\ampere} \\ \hline
+		\SI{0.74}{\milli\second} & \SI{-0.52}{\volt} & \SI{-0.52}{\milli\ampere} \\ \hline
+		\SI{0.78}{\milli\second} & \SI{-0.32}{\volt} & \SI{-0.32}{\milli\ampere} \\ \hline
+		\SI{0.82}{\milli\second} & \SI{-0.20}{\volt} & \SI{-0.20}{\milli\ampere} \\ \hline
+		\SI{0.86}{\milli\second} & \SI{-0.16}{\volt} & \SI{-0.16}{\milli\ampere} \\ \hline
+		\SI{0.90}{\milli\second} & \SI{-0.12}{\volt} & \SI{-0.12}{\milli\ampere} \\ \hline
+		\SI{0.94}{\milli\second} & \SI{-0.04}{\volt} & \SI{-0.04}{\milli\ampere} \\ \hline
+		\SI{0.98}{\milli\second} & \SI{-0.04}{\volt} & \SI{-0.04}{\milli\ampere} \\ \hline
+	\end{tabulary}
+\end{table}	
+
+Die Messergebnisse vom Labor sind in der Tabelle ($\ref{tab_mess}$) dargestellt. Die berechnete Werte sind in der zweiten Tabelle ($\ref{tab_ber}$) zu finden.
+
+%---------------------------------------------------------------------
+\section{Simulationsergebnisse}\label{sec:sim}
+
+Die folgende Graphen (Abbildungen 3 und 4) stellen die simulierte Ergebnisse dar.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sim_span}
+	\caption{Die simulierte Spannungen }
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{sim_stro}
+	\caption{Die simulierte Ströme }
+	\label{figure_schaltung}
+\end{figure}
+
+%---------------------------------------------------------------------
+\section{Interpretation}
+
+In Abbildung 5 sehen wir den Verlauf von den Spannungen am Kondensator und Widerstand in der im Labor gebauten Schaltung. Zwischen \SI{0}{\milli\second} und \SI{0.5}{\milli\second} beginnt der Kondensator sich aufzuladen. Da die Summe aus $ u_C $ und $ u_R $, $ u_E $ ergeben müss, beginnt die Spannung am Widerstand zur gleichen Zeit zu fallen. Zum Zeitpunk \SI{0.5}{\milli\second} ist der Kondensator nun aufgeladen und dann verhält sich der Kondensator als Quelle und beginnt sich zu entladen.
+
+Die simulierte und gemessene bzw. berechnete Ergebnisse weichen von einander ab. Das lässt sich ganz einfach erklären: die simulierte Schaltung hat zwei Kondensatoren in parallel geschaltet und die im Labor gebaute Schaltung nur einen. Also gilt:
+\begin{equation}
+\label{Einsetzen}
+\begin{split}
+	c_{SIM} & = c_1 + c_2 \\
+	& = \SI{200}{\nano\farad} \\ 
+	c_{LAB} & = c \\
+	& = \SI{100}{\nano\farad}
+\end{split}
+\end{equation}
+
+Die simulierte Schaltung hat also eine höhere Kapazität und braucht deshalb ein bisschen länger um aufzuladen (beide Kondensatoren müssen aufladen und das braucht länger als nur einen Kondensator aufzuladen). Das kann man sehe wenn man die Graphen Abbildung 3 und Abbildung 5 vergleicht. In Abbildung 5 beginnt die Spannung am Kondensator sofort nach die Änderung der Eingangsspannung zu fallen, aber in Abbildung 3 verzögert sich die Abnahme von den Spannungen.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{gem_span}
+	\caption{Die gemessene und berechnete Spannungen }
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{gem_stro}
+	\caption{Vergleich zwischen Ströme (gemessen und ideal) }
+	\label{figure_schaltung}
+\end{figure}
+
+%--------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%literatur
+% Abschließend sind die Quellen von Bildern und Zitaten nicht zu vergessen.
+\begin{thebibliography}{}   
+\bibitem{en_ue5}          % Hier beginnt das Literaturverzeichnis
+Abbildung 1: Peter Teske, Christian Gornig,                            % Autoren
+\newblock {\textit{Laborpraktikum 2: Ausgleichsvorgang 1. Ordnung,}}
+\newblock TU Berlin, 2016.
+
+\bibitem{DIN1338}
+Normenausschuss Technische Grundlagen (NATG) im DIN,                         % Autoren
+\newblock {\textit{DIN 1338:2011-03, Formelschreibweise und Formelsatz, }}
+\newblock DIN Deutsches Institut für Normung e. V., Berlin, 2011-03.
+
+%\bibitem{Abbildung_2}
+%Abbildung 2:	Erika Musterfrau, Dörte Shakira Wagner,
+%\newblock {\it  Anzugsmomente von Kolbenrückholfedervorspannungsschrauben,}
+%\newblock TU Berlin, 2014.
+
+%\bibitem{Informationen}
+%Claire Grube, Rainer Wahnsinn und Kurt Zschluß 
+%\newblock {\it Praktikumsbeschreibung Kurbelwelleninnenrandbeleuchtung,}
+%\newblock TU Berlin, 2014.
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------------------------------------
+\end{document}\grid

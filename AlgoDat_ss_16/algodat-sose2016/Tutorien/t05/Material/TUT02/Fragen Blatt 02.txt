@@ -1,0 +1,21 @@
+Iterator vs. Listiterator
+=========================
+
+The differences are listed in the Javadoc for ListIterator
+
+You can
+
+iterate backwards
+obtain the iterator at any point.
+add a new value at any point.
+set a new value at that point.
+
+
+
+Iterator<E>
+====================
+Sollte typisiert werden. Eclipse hat erkannt, dass es bei dem Iterator um String handelt,
+weil die Arraylist auch String war.
+
+Abhängig vom Editor. Da es logisch ist das es Iterator<String> ist da über eine Liste von Strings itteriert werden soll.
+Manche editoren geben ein Warning wenn ihr das <String> hinschreibt weil es nicht notwendig ist. 

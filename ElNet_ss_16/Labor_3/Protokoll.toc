@@ -1,0 +1,11 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Theorie}{1}
+\contentsline {subsection}{\numberline {1.1}Resonanz}{1}
+\contentsline {subsection}{\numberline {1.2}Eingangsstrom und Gesamtimpedanz}{1}
+\contentsline {subsection}{\numberline {1.3}Resonanzfrequenz}{1}
+\contentsline {subsection}{\numberline {1.4}Logarithmische Darstellung}{2}
+\contentsline {section}{\numberline {2}Durchf\"uhrung}{2}
+\contentsline {section}{\numberline {3}Mess- und Rechenergebnisse}{3}
+\contentsline {section}{\numberline {4}Simulationsergebnisse}{3}
+\contentsline {section}{\numberline {5}Interpretation}{4}
+\contentsline {section}{\nonumberline Literatur}{4}

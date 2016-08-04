@@ -1,0 +1,34 @@
+= 18. Mai 2016
+:hide-uri-scheme:
+:source-highlighter: highlight.js
+
+Tutorium 13, Mittwoch 8 Uhr, MAR 0.003, Alexander Elvers
+
+link:code[Java-Quelltext] aus dem Tutorium
+
+== Generics
+
+Siehe:
+
+* link:code/src/SimpleList.java[]
+* link:code/src/SimpleListTutorial.java[]
+
+== Exceptions
+
+Siehe:
+
+* link:code/src/ExceptionsExample.java[]
+
+== Interfaces
+
+Siehe:
+
+* link:code/src/ShapeTutorial.java[]
+
+Beachtet, dass man normalerweise `compareTo()` andersrum definiert:
+
+* `a.compareTo(b) < 0` soll genau dann gelten, wenn a < b sein soll
+* `a.compareTo(b) > 0` soll genau dann gelten, wenn a > b sein soll
+* `a.compareTo(b) == 0` soll genau dann	gelten, wenn a = b sein soll
+
+Der Grund dafür ist, dass die natürliche Ordnung laut https://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html[Dokumentation] als {(x, y) such that x.compareTo(y) <= 0} definiert ist. Die Elemente einer Liste könnten dann beispielsweise mit https://docs.oracle.com/javase/7/docs/api/java/util/Collections.html#sort(java.util.List)[Collections.sort] aufsteigend sortiert werden.

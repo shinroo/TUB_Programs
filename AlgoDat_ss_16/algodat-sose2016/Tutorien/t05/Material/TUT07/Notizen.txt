@@ -1,0 +1,13 @@
+Im PDF Grund für Rückkanten ist ein Beispiel dafür das die Rückkanten notwendig sind, da ich das improvisieren im
+Kurs ja gefailed habe^^
+
+Dort ist auch gleich das Beispiele für Edmund-Karp vorhanden. Wenn die Außenkanten bspw. 100 sind, und durch 
+Tiefensuche könnt ihr wenn ihr Pech habt immer den Weg über A-B bzw. B-A gehen und braucht 200 schritte. Obwohl nur
+2 notwendig sind.
+
+
+#####
+
+Bezüglich der Kanten: Ist etwas umständlich aber getSuccessorNodes() und dann getEdge(). 
+Es steht euch natürlich Frei, euch eine Methode zu schreiben, die das für euch Übernimmt.
+

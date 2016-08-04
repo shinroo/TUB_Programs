@@ -1,0 +1,392 @@
+
+
+\documentclass[
+	12pt,								% Schriftgröße
+	DIV10,
+	a4paper,         		% Papierformat
+	oneside,						% einseitiges Dokument
+%	titlepage,					% es wird eine Titelseite verwendet
+	parskip=half,				% Abstand zwischen Absätzen (halbe Zeile)
+	headings=normal,			% Größe der Überschriften verkleinern
+	listof=totoc,					% Verzeichnisse im Inhaltsverzeichnis aufführen
+	bibliography=totoc,						% Literaturverzeichnis im Inhaltsverzeichnis aufführen
+	index=totoc,						% Index im Inhaltsverzeichnis aufführen
+%	caption=tableheading,	% Beschriftung von Tabellen unterhalb ausgeben
+	final								% Status des Dokuments (final/draft)
+]{scrartcl}
+
+%--------------------------------------------------------------------------------
+% Ab hier werden Packages geladen
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{color}
+\usepackage{graphicx}
+\graphicspath{{./Bilder/}}
+
+\usepackage{float}
+\usepackage{amsmath,amsfonts}
+\usepackage{amssymb}
+\usepackage{exscale}
+\usepackage{subfig} 					
+\usepackage{booktabs}
+\usepackage{ulem}
+\usepackage{setspace}
+\usepackage[a4paper,lmargin={25mm},rmargin={25mm},tmargin={25mm},bmargin= {25mm}]{geometry}
+\addtolength{\footskip}{-0.8cm}		%Fussbereich 0.8cm höher, sodass die Seitennummierung höher ist
+
+\usepackage{tabularx}
+\usepackage{tabulary}
+\newcolumntype{w}[1]{>{\raggedleft\hspace{0pt}}p{#1}}
+
+\usepackage{siunitx}
+\sisetup{exponent-product= \cdot ,output-decimal-marker = {,},detect-family,detect-display-math = true,per-mode = symbol-or-fraction}
+
+%--------------------------------------------------------------------------------
+% Hier wird die Titelseite bearbeitet. Im folgenden kommen die zu ändernden Daten
+\newcommand{\nameOfTitel}{Laborversuch Zweitore}
+\newcommand{\untertitel}{4. Labortermin}	% wird nicht verwendet
+\newcommand{\art}{Protokoll zum Praktikum "elektrische Netzwerke"}
+\newcommand{\autor}{Robert Focke}
+\newcommand{\matrikelnr}{369264}
+\newcommand{\betreuer}{Michael Smirnov}
+\newcommand{\labortermin}{Mittwoch 14:00-16:00}
+\newcommand{\datum}{\today}				% hier Abgabedatum einfügen
+
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+% Ab hier wird die Titelseite zusammengesetzt. Es ist keine Änderung mehr notwendig!
+\thispagestyle{plain}
+\begin{titlepage}
+
+~\vspace{0.5cm} 
+\begin{center}
+\includegraphics[width=2.5cm]{Bilder/tu-logo_rot}\hspace{7cm}
+  		\includegraphics[width=2.5cm]{Bilder/sense}\hspace{1cm}\\[1cm]
+		\Large{TECHNISCHE UNIVERSITÄT BERLIN}\\
+			Fakultät IV - Institut für Energie- und Automatisierungstechnik\\
+			Fachgebiet Energieversorgungsnetze und Integration Erneuerbarer Energien
+\end{center}
+\vspace{1.2cm}
+\begin{center}
+\LARGE{\textbf{\textsc{\nameOfTitel}}}\\
+\LARGE{\textbf{\untertitel}}\\[2ex]
+\Large{\textbf{\art}}\\[8ex]
+
+\normalsize
+\begin{tabular}{w{5.4cm}p{8cm}}\\
+ vorgelegt von:	 & \quad \autor\\[1.2ex]
+ Matrikelnummer: & \quad \matrikelnr\\[1.2ex]
+ Betreuer: & \quad \betreuer\\[1.2ex]
+ Labortermin: & \quad \labortermin\\[1.2ex]
+ eingereicht am: &  \quad \datum\\[3ex]
+\end{tabular}
+\end{center}
+
+\end{titlepage}
+\newpage
+
+%-----------------------------------------------------------------------------
+\pagenumbering{roman}
+
+%-----------------------------------------------------------------------------
+% Eidesstattliche Versicherung der selbstständigen Arbeit
+\section*{Eidesstattliche Erklärung}
+Ich, \autor, versichere hiermit an Eides statt, dass ich mein \art \ mit dem Thema
+\begin{quote}
+\textit{\textsc{\nameOfTitel}} - \textit{\untertitel}
+\end{quote}
+selbständig und eigenhändig angefertigt und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.
+
+\bigskip
+\bigskip
+\bigskip
+
+Berlin, den \datum
+
+
+\rule[-0.2cm]{5cm}{0.5pt}
+
+\textsc{\autor} 
+
+\newpage
+%-----------------------------------------------------------------------------
+
+\tableofcontents % Inhaltsverzeichnis
+\newpage
+\pagenumbering{arabic}
+
+%---------------------------------------------------------------------
+% Ab hier fängt der eigenständige Teil an!
+
+\section{Theorie}
+\subsection{Zweitor}
+
+Ein Zweitor ist ein Vierpol, welcher aus zwei Toren besteht. Ein Beispiel für ein Zweitor ist ein Transformator.
+
+\subsection{Impedanzmatrix}
+
+Die Formeln für die Berechnung der Impedanzmatrix sind wie folgt:
+
+\begin{itemize}
+	\item Leerlauf: Eingangsimpedanz \\
+	$ Z_{11} = \frac{\underline{U_1}}{I_1}\bigg |_{I_2 = 0} $
+	\item Leerlauf: Übertragungsimpedanz vorwärts \\
+	$ Z_{21} = \frac{\underline{U_2}}{I_1}\bigg |_{I_2 = 0} $
+	\item Leerlauf: Übertragungsimpedanz rückwärts \\ 
+	$ Z_{12} = \frac{\underline{U_1}}{I_2}\bigg |_{I_1 = 0} $
+	\item Leerlauf: Ausgangsimpedanz \\
+	$ Z_{22} = \frac{\underline{U_2}}{I_2}\bigg |_{I_1 = 0} $
+\end{itemize}
+
+\subsection{Bestimmung einzelner Elemente der Impedanzmatrix}
+
+\begin{itemize}
+	\item $ Z_{11} = Z_1 + Z_3 $
+	\item $ Z_{21} = Z_3 $
+	\item $ Z_{12} = Z_3 $
+	\item $ Z_{22} = Z_2 + Z_3 $
+\end{itemize}
+
+
+\subsection{Bestimmung des Eingangstroms mit einem Hilfswiderstand}
+
+Zur Berechnung von dem Eingangstrom kann man einen Shuntwiderstand in Reihe schalten und dann das Ohmsche Gesetz benutzen.
+
+%---------------------------------------------------------------------
+\section{Durchführung}
+
+Die in Abbildung 1 dargestellte Schaltung würde im Labor gebaut. Der Funktionsgenerator würde dann erst an der linkeren Seite angeschlossen und danach an der rechten Seite. Die Werte für $ U_1 $ und $ U_2 $ würden für beide Seiten gemessen.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{schaltung1}
+	\caption{Die im Labor gebaute Schaltung \cite{en_ue5}}
+	\label{figure_schaltung}
+\end{figure}
+
+Danach wurde die in Abbildung 2 dargestellte Schaltung in LTSpice simuliert und die Werte für die Eingangsspannung, $ I_1 $ und $ I_2 $ exportiert.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{schaltung2}
+	\caption{Die simulierte Schaltung \cite{en_ue5}}
+	\label{figure_schaltung}
+\end{figure}
+
+%---------------------------------------------------------------------
+
+\section{Mess- und Rechenergebnisse}
+
+Die folgende Werte würden für $ U_1 $ und $ U_2 $ aufgenommen:
+
+\begin{table}[h]
+	\centering
+	\caption{Gemessene Werte}
+	\label{my-label}
+	\begin{tabulary}{\textwidth}{|C|C|C|}
+		\hline
+		Seite des Zweitors    & $ U_1 $ \SI{}{\volt}  & $ U_2 $ \SI{}{\volt}  \\ \hline
+		Links & 7.28 & 3.6 \\ \hline
+		Rechts & 3.6 & 7.28 \\ \hline  
+	\end{tabulary}
+\end{table}
+
+Zur Berechnung würde die Peak-to-Peak Werte benutzt ($U_E = \SI{10}{\volt}$).
+Ein Shuntwiderstand würde benutzt um den Eingangsstrom zu ermitteln:
+
+\begin{equation}
+	\begin{split}
+		U_E & = U_{R_{SHUNT}} + U_1 \\
+		\implies U_{R_{SHUNT}} & = U_E - U_1 \\
+		U_{R_{SHUNT}} & = \SI{10}{\volt} - \SI{7.28}{\volt} \\
+		\implies U_{R_{SHUNT}} & = \SI{2.72}{\volt} \\
+		U_{R_{SHUNT}} & = I_{R_{SHUNT}} R_{SHUNT} \\
+		\implies I_{R_{SHUNT}} & = \frac{U_{R_{SHUNT}}}{R_{SHUNT}} \\
+		I_{R_{SHUNT}} & = \frac{\SI{2.72}{\volt}}{\SI{10}{\kilo\ohm}} \\
+		I_{R_{SHUNT}} & = \SI{0.27}{\milli\ampere}
+	\end{split}
+\end{equation}
+
+Da $ U_1 $ auf der linkeren Seite gleich $ U_2 $ auf der rechteren Seite ist, folgt dass die Eingangströme, $ I_1 $ und $ I_2 $ auf den jeweiligen Seiten auch gleich sind. Diese Beide Ströme sind gleich $ I_{R_{SHUNT}} $
+
+Berechnung von der Impendanzmatrix:
+
+\begin{itemize}
+	\item $ Z_{11} $:
+		\begin{equation}
+			\begin{split}
+				Z_{11} & = \frac{U_1}{I_1} \\
+				Z_{11} & = \frac{\SI{7.28}{\volt}}{\SI{0.27}{\milli\ampere}} \\
+				\implies Z_{11} & = \SI{26.96}{\kilo\ohm}
+			\end{split}	
+		\end{equation}
+	\item $ Z_{21} $:
+		\begin{equation}
+			\begin{split}
+				Z_{21} & = \frac{U_2}{I_1} \\
+				Z_{21} & = \frac{\SI{3.6}{\volt}}{\SI{0.27}{\milli\ampere}} \\
+				\implies Z_{21} & = \SI{13.33}{\kilo\ohm}
+			\end{split}	
+		\end{equation}
+	\item $ Z_{12} $:
+		\begin{equation}
+			\begin{split}
+				Z_{12} & = \frac{U_1}{I_2} \\
+				Z_{12} & = \frac{\SI{3.6}{\volt}}{\SI{0.27}{\milli\ampere}} \\
+				\implies Z_{12} & = \SI{13.33}{\kilo\ohm}
+			\end{split}	
+		\end{equation}
+	\item $ Z_{22} $:
+		\begin{equation}
+			\begin{split}
+				Z_{22} & = \frac{U_2}{I_2} \\
+				Z_{22} & = \frac{\SI{7.28}{\volt}}{\SI{0.27}{\milli\ampere}} \\
+				\implies Z_{22} & = \SI{26.96}{\kilo\ohm}
+			\end{split}	
+		\end{equation}
+\end{itemize}
+
+Matrix Darstellung:
+
+\[ \left
+	( \begin{array}{cc}
+		\SI{26.96}{\kilo\ohm} & \SI{13.33}{\kilo\ohm}  \\
+		\SI{13.33}{\kilo\ohm} & \SI{26.96}{\kilo\ohm}  \end{array} 
+\right)\] 
+
+Berechnung der einzelnen Impedanzen:
+
+\begin{equation}
+	\begin{split}
+		Z_{12} & = Z_{21} = Z_3 \\
+		\implies Z_3 & = \SI{13.33}{\kilo\ohm}
+	\end{split}
+\end{equation}
+\begin{equation}
+	\begin{split}
+		Z_{11} & = Z_1 + Z_3 \\
+		\implies Z_1 & = Z_{11} - Z_3 \\
+		\implies Z_1 & = \SI{26.96}{\kilo\ohm} - \SI{13.33}{\kilo\ohm} \\
+		\implies Z_1 & = \SI{13.63}{\kilo\ohm}	
+	\end{split}
+\end{equation}
+\begin{equation}
+	\begin{split}
+		Z_{22} & = Z_{11} \\
+		Z_1 & = Z_2 \\
+		\implies Z_2 & = \SI{13.63}{\kilo\ohm}
+	\end{split}
+\end{equation}
+	
+%---------------------------------------------------------------------
+\section{Simulationsergebnisse}\label{sec:sim}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{spannung}
+	\caption{Die simulierte Eingangsspannung}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{links}
+	\caption{Die simulierte Eingangsspannung}
+	\label{figure_schaltung}
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{rechts}
+	\caption{Die simulierte Eingangsspannung}
+	\label{figure_schaltung}
+\end{figure}
+
+Berechnung der Admittanzmatrix:
+
+Die Benutzte Formeln:
+
+\begin{itemize} 
+	\item Kurzschluss: Eingangsadmittanz \\
+	$ Y_{11} = \frac{\underline{I_1}}{U_1}\bigg |_{U_2 = 0} $
+	\item Kurzschluss: Übertragungsadmittanz vorwärts \\
+	$ Y_{21} = \frac{\underline{I_2}}{U_1}\bigg |_{U_2 = 0} $
+	\item Kurzschluss: Übertragungsadmittanz rückwärts \\ 
+	$ Y_{12} = \frac{\underline{I_1}}{U_2}\bigg |_{U_1 = 0} $
+	\item Kurzschluss: Ausgangsadmittanz \\
+	$ Y_{22} = \frac{\underline{I_2}}{U_2}\bigg |_{U_1 = 0} $
+\end{itemize}
+
+\begin{itemize}
+	\item $ Y_{11} $:
+		\begin{equation}
+			\begin{split}
+				Y_{11} & = \frac{I_1}{U_1} \\
+				Y_{11} & = \frac{\SI{2.69}{\milli\ampere}}{\SI{10}{\volt}} \\
+				Y_{11} & = \SI{2.69}{\milli\siemens}
+			\end{split}
+		\end{equation}
+	\item $ Y_{21} $:
+		\begin{equation}
+			\begin{split}
+				Y_{21} & = \frac{I_2}{U_1} \\
+				Y_{21} & = \frac{\SI{0.79}{\milli\ampere}}{\SI{10}{\volt}} \\
+				Y_{21} & = \SI{0.79}{\milli\siemens}
+			\end{split}
+		\end{equation}
+	\item $ Y_{12} $:
+		\begin{equation}
+			\begin{split}
+				Y_{12} & = \frac{I_1}{U_2} \\
+				Y_{12} & = \frac{\SI{0.79}{\milli\ampere}}{\SI{10}{\volt}} \\
+				Y_{12} & = \SI{0.79}{\milli\siemens}
+			\end{split}
+		\end{equation}
+	\item $ Y_{22} $:
+		\begin{equation}
+			\begin{split}
+				Y_{22} & = \frac{I_2}{U_2} \\
+				Y_{22} & = \frac{\SI{0.94}{\milli\ampere}}{\SI{10}{\volt}} \\
+				Y_{22} & = \SI{2.69}{\milli\siemens}
+			\end{split}
+		\end{equation}
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{Interpretation}
+
+In diesem Laborversuch würden sehr hilfreiche Methoden zur Berechnung von Zweitoren vorgestellt. Diese Methoden erleichtern der Bestimmung von den einzelnen Elementen des Zweitors, die oft nicht sichtbar sind. Mit einfache Arithmetik und Matrizen können alle Impedanzen/Admittanzen in einem Zweitor bestimmt werden.
+
+Zwei verschiedenen Arten von Zweitorberechnung  würden untersucht. Im praktischen Teil würden Impedanzen bestimmt und im simulierten Teil Admittanzen. Methoden zur Berechnung von Zweitoren, die sich im Leerlauf oder Kurzschluss befinden, stehen uns jetzt zur Verfügung.
+
+%--------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%literatur
+% Abschließend sind die Quellen von Bildern und Zitaten nicht zu vergessen.
+\begin{thebibliography}{}   
+\bibitem{en_ue5}          % Hier beginnt das Literaturverzeichnis
+Abbildung 1: Peter Teske, Christian Gornig,                            % Autoren
+\newblock {\textit{Laborpraktikum 4: Zweitore,}}
+\newblock TU Berlin, 2016.
+
+\bibitem{DIN1338}
+Normenausschuss Technische Grundlagen (NATG) im DIN,                         % Autoren
+\newblock {\textit{DIN 1338:2011-03, Formelschreibweise und Formelsatz, }}
+\newblock DIN Deutsches Institut für Normung e. V., Berlin, 2011-03.
+
+%\bibitem{Abbildung_2}
+%Abbildung 2:	Erika Musterfrau, Dörte Shakira Wagner,
+%\newblock {\it  Anzugsmomente von Kolbenrückholfedervorspannungsschrauben,}
+%\newblock TU Berlin, 2014.
+
+%\bibitem{Informationen}
+%Claire Grube, Rainer Wahnsinn und Kurt Zschluß 
+%\newblock {\it Praktikumsbeschreibung Kurbelwelleninnenrandbeleuchtung,}
+%\newblock TU Berlin, 2014.
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------------------------------------
+\end{document}\grid

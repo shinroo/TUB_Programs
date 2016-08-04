@@ -1,0 +1,27 @@
+1.) 2 Graphen (Betrag und Argument in Abhängigkeit der Kreizfrequenz dargestellt). linear, logarithmisch
+	H = \frac{U_A}{U_E}
+	|H|_{db} = 20 log_{10} (|H|)
+	arg(H) = arctan(\frac{Im(H)}{Re(H)})
+2.) Widerstandsbauelement, dessen Widerstandswerte mechanisch veränderbar sind (https://de.wikipedia.org/wiki/Potentiometer)
+	\alpha \element [0,1]
+	R_{ges} = R_1 + R_2
+	R_1 = \alpha * R
+	R_2 = (1 - \alpha) * R
+3.) Verhalten des Netzwerks:
+	Hochpass, Tiefe Frequenzen werden blockiert
+	Hohe Frequenzen werden durchgelassen
+
+	Rechnerische Beweis:
+
+	H = \frac{U_A}{U_E} = \frac{R + \frac{1}{j\omegaC_2}{R + \frac{1}{j\omegaC_1} + \frac{1}{j\omegaC_2}
+	= \frac{ R \omega C_1 C_2 - j C_1}{R \omega C_1 C_2 - j(C_1 + C_2)}
+
+	\omega -> 0:
+		|H| = \frac{C_1}{C_1 + C_2}
+		arg(H) = 0
+	\omega -> \infinity:
+		|H| = 1
+		arg(H) = 0
+
+	\omega = \frac{1}{C_1R} = -17.8, 39.8 degrees
+	\omega = \frac{1}{C_2R} = -3.4, 42,7 degrees
