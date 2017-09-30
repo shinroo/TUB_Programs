@@ -1,0 +1,2 @@
+set(create_fundamentals_MESSAGE_FILES "/home/liliac/lilac/src/create_fundamentals/msg/SensorPacket.msg")
+set(create_fundamentals_SERVICE_FILES "/home/liliac/lilac/src/create_fundamentals/srv/ResetEncoders.srv;/home/liliac/lilac/src/create_fundamentals/srv/Leds.srv;/home/liliac/lilac/src/create_fundamentals/srv/DiffDrive.srv;/home/liliac/lilac/src/create_fundamentals/srv/StoreSong.srv;/home/liliac/lilac/src/create_fundamentals/srv/PlaySong.srv")

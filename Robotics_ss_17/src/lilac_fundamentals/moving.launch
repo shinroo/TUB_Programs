@@ -1,0 +1,7 @@
+ <launch> 
+<arg name="plan" doc="sequence of movement"/>
+  <node name="execute_plan_server" pkg="lilac_fundamentals" type="execute_plan_server" />
+
+   
+
+</launch>

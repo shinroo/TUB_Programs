@@ -1,0 +1,345 @@
+#include "ros/ros.h"
+#include <cstdlib>
+#include <cmath>
+#include "sensor_msgs/LaserScan.h"
+#include "DiffDrive.h"
+#include "SensorPacket.h"
+#include <math.h>
+#include <float.h>
+#include <time.h>
+#include "lilac_fundamentals/ExecutePlan.h"
+#include <algorithm> 
+
+#define WHEEL_RAD 3
+#define ROBOT_DIAMETER 26.5
+
+struct point    
+  {
+    double x;
+    double y;
+  };
+
+struct model    
+  {
+    double m;
+    double c;
+  };
+
+class Plan
+{
+	public:
+		Plan();
+	
+		std::vector<int> plan;
+		
+		
+		bool laser;
+		int orientation;
+		double distanceRight;
+		double distanceLeft;
+		ros::NodeHandle *rosnode;
+
+		ros::ServiceClient diffDrive;
+		
+		
+		create_fundamentals::DiffDrive msg_forward;
+		create_fundamentals::DiffDrive msg_stop;
+		create_fundamentals::DiffDrive msg_turn_left;
+		create_fundamentals::DiffDrive msg_turn_right;
+
+		//void sensorCallback(const create_fundamentals::SensorPacket::ConstPtr& msg);
+		void rotateLeft(double angle);
+		void rotateRight(double angle);
+		
+		void move(double distance);
+		
+		double distancePoint(struct point p1, struct point p2);
+		
+		void executePlan();
+		//void rotatePolar(double angle);
+		double findRadius(struct point p1, struct point p2, struct point p3);
+		bool execute(lilac_fundamentals::ExecutePlan::Request &req, lilac_fundamentals::ExecutePlan::Response &res);
+
+		void laserCallbackExecute(const sensor_msgs::LaserScan::ConstPtr& msg);
+		void moveCentered(double distance);
+		
+		
+} p1;
+
+Plan::Plan()
+{	
+	msg_turn_right.request.left = 3;
+	msg_turn_right.request.right = -3;
+
+	msg_forward.request.left = 3;
+	msg_forward.request.right = 3;
+
+	msg_stop.request.left = 0;
+	msg_stop.request.right = 0;
+
+	msg_turn_left.request.left = -3;
+	msg_turn_left.request.right = 3;
+	
+	orientation = 1;
+}
+
+void Plan::move(double distance){
+ 
+	double seconds = distance / 0.09;
+	seconds = seconds - (9.15*(seconds / 100));
+    diffDrive.call(msg_forward);
+
+        ros::Duration(seconds).sleep();
+
+        // stop
+        diffDrive.call(msg_stop);
+}
+
+
+void Plan::rotateRight(double angle){
+
+    //ROS_INFO("rotate Right %f", angle);
+    double seconds =  (angle * ROBOT_DIAMETER * M_PI) / (2 * M_PI * 3.0 * WHEEL_RAD);
+
+	seconds = seconds - (9.15*(seconds / 100));
+
+	//stop
+	diffDrive.call(msg_turn_right);
+
+
+
+        //sleep until at correct angle
+        ros::Duration(seconds).sleep();
+
+        //stop rotating
+        diffDrive.call(msg_stop);
+        //ros::Duration(3).sleep();
+        
+	//ROS_INFO("Rotate Position: %d", position);
+	//ROS_INFO("complete rotate Right %f", angle);
+}
+
+void Plan::rotateLeft(double angle){
+
+    //ROS_INFO("rotate Left %f", angle);
+    double seconds =  (angle * ROBOT_DIAMETER * M_PI) / (2 * M_PI * 3.0 * WHEEL_RAD);
+
+	seconds = seconds - (9.15*(seconds / 100));
+
+	//stop
+	diffDrive.call(msg_turn_left);
+
+
+
+        //sleep until at correct angle
+        ros::Duration(seconds).sleep();
+
+        //stop rotating
+        diffDrive.call(msg_stop);
+        //ros::Duration(3).sleep();
+      
+	//ROS_INFO("Rotate Position: %d", position);
+	//ROS_INFO("complete rotate Left %f", angle);
+}
+
+
+double Plan::distancePoint(struct point p1, struct point p2){
+	return sqrt((p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y));
+}
+
+
+double Plan::findRadius(struct point p1, struct point p2, struct point p3){
+	model line1;
+	line1.m = (p2.y - p1.y)/(p2.x - p1.x);
+    line1.c = -line1.m * p1.x + p1.y;
+	model line2;
+	line2.m = (p3.y - p1.y)/(p3.x - p1.x);
+    line2.c = -line2.m * p1.x + p1.y;
+	model line1p;
+	line1p.m = -1/line1.m;
+	line1p.c = -line1p.m * ((p2.x - p1.x)/2 + p1.x) + ((p2.y - p1.y)/2 + p1.y);
+	model line2p;
+	line2p.m = -1/line2.m;
+	line2p.c = -line2p.m * ((p3.x - p1.x)/2 + p1.x) + ((p3.y - p1.y)/2 + p1.y);
+	point intersection = point();
+    intersection.x = (line1p.c - line2p.c)/(line2p.m - line1p.m);
+	intersection.y = line2p.m * intersection.x + line2p.c;
+
+	return distancePoint(intersection, p1);
+}
+
+void Plan::laserCallbackExecute(const sensor_msgs::LaserScan::ConstPtr& msg)
+{
+	
+	if(!isnan(msg->ranges[0]) && msg->ranges[0] != 0.0){
+	
+	distanceRight = msg->ranges[0];
+	laser = true;
+	} else{
+		distanceRight = -1.0;
+laser = true;
+	}
+	if(!isnan(msg->ranges[msg->ranges.size()-1]) && msg->ranges[msg->ranges.size()-1] != 0.0){
+	distanceLeft = msg->ranges[msg->ranges.size()-1];
+laser = true;
+	} else{
+		distanceLeft = -1.0;
+laser = true;
+	}
+}
+
+void Plan::moveCentered(double distance){
+ 	laser = false;
+
+	ros::Subscriber sub2 = rosnode->subscribe("scan_filtered", 1, &Plan::laserCallbackExecute, this);
+	while(!laser){
+		ros::spinOnce();
+        }
+	double longDistance;
+	bool right = true;
+	if(distanceRight >= 0.39){
+		longDistance = distanceRight;
+		right = false;
+	} else if(distanceLeft >= 0.39){
+		longDistance = distanceLeft;
+		right = true;
+	} else if(distanceLeft == -1.0 && distanceRight == -1.0){
+		longDistance = 0.0;
+	}else{
+		longDistance = std::max(distanceLeft,distanceRight);
+		if(longDistance == distanceLeft){
+			right = false;
+		} else{
+			right = true;
+		}
+	}
+	if(longDistance/0.39 > 1.12 || longDistance/0.39 < 0.88 || longDistance != 0.0){
+	//ROS_INFO("distanceLeft %f    distanceRight %f", distanceLeft, distanceRight);
+	point p1 = point();
+	p1.x = 0.0;
+	p1.y = 0.0;
+
+	point p2 = point();
+	p2.x = std::abs(longDistance - 0.39);
+	p2.y = distance/2;
+
+	point p3 = point();
+	p3.x = std::abs(longDistance - 0.39);
+	p3.y = -1 * distance/2;
+
+	double radius = findRadius(p1,p2,p3);
+	double angle = acos(1 - (pow(distancePoint(p1,p2),2.0) / (2 * pow(radius, 2.0))));
+
+    double arclengthOut = (radius + ROBOT_DIAMETER/200) * angle;
+    double arclengthIn = (radius - ROBOT_DIAMETER/200) * angle;
+ 	//ROS_INFO("longDistance %f arclengthOut %f    arclengthIn %f     radius %f     angle %f", longDistance, arclengthOut, arclengthIn, radius, angle);
+    create_fundamentals::DiffDrive srv;
+
+    double velIn = 3.0;
+    double velOut = (arclengthOut/arclengthIn * 0.78) * velIn;
+    
+    double seconds = ((arclengthIn / (0.03 * velIn))+(arclengthOut / (0.03 * velOut)))/2;
+    seconds = seconds - (10*(seconds / 100));
+
+    if(right){
+    	srv.request.left = velIn;
+    	srv.request.right = velOut;
+
+    	//ROS_INFO("Diff drive left %f    right %f", srv.request.left, srv.request.right);
+		diffDrive.call(srv);
+    	ros::Duration(seconds).sleep();
+    	srv.request.left = velOut;
+    	srv.request.right = velIn;
+    	//ROS_INFO("Diff drive left %f    right %f", srv.request.left, srv.request.right);
+		diffDrive.call(srv);
+    	ros::Duration(seconds).sleep();
+    } else{
+    	srv.request.left = velOut;
+    	srv.request.right = velIn;
+ 		//ROS_INFO("Diff drive left %f    right %f", srv.request.left, srv.request.right);
+		diffDrive.call(srv);
+    	ros::Duration(seconds).sleep();
+    	srv.request.left = velIn;
+    	srv.request.right = velOut;
+		//ROS_INFO("Diff drive left %f    right %f", srv.request.left, srv.request.right);
+		diffDrive.call(srv);
+    	ros::Duration(seconds).sleep();
+    	
+    }
+
+    } else{
+		move(0.8);
+    }
+}
+
+void Plan::executePlan()
+{
+	for(int i = 0; i < plan.size(); i++){
+		if(plan.at(i) == orientation){
+			moveCentered(0.8);
+		}else if(plan.at(i) == orientation + 1 || (orientation == 3 && plan.at(i) == 0)){
+			rotateLeft(M_PI/2);
+			orientation = plan.at(i);
+			moveCentered(0.8);
+		}else if(plan.at(i) == orientation - 1 || (orientation == 0 && plan.at(i) == 3)){
+			rotateRight(M_PI/2);
+			orientation = plan.at(i);
+			moveCentered(0.8);
+		}else if(abs(plan.at(i) - orientation) == 2){
+			rotateRight(M_PI);
+			orientation = plan.at(i);
+			moveCentered(0.8);
+		}
+	}
+	diffDrive.call(msg_stop);
+	plan.clear();
+		
+
+}
+
+
+
+
+bool Plan::execute(lilac_fundamentals::ExecutePlan::Request &req, lilac_fundamentals::ExecutePlan::Response &res){
+	
+	/*rotateLeft(M_PI/2.0);
+	ros::Duration(5).sleep();
+	rotateRight(M_PI/2.0);
+	*/
+	
+
+	for(int i = 0; i < req.plan.size(); i++){
+		plan.push_back(req.plan[i]);	
+	}
+	
+	executePlan();
+	//ros::Duration(30).sleep();
+	res.success = true;
+	return true;
+
+}
+
+
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "Plan");
+	ros::NodeHandle n;
+	Plan p1;
+	p1.rosnode = &n;
+	
+	//ros::Subscriber sub2 = n.subscribe("sensor_packet", 1, &Plan::sensorCallback, &a1);
+	p1.diffDrive = n.serviceClient<create_fundamentals::DiffDrive>("diff_drive");
+	create_fundamentals::DiffDrive srv;
+	
+
+	ros::ServiceServer service = n.advertiseService("localize_execute_plan", &Plan::execute, &p1);
+	
+	ROS_INFO("Ready to execute plan localize");
+	
+	ros::spin();
+	return 0;
+}
+
+
+			
+			

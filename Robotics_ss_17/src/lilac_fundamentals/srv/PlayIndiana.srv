@@ -1,0 +1,6 @@
+# play the song
+bool play
+
+---
+# success by play the song
+bool success

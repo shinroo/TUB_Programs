@@ -1,0 +1,562 @@
+#include "ros/ros.h"
+#include <cstdlib>
+#include <cmath>
+#include "sensor_msgs/LaserScan.h"
+#include "DiffDrive.h"
+#include "SensorPacket.h"
+#include <math.h>
+#include <float.h>
+#include <limits.h>
+#include <time.h>
+#include <algorithm> 
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <ros/package.h>
+
+#include "lilac_fundamentals/Cell.h"
+#include "lilac_fundamentals/Grid.h"
+#include "lilac_fundamentals/Row.h"
+#include "lilac_fundamentals/ExecutePlan.h"
+#include "lilac_fundamentals/MoveToPosition.h"
+#include "lilac_fundamentals/Position.h"
+#include "lilac_fundamentals/ActualLocalization.h"
+
+
+#define WHITE 0;
+#define GRAY 1;
+#define BLACK 2;
+	
+
+struct point    
+  {
+    double x;
+    double y;
+  };
+
+struct model    
+  {
+    double m;
+    double c;
+  };
+
+struct MapPoint    
+{
+	int row;
+	int column;
+};
+
+struct RobotPerspective
+{
+	MapPoint m;
+	int globalPerspective;
+
+	bool Front;
+	bool Left;
+	bool Right;
+
+	int visibleWalls;
+};
+
+struct Cell
+{
+	MapPoint m;
+	
+	bool Top;
+	bool Right;
+	bool Left;
+	bool Bottom;
+};
+
+
+
+class CellNode {
+
+	public: 
+		CellNode(int rowN, int columnN);
+		int id;
+
+		int row; //row index of cell
+		int column; //column index cell
+		bool gold;
+		bool pickup;
+	
+		int distanceToGoalEstimate;
+		
+		std::vector<struct Edge> edges;
+   		std::vector<int> walls ; 
+        
+		int status;
+		int distance;
+
+		CellNode* predecesor;
+
+		std::vector<CellNode*> getAdjacentNodes();
+		void addEdge(CellNode* end_node);
+
+};
+
+struct Edge
+{
+	CellNode* endNode;
+	int status; //Colour to identify the state of the Edge
+};
+
+
+CellNode::CellNode(int rowN, int columnN) {		
+	this->row = rowN;
+	this->column = columnN;
+	this->id = rowN * 10 + columnN;
+	this->gold = false;
+	this->pickup = false;
+}
+
+void CellNode::addEdge(CellNode* end_node){
+	Edge newEdge = Edge();
+	newEdge.endNode = end_node;
+	newEdge.status = WHITE;
+
+	this->edges.push_back(newEdge);
+}
+
+std::vector<CellNode*> CellNode::getAdjacentNodes(){
+	std::vector<CellNode*> adjacentNodes;
+
+	for (int i = 0; i < this->edges.size(); i++)
+	{
+		adjacentNodes.push_back(edges.at(i).endNode);
+	}
+
+	return adjacentNodes;
+}
+
+
+
+class MazeServer {
+
+	public: 
+		MazeServer();
+
+		int actualRow;
+		int actualColumn;
+		bool listenToPosition;
+		bool localized;
+		
+		ros::NodeHandle *rosnode;
+		ros::ServiceClient moveExecuter;
+		lilac_fundamentals::MoveToPosition srvMove;
+		ros::Subscriber PositionSubscriber;
+		ros::Subscriber LocalizationSubscriber;
+
+		
+		bool mapCalculated;
+
+		std::vector<CellNode> nodes;
+
+		std::vector<CellNode*> gold;
+
+		std::vector<CellNode*> pickUp;
+
+		void PositionCallback(const lilac_fundamentals::Position::ConstPtr&  msg);
+
+		bool movePlanning(lilac_fundamentals::MoveToPosition::Request &req, lilac_fundamentals::MoveToPosition::Response &res);
+		int moveDirection(CellNode start, CellNode next);
+		std::vector<int> findShortestPath(int row, int column);
+		void mapCallback(const lilac_fundamentals::Grid::ConstPtr& grid_msg);
+		void mapToGraph();
+		void calculatePaths();
+
+		void solve();
+		void erase(CellNode* eraseNode);
+		CellNode* closest(std::vector<CellNode*> nodesVector);
+		CellNode* getNodes(int row,int column);
+		void setGoldPickup();
+		std::vector<struct MapPoint> parse(std::string text);
+		void localizationCallback(const lilac_fundamentals::ActualLocalization::ConstPtr&  msg);
+
+
+};
+
+MazeServer::MazeServer(){
+	mapCalculated = false;
+	listenToPosition = true;
+	localized = false;
+}
+
+CellNode *MazeServer::getNodes(int row,int column)
+{   //ROS_INFO("call %d %d ",row,column);
+    for (int i = 0 ; i < nodes.size() ; i++)
+    {
+//	ROS_INFO("nodes (%d %d) \n",nodes.at(i).row,nodes.at(i).column);
+        if (nodes.at(i).row == row && nodes.at(i).column == column)
+        { 
+	   //ROS_INFO("Get -- (%d,%d)",nodes.at(i).row,nodes.at(i).column);
+	   return &nodes.at(i);
+    	}
+    }
+   // ROS_INFO("not a succes");
+  
+    
+}
+
+void MazeServer::mapCallback(const lilac_fundamentals::Grid::ConstPtr& grid_msg){
+	//TODO Wissem here you need to implement the map to graph logic see how the mapCallback from robert works on localization.cpp
+	if (mapCalculated == true){
+		return;
+	}
+	ROS_INFO(" in ");
+	int rowCount = grid_msg->rows.size();
+	int cellCount = grid_msg->rows[0].cells.size();
+    
+    for(int row = 0; row < rowCount; row++){
+
+		for (int cell = 0; cell < cellCount; cell++){
+          CellNode newNode = CellNode(row, cell) ; 
+          int wallCount = grid_msg->rows[row].cells[cell].walls.size();
+          for (int wall = 0; wall < wallCount; wall++){
+				newNode.walls.push_back( grid_msg->rows[row].cells[cell].walls[wall]);
+            }
+            
+          nodes.push_back(newNode);
+			}
+		}
+       for (int i = 0 ; i < nodes.size() ; i++)
+       {
+			ROS_INFO("hergestellte nodes (%d,%d)",nodes.at(i).row,nodes.at(i).column);
+		}
+        for(int i = 0 ; i < nodes.size() ; i++) {
+		ROS_INFO("node mother (%d,%d)-->",nodes.at(i).row,nodes.at(i).column);
+            if (!(std::find(nodes.at(i).walls.begin(), nodes.at(i).walls.end(), 0) != nodes.at(i).walls.end()) )
+            {			
+				ROS_INFO("right (%d,%d)",nodes.at(i).row,nodes.at(i).column+1);
+				nodes.at(i).addEdge(getNodes(nodes.at(i).row,nodes.at(i).column+1));
+				
+				
+            }
+            
+            if (!(std::find(nodes.at(i).walls.begin(), nodes.at(i).walls.end(), 1) != nodes.at(i).walls.end()) )
+            {
+				ROS_INFO("up (%d,%d)",nodes.at(i).row-1,nodes.at(i).column);
+			
+					nodes.at(i).addEdge(getNodes(nodes.at(i).row-1,nodes.at(i).column));
+                
+            }
+            if (!(std::find(nodes.at(i).walls.begin(), nodes.at(i).walls.end(), 2) != nodes.at(i).walls.end()) )
+            {
+				ROS_INFO("left (%d,%d)",nodes.at(i).row,nodes.at(i).column-1);
+				
+					nodes.at(i).addEdge(getNodes(nodes.at(i).row,nodes.at(i).column-1));
+                
+            }
+            
+            if (!(std::find(nodes.at(i).walls.begin(), nodes.at(i).walls.end(), 3) != nodes.at(i).walls.end()) )
+            {
+				//ROS_INFO("Down %d  next %d",i,getNodes(nodes.at(i).row,nodes.at(i).column));
+				ROS_INFO("Down (%d,%d)",nodes.at(i).row+1,nodes.at(i).column);
+					nodes.at(i).addEdge(getNodes(nodes.at(i).row+1,nodes.at(i).column));
+				//ROS_INFO("after Down %d",i);
+                
+            }
+
+			for (int j=0 ; j < nodes.at(i).edges.size() ; j++ ){
+				ROS_INFO("(%d,%d) -> (%d,%d)",nodes.at(i).row,nodes.at(i).column,
+				nodes.at(i).edges.at(j).endNode->row,nodes.at(i).edges.at(j).endNode->column);
+			}
+          
+        }
+	
+	
+	ROS_INFO("End");
+	mapCalculated = true;
+
+}
+void MazeServer::mapToGraph(){
+
+	mapCalculated = false;
+	ros::Subscriber sub = rosnode->subscribe("map", 1, &MazeServer::mapCallback, this);
+
+	while(!mapCalculated){
+		ros::spinOnce();   
+	}
+
+	sub.shutdown();
+	setGoldPickup();
+	
+}
+
+void MazeServer::calculatePaths()
+{
+	CellNode * start = getNodes(actualRow,actualColumn);
+	
+    
+    for (int i = 0  ; i < nodes.size(); i ++ )
+    {
+        nodes.at(i).distanceToGoalEstimate = INT_MAX ; 
+        nodes.at(i).predecesor = NULL ; 
+        nodes.at(i).status = 0 ; 
+        
+    }
+    
+    start->predecesor = NULL ; 
+    start->distanceToGoalEstimate = 0 ; 
+    
+    std::vector<CellNode*> Q ;
+    Q.clear() ; 
+    Q.push_back(start);
+    
+    while (!Q.empty() && ros::ok())
+    {
+        CellNode *n =  Q.back();
+        Q.pop_back(); 
+        n->status = 2; 
+        std::vector<CellNode*> adjacentNodes = n->getAdjacentNodes();
+        for (int i = 0 ; i < adjacentNodes.size() ; i ++ )
+        {
+            if (adjacentNodes.at(i)->status != 1 && adjacentNodes.at(i)->distanceToGoalEstimate > n->distanceToGoalEstimate + 1  )
+            {
+			
+					adjacentNodes.at(i)->distanceToGoalEstimate = n->distanceToGoalEstimate + 1 ;
+					adjacentNodes.at(i)->predecesor = n ; 
+
+					//adjacentNodes.at(i)->status = 1;
+					Q.push_back(adjacentNodes.at(i));
+
+			
+            }
+        }
+        //printDistances();
+        //ROS_INFO("Nodes in queue %lu", Q.size());
+        n = NULL ; 
+    }
+}
+
+
+void MazeServer::PositionCallback(const lilac_fundamentals::Position::ConstPtr&  msg)
+{
+	if(!listenToPosition){
+		return;
+	}
+
+	ROS_INFO("Position is (%d, %d)",msg->row , msg->column);
+	if(msg->row == -2 && msg->column == -2){
+		actualRow = msg->row;
+		actualColumn = msg->column;
+		localized = false;
+		ROS_INFO("I am lost! I will localize one more time");
+		
+
+	} else{
+		actualRow = msg->row;
+		actualColumn = msg->column;
+		listenToPosition = false;
+	}
+}
+
+CellNode* MazeServer::closest(std::vector<CellNode*> nodesVector){
+	int minDistance = INT_MAX;
+	CellNode* closestNode;
+	for (int i = 0; i < nodesVector.size(); i++)
+	{
+		if(nodesVector.at(i)->distanceToGoalEstimate < minDistance){
+			closestNode = nodesVector.at(i);
+			minDistance = nodesVector.at(i)->distanceToGoalEstimate;
+		}
+	}
+	return closestNode;
+}
+
+void MazeServer::erase(CellNode* eraseNode){
+	for (int i = 0; i < gold.size(); i++)
+	{
+		if(gold.at(i)->id == eraseNode->id){
+			gold.erase(gold.begin() + i);
+		}
+	}
+}
+std::vector<struct MapPoint> MazeServer::parse (std::string text) 
+{   
+	std::vector<struct MapPoint> points ; 
+    int i = text.length()-1 ;
+    size_t pos = text.find("[");
+    std::string s = text.substr(pos+1);
+    std::string::size_type sz ;
+    MapPoint d ; 
+    int k ; 
+    char c ; 
+    while (i > 0 && s[0]!= ']')
+    {
+        pos = s.find("[");
+        c = s[pos+1];
+        k = c - 48 ; 
+        d.row = k ; 
+        c = s[pos+3];
+        k = c - 48 ; 
+        d.column = k ;
+     //  d.column = stoi(text , &sz);
+        
+        pos = s.find("]");
+        s = s.substr(pos+1);
+    
+        points.push_back(d);
+    }
+    return points ; 
+   
+    
+    
+}
+
+void MazeServer::setGoldPickup(){
+	
+	//char * STRING = new char[127];
+	std::string STRING;
+	std::ifstream infile;
+	
+
+	infile.open("/home/liliac/lilac/src/lilac_fundamentals/gold.txt");
+    std::getline(infile,STRING); // Saves the line in STRING.
+    ROS_INFO("GOLDS   %s", STRING.c_str());
+	
+    std::vector<struct MapPoint> score ;
+    std::vector<struct MapPoint> exit ; 
+    score = parse(STRING);
+   // ROS_INFO("score size   %lu", score.size());
+	infile.close();
+
+    
+	
+	
+	std::string STRING2;
+	std::ifstream infile2;
+	infile.open("/home/liliac/lilac/src/lilac_fundamentals/pickup.txt");
+	
+    std::getline(infile,STRING2); // Saves the line in STRING.
+    ROS_INFO("PICKUPS    %s", STRING2.c_str());
+    
+    exit = parse(STRING2);
+	//cout <<"hier"  << std::endl ; // Prints our STRING.
+	infile2.close();
+	//ROS_INFO("score exit   %lu", exit.size());
+     
+
+     for (int i = 0 ; i < score.size() ; i++ )
+     {
+        
+        
+       // ROS_INFO("Gold found (%d,%d)", score.at(i).row,score.at(i).column);
+
+        CellNode * goldCell = getNodes(score.at(i).row,score.at(i).column);
+        goldCell->gold = true;
+         
+         
+       // getNodes(m.row,m.column)->gold = true ;
+        
+        gold.push_back(goldCell);
+        
+            
+    }
+   
+    for (int i = 0 ; i < exit.size() ; i++ )
+     {
+        
+        
+        //ROS_INFO("Gold found (%d,%d)", m.row,m.column);
+
+        CellNode * pickUpCell = getNodes(exit.at(i).row,exit.at(i).column);
+        pickUpCell->gold = true;
+         
+         
+       // getNodes(m.row,m.column)->gold = true ;
+        
+        pickUp.push_back(pickUpCell);
+        
+            
+    }
+    
+}
+
+void MazeServer::solve(){
+	ROS_INFO("Ready to solve");
+	bool solved = false;
+	//TODO Read Gold and Pickup
+	
+	
+	while(gold.size() > 0){
+
+		listenToPosition = true;
+		while(listenToPosition){
+			ros::spinOnce();
+		}
+ROS_INFO("Actual position (%d,%d)", actualRow, actualColumn);
+		if(actualRow >= 0 && actualColumn >= 0){
+			calculatePaths();
+			CellNode* closestNode = closest(gold);
+			srvMove.request.row = closestNode->row;
+			srvMove.request.column = closestNode->column;
+			bool success = moveExecuter.call(srvMove);
+			if(success){
+				erase(closestNode);
+				ROS_INFO("I get the gold (%d,%d)",closestNode->row,closestNode->column);
+				std::system("rosrun lilac_fundamentals Indiana.py&");
+				ros::Duration(5).sleep();
+			}
+			
+			
+			
+		}
+	}
+	listenToPosition = true;
+		while(listenToPosition){
+			ros::spinOnce();
+		}
+
+ROS_INFO("Actual position (%d,%d)", actualRow, actualColumn);
+	calculatePaths();
+	CellNode* closestNode = closest(pickUp);
+	ROS_INFO("I ready for Pickup (%d,%d)",closestNode->row,closestNode->column);
+			
+	srvMove.request.row = closestNode->row;
+	srvMove.request.column = closestNode->column;
+	moveExecuter.call(srvMove);
+	std::system("rosrun lilac_fundamentals Indiana.py&");
+
+}
+
+
+void MazeServer::localizationCallback(const lilac_fundamentals::ActualLocalization::ConstPtr&  msg)
+{
+   	ROS_INFO("row %d, column %d, orientation %d, localized %d", msg->row, msg->column, msg->orientation, msg->localized);
+   	if(msg->localized){
+   		actualRow = msg->row;
+   		actualColumn = msg->column;
+   		localized = true;
+   	}
+}
+
+
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "MazeServer");
+	ros::NodeHandle n;
+	MazeServer m1;
+	m1.rosnode = &n;
+	
+	m1.moveExecuter = n.serviceClient<lilac_fundamentals::MoveToPosition>("move_to_position");
+
+	m1.PositionSubscriber = n.subscribe("position", 1, &MazeServer::PositionCallback, &m1);
+	m1.LocalizationSubscriber = n.subscribe("actual_localization", 1, &MazeServer::localizationCallback, &m1);
+
+	m1.mapToGraph();
+
+	while(!m1.localized){
+		ros::spinOnce();
+	}
+
+	m1.solve();
+	
+	
+	return 0;
+}
+
+			
+			

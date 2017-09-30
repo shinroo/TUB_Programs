@@ -1,0 +1,22 @@
+#include "ros/ros.h"
+#include "PlaySong.h"
+#include "PlaySongRequest.h"
+#include "PlaySongResponse.h"
+
+
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "song");
+	ros::NodeHandle n;
+	
+	
+	//ros::Subscriber sub2 = n.subscribe("sensor_packet", 1, &Plan::sensorCallback, &a1);
+	p1.diffDrive = n.serviceClient<create_fundamentals::PlaySong>("PlaySong");
+	create_fundamentals::PlaySong srv;
+	
+	ROS_INFO("Ready to execute plan localize");
+	
+	ros::spin();
+	return 0;
+}
+

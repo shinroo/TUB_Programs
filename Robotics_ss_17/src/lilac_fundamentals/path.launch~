@@ -1,0 +1,7 @@
+ <launch> 
+<arg name="plan" doc="path"/>
+  <node name="moveServer"  launch-prefix="valgrind" pkg="lilac_fundamentals" type="moveServer" />
+
+   
+
+</launch>

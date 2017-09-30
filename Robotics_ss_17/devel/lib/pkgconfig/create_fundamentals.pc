@@ -1,0 +1,8 @@
+prefix=/home/liliac/lilac/devel
+
+Name: create_fundamentals
+Description: Description of create_fundamentals
+Version: 1.0.0
+Cflags: -I/home/liliac/lilac/devel/include
+Libs: -L/home/liliac/lilac/devel/lib 
+Requires: roscpp rospy message_runtime

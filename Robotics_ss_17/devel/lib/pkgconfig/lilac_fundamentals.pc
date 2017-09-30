@@ -1,0 +1,8 @@
+prefix=/home/liliac/lilac/devel
+
+Name: lilac_fundamentals
+Description: Description of lilac_fundamentals
+Version: 0.0.0
+Cflags: -I/home/liliac/lilac/devel/include
+Libs: -L/home/liliac/lilac/devel/lib 
+Requires: 

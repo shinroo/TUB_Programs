@@ -1,0 +1,116 @@
+#include <math.h>
+#include <cstdlib>
+#include <sstream>
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include "create_fundamentals/DiffDrive.h"
+#include "create_fundamentals/SensorPacket.h"
+
+#define WHEEL_RAD 3
+#define ROBOT_CIRC 81.68
+
+class Square{
+
+	public:
+		Square(ros::NodeHandle *n);
+		// numerical parameters
+		double distance;
+		double velocity;
+		double angle;
+		double rotational_velocity;
+
+		// ros parameters
+		ros::ServiceClient diffDrive;
+
+		// methods
+		void rotate();
+		void move();
+		void sensorCallback(const create_fundamentals::SensorPacket::ConstPtr& msg);
+};
+
+Square::Square(ros::NodeHandle *n){
+
+	// init numerical values
+	distance = 100;
+	velocity = 10;
+	angle = M_PI / 2;
+	rotational_velocity = 3;
+
+	// ros init
+	diffDrive = n->serviceClient<create_fundamentals::DiffDrive>("diff_drive");
+}
+
+void Square::sensorCallback(const create_fundamentals::SensorPacket::ConstPtr& msg){
+	ROS_INFO("left encoder: %f, right encoder: %f", msg->encoderLeft, msg->encoderRight);
+}
+
+void Square::rotate(){
+
+	create_fundamentals::DiffDrive srv;
+	double seconds =  (angle * ROBOT_CIRC) / (2 * M_PI * rotational_velocity * WHEEL_RAD);
+
+	//stop
+	srv.request.left = 0;
+	srv.request.right = 0;
+	diffDrive.call(srv);
+
+	ros::Duration(0.1).sleep();
+
+	//rotate
+	srv.request.left = -1 * rotational_velocity;
+	srv.request.right = rotational_velocity;
+	diffDrive.call(srv);
+
+	//sleep until at correct angle
+	ros::Duration(seconds).sleep();
+
+	//stop rotating
+	srv.request.left = 0;
+	srv.request.right = 0;
+	diffDrive.call(srv);
+}
+
+void Square::move(){
+	create_fundamentals::DiffDrive srv;
+
+        double seconds = distance / velocity;
+        double angular_velocity = velocity / WHEEL_RAD;
+
+	//stop
+	srv.request.left = 0;
+	srv.request.right = 0;
+	diffDrive.call(srv);
+
+	ros::Duration(0.1).sleep();
+
+        // move
+        srv.request.left = angular_velocity;
+        srv.request.right = angular_velocity;
+        diffDrive.call(srv);
+
+        ros::Duration(seconds).sleep();
+
+        // stop
+        srv.request.left = 0;
+        srv.request.right = 0;
+        diffDrive.call(srv);
+}
+
+int main(int argc, char **argv){
+        ros::init(argc, argv, "rotate");
+
+	ros::NodeHandle n;
+	ros::Subscriber sub;
+
+	Square square(&n);
+
+	sub = n.subscribe("sensor_packet", 1, &Square::sensorCallback, &square);
+
+	//make a square
+	for (int i = 0; i < 4; i++){
+		square.rotate();
+		square.move();
+	}
+
+	return 0;
+}

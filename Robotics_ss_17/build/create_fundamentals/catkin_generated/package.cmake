@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "create_fundamentals")
+set(create_fundamentals_MAINTAINER "Rico Jonschkowski <rico.jonschkowski@tu-berlin.de>")
+set(create_fundamentals_DEPRECATED "")
+set(create_fundamentals_VERSION "1.0.0")
+set(create_fundamentals_BUILD_DEPENDS "roscpp" "rospy" "sensor_msgs" "message_generation")
+set(create_fundamentals_RUN_DEPENDS "roscpp" "rospy" "sensor_msgs" "message_runtime")
+set(create_fundamentals_BUILDTOOL_DEPENDS "catkin")

@@ -1,0 +1,7 @@
+ <launch> 
+<arg name="smooth" doc="smoothy sequence of movement"/>
+  <node name="execute_plan_smooth_server" pkg="lilac_fundamentals" type="execute_plan_smooth_server" />
+
+   
+
+</launch>

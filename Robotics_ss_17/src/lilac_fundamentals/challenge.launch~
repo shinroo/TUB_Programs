@@ -1,0 +1,12 @@
+ <launch> 
+<arg name="Challenge" doc="collecting Gold"/>
+  <node name="execute" pkg="lilac_fundamentals" type="execute_plan_loc" />
+  <node name="indiana" pkg="lilac_fundamentals" type="Indiana3.py" />
+  <node name="loc" pkg="lilac_fundamentals" type="localization" />
+  <node name="goToThePath" pkg="lilac_fundamentals" type="moveServer" output="screen"/>
+
+
+  <node name="Amplifier" pkg="lilac_fundamentals" type="poseAmplifier" />
+  <node name="collectGold" pkg="lilac_fundamentals" type="solveMaze" output="screen"/>
+
+</launch>

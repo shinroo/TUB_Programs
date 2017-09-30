@@ -1,0 +1,2 @@
+create_fundamentals:lilac_fundamentals
+-DCATKIN_DEVEL_PREFIX=/home/liliac/lilac/devel -DCMAKE_INSTALL_PREFIX=/home/liliac/lilac/install -G Unix Makefiles

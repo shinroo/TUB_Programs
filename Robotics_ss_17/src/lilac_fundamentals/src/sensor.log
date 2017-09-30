@@ -1,0 +1,177 @@
+[ INFO] [1494254409.261847068]: ---------------------ROTATING--------------------------------
+[ INFO] [1494254409.262854109]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254409.263250598]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254409.506773255]: loop iteration 1 encoderLeft -0.211076 encoderRight 0.211076 tLeft 3.468842 tRight 3.468842
+[ INFO] [1494254409.507311313]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254409.737441764]: loop iteration 2 encoderLeft -0.914662 encoderRight 0.914662 tLeft 6.937684 tRight 6.937684
+[ INFO] [1494254409.737856622]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254409.969385016]: loop iteration 3 encoderLeft -2.282725 encoderRight 2.220225 tLeft 10.406526 tRight 10.406526
+[ INFO] [1494254409.970601861]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254410.202048821]: loop iteration 4 encoderLeft -3.932222 encoderRight 3.807222 tLeft 13.875368 tRight 13.875368
+[ INFO] [1494254410.203240942]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254410.430605190]: loop iteration 5 encoderLeft -6.246197 encoderRight 5.996197 tLeft 17.344209 tRight 17.344209
+[ INFO] [1494254410.430849983]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254410.660062441]: loop iteration 6 encoderLeft -9.193399 encoderRight 8.818399 tLeft 20.813051 tRight 20.813051
+[ INFO] [1494254410.660557965]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254410.888852080]: loop iteration 7 encoderLeft -12.773828 encoderRight 12.273828 tLeft 24.281893 tRight 24.281893
+[ INFO] [1494254410.889138918]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254411.118699535]: loop iteration 8 encoderLeft -16.846768 encoderRight 16.221768 tLeft 27.750735 tRight 27.750735
+[ INFO] [1494254411.118947052]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254411.345401478]: loop iteration 9 encoderLeft -21.592043 encoderRight 20.904543 tLeft 31.219577 tRight 31.219577
+[ INFO] [1494254411.345589770]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254411.571693173]: after rotation left: -27.181621 right: 26.431621 expected: |34.5|
+[ INFO] [1494254411.578846038]: ---------------------MOVING--------------------------------
+[ INFO] [1494254411.579633918]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254411.580370464]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254412.717711951]: loop iteration 1 encoderLeft 2.023207 encoderRight 2.726793 tLeft 16.666667 tRight 16.666667
+[ INFO] [1494254412.717957932]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254413.849246206]: loop iteration 2 encoderLeft 7.296414 encoderRight 8.703586 tLeft 33.333333 tRight 33.333333
+[ INFO] [1494254413.849687742]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254414.978956974]: loop iteration 3 encoderLeft 16.069621 encoderRight 18.180379 tLeft 50.000000 tRight 50.000000
+[ INFO] [1494254414.979165520]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254416.108687717]: loop iteration 4 encoderLeft 28.374078 encoderRight 31.188422 tLeft 66.666667 tRight 66.666667
+[ INFO] [1494254416.109859793]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254417.237997177]: loop iteration 5 encoderLeft 44.209785 encoderRight 47.727715 tLeft 83.333333 tRight 83.333333
+[ INFO] [1494254417.238274866]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254418.369832029]: loop iteration 6 encoderLeft 63.732991 encoderRight 67.954509 tLeft 100.000000 tRight 100.000000
+[ INFO] [1494254418.370163076]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254419.501682664]: loop iteration 7 encoderLeft 86.537448 encoderRight 91.462552 tLeft 116.666667 tRight 116.666667
+[ INFO] [1494254419.501902036]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254420.630430740]: loop iteration 8 encoderLeft 112.841905 encoderRight 118.470595 tLeft 133.333333 tRight 133.333333
+[ INFO] [1494254420.630648715]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254421.759433667]: loop iteration 9 encoderLeft 142.896361 encoderRight 149.228639 tLeft 150.000000 tRight 150.000000
+[ INFO] [1494254421.759708912]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254422.887465801]: after movement left: 176.232070 right: 183.267930 expected: 150
+[ INFO] [1494254422.908608433]: ---------------------ROTATING--------------------------------
+[ INFO] [1494254422.909451278]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254422.911086262]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254423.150456995]: loop iteration 1 encoderLeft 0.273391 encoderRight 0.414109 tLeft 3.468842 tRight 3.468842
+[ INFO] [1494254423.150673643]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254423.378163745]: loop iteration 2 encoderLeft 0.179273 encoderRight 1.445727 tLeft 6.937684 tRight 6.937684
+[ INFO] [1494254423.379252431]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254423.609742355]: loop iteration 3 encoderLeft -0.696649 encoderRight 3.384149 tLeft 10.406526 tRight 10.406526
+[ INFO] [1494254423.609970736]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254423.841260972]: loop iteration 4 encoderLeft -1.994722 encoderRight 5.744722 tLeft 13.875368 tRight 13.875368
+[ INFO] [1494254423.841683023]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254424.070916434]: loop iteration 5 encoderLeft -4.207457 encoderRight 9.019957 tLeft 17.344209 tRight 17.344209
+[ INFO] [1494254424.071293926]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254424.298776136]: loop iteration 6 encoderLeft -7.084669 encoderRight 12.897169 tLeft 20.813051 tRight 20.813051
+[ INFO] [1494254424.299254828]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254424.528399539]: loop iteration 7 encoderLeft -10.665467 encoderRight 17.477967 tLeft 24.281893 tRight 24.281893
+[ INFO] [1494254424.528889267]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254424.759892874]: loop iteration 8 encoderLeft -14.738775 encoderRight 22.551275 tLeft 27.750735 tRight 27.750735
+[ INFO] [1494254424.760123280]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254424.987764938]: loop iteration 9 encoderLeft -19.656386 encoderRight 28.468887 tLeft 31.219577 tRight 31.219577
+[ INFO] [1494254424.987988639]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254425.215355821]: after rotation left: -25.066507 right: 34.879008 expected: |34.5|
+[ INFO] [1494254425.222372355]: ---------------------MOVING--------------------------------
+[ INFO] [1494254425.222632654]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254425.222812984]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254426.353881607]: loop iteration 1 encoderLeft 2.194990 encoderRight 3.180010 tLeft 16.666667 tRight 16.666667
+[ INFO] [1494254426.354084566]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254427.482142121]: loop iteration 2 encoderLeft 7.858730 encoderRight 9.828770 tLeft 33.333333 tRight 33.333333
+[ INFO] [1494254427.482348362]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254428.611062565]: loop iteration 3 encoderLeft 16.803720 encoderRight 19.758780 tLeft 50.000000 tRight 50.000000
+[ INFO] [1494254428.611299397]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254429.738187181]: loop iteration 4 encoderLeft 29.061210 encoderRight 33.001290 tLeft 66.666667 tRight 66.666667
+[ INFO] [1494254429.738471086]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254430.871442604]: loop iteration 5 encoderLeft 44.631200 encoderRight 49.556300 tLeft 83.333333 tRight 83.333333
+[ INFO] [1494254430.871705556]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254432.006982396]: loop iteration 6 encoderLeft 63.701190 encoderRight 69.611310 tLeft 100.000000 tRight 100.000000
+[ INFO] [1494254432.007212732]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254433.136113831]: loop iteration 7 encoderLeft 86.489930 encoderRight 93.385070 tLeft 116.666667 tRight 116.666667
+[ INFO] [1494254433.136465342]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254434.264674802]: loop iteration 8 encoderLeft 112.778671 encoderRight 120.658829 tLeft 133.333333 tRight 133.333333
+[ INFO] [1494254434.264930212]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254435.394296802]: loop iteration 9 encoderLeft 142.598661 encoderRight 151.463839 tLeft 150.000000 tRight 150.000000
+[ INFO] [1494254435.394951634]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254436.528251546]: after movement left: 175.699899 right: 185.550101 expected: 150
+[ INFO] [1494254436.551406306]: ---------------------ROTATING--------------------------------
+[ INFO] [1494254436.552176306]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254436.552949310]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254436.787777216]: loop iteration 1 encoderLeft 0.335891 encoderRight 0.476609 tLeft 3.468842 tRight 3.468842
+[ INFO] [1494254436.787986740]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254437.016187337]: loop iteration 2 encoderLeft 0.304273 encoderRight 1.570727 tLeft 6.937684 tRight 6.937684
+[ INFO] [1494254437.016501623]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254437.247163497]: loop iteration 3 encoderLeft -0.329323 encoderRight 3.329323 tLeft 10.406526 tRight 10.406526
+[ INFO] [1494254437.247856253]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254437.476086463]: loop iteration 4 encoderLeft -1.877581 encoderRight 6.002581 tLeft 13.875368 tRight 13.875368
+[ INFO] [1494254437.476527371]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254437.706963238]: loop iteration 5 encoderLeft -4.129424 encoderRight 9.379424 tLeft 17.344209 tRight 17.344209
+[ INFO] [1494254437.707761455]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254437.935760350]: loop iteration 6 encoderLeft -7.084854 encoderRight 13.459853 tLeft 20.813051 tRight 20.813051
+[ INFO] [1494254437.936109277]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254438.165970840]: loop iteration 7 encoderLeft -10.954945 encoderRight 18.454944 tLeft 24.281893 tRight 24.281893
+[ INFO] [1494254438.166285615]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254438.400370899]: loop iteration 8 encoderLeft -15.317545 encoderRight 23.942545 tLeft 27.750735 tRight 27.750735
+[ INFO] [1494254438.400777585]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254438.635200482]: loop iteration 9 encoderLeft -20.313373 encoderRight 30.063373 tLeft 31.219577 tRight 31.219577
+[ INFO] [1494254438.635445066]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254438.866258286]: after rotation left: -26.012788 right: 36.887788 expected: |34.5|
+[ INFO] [1494254438.875255729]: ---------------------MOVING--------------------------------
+[ INFO] [1494254438.875697056]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254438.876498694]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254440.019883897]: loop iteration 1 encoderLeft 1.976240 encoderRight 2.961260 tLeft 16.666667 tRight 16.666667
+[ INFO] [1494254440.021021192]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254441.146079204]: loop iteration 2 encoderLeft 7.358730 encoderRight 9.328770 tLeft 33.333333 tRight 33.333333
+[ INFO] [1494254441.146774754]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254442.276901287]: loop iteration 3 encoderLeft 16.272470 encoderRight 19.227530 tLeft 50.000000 tRight 50.000000
+[ INFO] [1494254442.277563173]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254443.406543332]: loop iteration 4 encoderLeft 28.717460 encoderRight 32.657540 tLeft 66.666667 tRight 66.666667
+[ INFO] [1494254443.407445262]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254444.544359600]: loop iteration 5 encoderLeft 44.912450 encoderRight 49.837550 tLeft 83.333333 tRight 83.333333
+[ INFO] [1494254444.544683594]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254445.675027055]: loop iteration 6 encoderLeft 64.607440 encoderRight 70.517560 tLeft 100.000000 tRight 100.000000
+[ INFO] [1494254445.675418026]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254446.804248375]: loop iteration 7 encoderLeft 87.833680 encoderRight 94.728820 tLeft 116.666667 tRight 116.666667
+[ INFO] [1494254446.804680413]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254447.931893867]: loop iteration 8 encoderLeft 114.528671 encoderRight 122.408829 tLeft 133.333333 tRight 133.333333
+[ INFO] [1494254447.932148369]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254449.062953899]: loop iteration 9 encoderLeft 144.723661 encoderRight 153.588839 tLeft 150.000000 tRight 150.000000
+[ INFO] [1494254449.063474915]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254450.197552161]: after movement left: 178.199899 right: 188.050101 expected: 150
+[ INFO] [1494254450.219554051]: ---------------------ROTATING--------------------------------
+[ INFO] [1494254450.220043778]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254450.220484686]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254450.451462592]: loop iteration 1 encoderLeft 0.375000 encoderRight 0.375000 tLeft 3.468842 tRight 3.468842
+[ INFO] [1494254450.451707455]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254450.677942858]: loop iteration 2 encoderLeft 0.171414 encoderRight 1.578586 tLeft 6.937684 tRight 6.937684
+[ INFO] [1494254450.678221176]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254450.908225285]: loop iteration 3 encoderLeft -0.493432 encoderRight 3.305932 tLeft 10.406526 tRight 10.406526
+[ INFO] [1494254450.908541875]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254451.137213412]: loop iteration 4 encoderLeft -1.830614 encoderRight 5.768114 tLeft 13.875368 tRight 13.875368
+[ INFO] [1494254451.137543343]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254451.366737991]: loop iteration 5 encoderLeft -4.012099 encoderRight 9.074599 tLeft 17.344209 tRight 17.344209
+[ INFO] [1494254451.366987254]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254451.595123179]: loop iteration 6 encoderLeft -6.897169 encoderRight 13.084669 tLeft 20.813051 tRight 20.813051
+[ INFO] [1494254451.595876836]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254451.824564087]: loop iteration 7 encoderLeft -10.204391 encoderRight 17.516892 tLeft 24.281893 tRight 24.281893
+[ INFO] [1494254451.824936691]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254452.058026178]: loop iteration 8 encoderLeft -14.355916 encoderRight 22.793417 tLeft 27.750735 tRight 27.750735
+[ INFO] [1494254452.058841645]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254452.287973156]: loop iteration 9 encoderLeft -19.211028 encoderRight 28.773528 tLeft 31.219577 tRight 31.219577
+[ INFO] [1494254452.288238902]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254452.515673271]: after rotation left: -24.800974 right: 35.425975 expected: |34.5|
+[ INFO] [1494254452.524965654]: ---------------------MOVING--------------------------------
+[ INFO] [1494254452.526115660]: loop iteration 0 encoderLeft 0.000000 encoderRight 0.000000 tLeft 0.000000 tRight 0.000000
+[ INFO] [1494254452.526351654]: loop iteration 0 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254453.666301853]: loop iteration 1 encoderLeft 2.265348 encoderRight 3.109652 tLeft 16.666667 tRight 16.666667
+[ INFO] [1494254453.666492939]: loop iteration 1 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254454.795318120]: loop iteration 2 encoderLeft 7.999447 encoderRight 9.688053 tLeft 33.333333 tRight 33.333333
+[ INFO] [1494254454.795574647]: loop iteration 2 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254455.924986634]: loop iteration 3 encoderLeft 17.014795 encoderRight 19.547705 tLeft 50.000000 tRight 50.000000
+[ INFO] [1494254455.925370272]: loop iteration 3 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254457.055138660]: loop iteration 4 encoderLeft 29.561394 encoderRight 32.938606 tLeft 66.666667 tRight 66.666667
+[ INFO] [1494254457.055554425]: loop iteration 4 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254458.188079937]: loop iteration 5 encoderLeft 45.607992 encoderRight 49.829508 tLeft 83.333333 tRight 83.333333
+[ INFO] [1494254458.188454077]: loop iteration 5 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254459.317963213]: loop iteration 6 encoderLeft 65.185841 encoderRight 70.251659 tLeft 100.000000 tRight 100.000000
+[ INFO] [1494254459.318195785]: loop iteration 6 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254460.447148007]: loop iteration 7 encoderLeft 88.263689 encoderRight 94.173811 tLeft 116.666667 tRight 116.666667
+[ INFO] [1494254460.447363886]: loop iteration 7 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254461.578671017]: loop iteration 8 encoderLeft 115.091537 encoderRight 121.845963 tLeft 133.333333 tRight 133.333333
+[ INFO] [1494254461.578978877]: loop iteration 8 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254462.709517894]: loop iteration 9 encoderLeft 145.169386 encoderRight 152.768114 tLeft 150.000000 tRight 150.000000
+[ INFO] [1494254462.709929608]: loop iteration 9 velocityLeft 3.000000 velocityRight 3.000000
+[ INFO] [1494254463.848411603]: after movement left: 178.778486 right: 187.221514 expected: 150
+

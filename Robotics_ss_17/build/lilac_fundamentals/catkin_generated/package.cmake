@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "lilac_fundamentals")
+set(lilac_fundamentals_MAINTAINER "jack <jack@todo.todo>")
+set(lilac_fundamentals_DEPRECATED "")
+set(lilac_fundamentals_VERSION "0.0.0")
+set(lilac_fundamentals_BUILD_DEPENDS "roscpp" "rospy" "std_msgs" "message_generation")
+set(lilac_fundamentals_RUN_DEPENDS "roscpp" "rospy" "std_msgs" "message_runtime")
+set(lilac_fundamentals_BUILDTOOL_DEPENDS "catkin")

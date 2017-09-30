@@ -1,0 +1,10 @@
+ <launch> 
+<arg name="smooth" doc="go the goal by the shortest path"/>
+  <node name="execute" pkg="lilac_fundamentals" type="execute_plan_loc" />
+  <node name="loc" pkg="lilac_fundamentals" type="localization" />
+
+
+  <node name="Amplifier" pkg="lilac_fundamentals" type="poseAmplifier" />
+  <node name="goToThePath" pkg="lilac_fundamentals" type="moveServer" />
+
+</launch>

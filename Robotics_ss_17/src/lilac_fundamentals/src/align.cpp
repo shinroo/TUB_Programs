@@ -1,0 +1,422 @@
+#include "ros/ros.h"
+#include <cstdlib>
+#include <cmath>
+#include "sensor_msgs/LaserScan.h"
+#include "DiffDrive.h"
+#include "SensorPacket.h"
+#include <math.h>
+#include <float.h>
+#include <time.h>
+
+
+#define WHEEL_RAD 3
+#define ROBOT_DIAMETER 26.5
+
+struct point    
+  {
+    double x;
+    double y;
+  };
+
+struct model    
+  {
+    double m;
+    double c;
+  };
+
+
+class Align
+{
+	public:
+		Align();
+		//int counter;
+		
+		std::vector<struct point> points;
+		std::vector<struct model> walls;
+		int position;
+		int ready;
+		int counter;
+
+		ros::ServiceClient diffDrive;
+		
+		
+		create_fundamentals::DiffDrive msg_forward;
+		create_fundamentals::DiffDrive msg_stop;
+		create_fundamentals::DiffDrive msg_turn_left;
+		create_fundamentals::DiffDrive msg_turn_right;
+  	
+		void laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg);
+		void sensorCallback(const create_fundamentals::SensorPacket::ConstPtr& msg);
+		void rotateLeft(double angle);
+		void rotateRight(double angle);
+		void ransac();
+		double distance(struct point p, struct model m1);
+		void solve();
+		void move(double distance);
+		point nearestPoint(struct point intersection, struct model line, double dist);
+		double distancePoint(struct point p1, struct point p2);
+		void rotatePolar(double angle);
+} a1;
+
+Align::Align()
+{	
+	msg_turn_right.request.left = 3;
+	msg_turn_right.request.right = -3;
+
+	msg_forward.request.left = 3;
+	msg_forward.request.right = 3;
+
+	msg_stop.request.left = 0;
+	msg_stop.request.right = 0;
+
+	msg_turn_left.request.left = -3;
+	msg_turn_left.request.right = 3;
+
+	position = 0;
+	ready = 1;
+	counter = 0;
+}
+
+void Align::move(double distance){
+        
+
+        //double seconds = distance / velocity;
+        //double angular_velocity = velocity / WHEEL_RAD;
+
+	double seconds = distance / 0.09;
+	seconds = seconds - (12*(seconds / 100));
+
+	//stop
+    diffDrive.call(msg_forward);
+
+        ros::Duration(seconds).sleep();
+
+        // stop
+        diffDrive.call(msg_stop);
+}
+
+
+void Align::rotateRight(double angle){
+
+        
+    double seconds =  (angle * ROBOT_DIAMETER * M_PI) / (2 * M_PI * 3.0 * WHEEL_RAD);
+
+	seconds = seconds - (9.15*(seconds / 100));
+
+	//stop
+	diffDrive.call(msg_turn_right);
+
+
+
+        //sleep until at correct angle
+        ros::Duration(seconds).sleep();
+
+        //stop rotating
+        diffDrive.call(msg_stop);
+        //ros::Duration(3).sleep();
+        ready = 1;
+	//ROS_INFO("Rotate Position: %d", position);
+}
+
+void Align::rotateLeft(double angle){
+
+        
+    double seconds =  (angle * ROBOT_DIAMETER * M_PI) / (2 * M_PI * 3.0 * WHEEL_RAD);
+
+	seconds = seconds - (9.15*(seconds / 100));
+
+	//stop
+	diffDrive.call(msg_turn_left);
+
+
+
+        //sleep until at correct angle
+        ros::Duration(seconds).sleep();
+
+        //stop rotating
+        diffDrive.call(msg_stop);
+        //ros::Duration(3).sleep();
+        ready = 1;
+	//ROS_INFO("Rotate Position: %d", position);
+}
+
+void Align::rotatePolar(double angle){
+
+    rotateLeft(3*M_PI/2);    
+    double seconds =  ((angle) * ROBOT_DIAMETER * M_PI) / (2 * M_PI * 3.0 * WHEEL_RAD);
+	
+	seconds = seconds - (9.15*(seconds / 100));
+
+	//stop
+	if(seconds < 0.0){
+		diffDrive.call(msg_turn_right);
+		seconds = seconds * -1;
+	}else{
+	diffDrive.call(msg_turn_left);
+	}
+
+
+
+        //sleep until at correct angle
+        ros::Duration(seconds).sleep();
+
+        //stop rotating
+        diffDrive.call(msg_stop);
+        //ros::Duration(3).sleep();
+        ready = 1;
+	//ROS_INFO("Rotate Position: %d", position);
+}
+
+double Align::distancePoint(struct point p1, struct point p2){
+	return sqrt((p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y));
+}
+
+point Align::nearestPoint(struct point intersection, struct model line, double dist){
+	point p1 = point();
+	point p2 = point();
+
+	p1.x = (1.0/(sqrt(1.0 + line.m * line.m))) * dist + intersection.x;
+	p1.y = line.m/(sqrt(1.0 + line.m * line.m)) * dist + intersection.y;
+
+	p2.x = -1.0/(sqrt(1.0 + line.m * line.m)) * dist + intersection.x;
+	p2.y = -line.m/(sqrt(1.0 + line.m * line.m)) * dist + intersection.y;
+
+	point origin = point();
+	origin.x = 0.0;
+	origin.y = 0.0;
+	if(distancePoint(p1, origin) >= distancePoint(p2, origin)){
+		return p2;
+	}else{
+		return p1;
+	}
+}
+
+
+
+
+void Align::solve()
+{
+	ROS_INFO("Calculating middle");
+	point intersection = point();
+	int w2 = 0;
+
+	point origin = point();
+	origin.x = 0.0;
+	origin.y = 0.0;
+	
+	for(int i = 1; i < walls.size(); i++){
+		intersection.x = (walls.at(i).c - walls.at(0).c)/(walls.at(0).m - walls.at(i).m);
+		intersection.y = walls.at(0).m * intersection.x + walls.at(0).c;
+		if(distancePoint(intersection, origin) <= 1.5){
+			w2 = i;
+			break;
+		}
+	}
+	ROS_INFO("Intersection found X: %f Y: %f", intersection.x, intersection.y);
+
+	point diag1 = nearestPoint(intersection, walls.at(0), 0.78);
+	point diag2 = nearestPoint(intersection, walls.at(w2), 0.78);
+
+	point result = point();
+	ROS_INFO("Diag1 X: %f Y: %f", diag1.x, diag1.y);
+	ROS_INFO("Diag2 X: %f Y: %f", diag2.x, diag2.y);
+
+	result.x = diag1.x + (diag2.x - diag1.x)/2;
+	result.y = diag1.y + (diag2.y - diag1.y)/2;
+
+	ROS_INFO("RESULT X: %f Y: %f", result.x, result.y);
+	
+	ROS_INFO("ANGLE: %f DIST: %f", atan2(result.y , result.x), sqrt(result.x * result.x + result.y * result.y));
+	
+	double angle = atan2(result.y,result.x);
+	if(angle < M_PI/2 && angle > 0.0){
+		rotateRight(M_PI/2 - angle);
+	} else if(angle < M_PI){
+		rotateLeft(angle - M_PI/2);
+	} else if(angle < 2 * M_PI){
+		rotateRight((2 * M_PI - angle) + M_PI/2);
+	} else if(angle < 0.0){
+		rotateRight(-1.0 * angle + M_PI/2);
+	}
+	move(sqrt(result.x * result.x + result.y * result.y));
+
+	ROS_INFO("FINITO!!!");
+
+}
+
+
+void Align::ransac()
+{
+	ROS_INFO("RANSAC TIME");
+	srand (time(NULL));
+	while(walls.size() < 4 && points.size() > 200){
+		int iterations = 0;
+		model bestfit;
+		int besterr = 0; ///Besterror is the amount of points fitting the model 
+		ROS_INFO("RANSAC Nr %d", walls.size());
+		while(iterations < 10000){
+			point p1 = points.at(rand() % (points.size()-1) + 0);
+			point p2 = points.at(rand() % (points.size()-1) + 0);
+			model maybemodel;
+			int thiserr = 0;
+			maybemodel.m = (p2.y - p1.y)/(p2.x - p1.x);
+			maybemodel.c = -maybemodel.m * p1.x + p1.y;
+			for(int i = 0; i < points.size(); i++){
+				if(distance(points.at(i), maybemodel) < 0.02){
+					thiserr++;
+				}
+			}
+			if(thiserr > 200 && thiserr > besterr){
+				ROS_INFO("New Bestmodel! %d    error: %d", iterations, thiserr);
+				bestfit = maybemodel;
+				besterr = thiserr;
+			}
+			iterations++;
+			//ROS_INFO("Model worked %d    error: %d", iterations, thiserr);
+		}
+		if(besterr >= 200){
+			walls.push_back(bestfit);
+			counter = 0;
+			std::vector<struct point> newPoints;
+			for(int i = 0; i < points.size(); i++){			
+				if(distance(points.at(i), bestfit) >= 0.02){
+					newPoints.push_back(point());
+					newPoints[counter].x = points.at(i).x;
+					newPoints[counter].y =  points.at(i).y;
+					counter++;
+				}	
+			}
+			points = newPoints;
+			ROS_INFO("bestfit: %f *x + %f  error: %d    >>>WALLS: %d", bestfit.m, bestfit.c, besterr, walls.size());
+			ROS_INFO("New points size: %d", points.size());	
+		}else{
+			ROS_INFO("No acceptable bestfit found");
+			break;
+		}
+		
+		//ros::Duration(7).sleep();
+
+	}	
+	position = 5;
+	if(walls.size() > 1){
+		solve();
+	}else{
+		point reference = point();
+		//point reference2 = point();
+		reference.x = 100.0;
+		reference.y = 100.0;
+
+		point origin = point();
+		origin.x = 0.0;
+		origin.y = 0.0;
+		counter = 0;
+
+		for(int i = 0; i < points.size(); i++){			
+				if(distancePoint(points.at(i), origin) < distancePoint(reference, origin)){
+					reference.x = points.at(i).x;
+					reference.y = points.at(i).y;
+					counter++;
+				}	
+		}
+
+		model newLine = model();
+		newLine.m = -1/walls.at(0).m;
+		newLine.c = reference.y - newLine.m * reference.x;
+		walls.push_back(newLine);
+		solve();
+	}
+	
+}
+
+double Align::distance(struct point p, struct model m1){
+	double temp = m1.m * p.x - p.y + m1.c ; 
+	if (temp < 0.0 ) temp = - temp ; 
+	double racine = sqrt (m1.m * m1.m + 1.0*1.0);
+	double distance = temp / racine ; 
+	return distance;
+}
+
+void Align::laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
+{
+	if(position == 4){
+		ransac();
+	}
+		if(ready == 1 && position < 4){
+		ROS_INFO("LaserCallBack Position: %d", position);
+			ready = 0;
+			for(int i = 0; i < 512; i++){
+				double dist = msg->ranges[i];
+				
+				if(!isnan(dist) && dist != 0.0){
+					points.push_back(point());
+					points.at(counter).x = dist * cos(((M_PI / 511.0) * i) + (M_PI/2 * position));
+					points.at(counter).y = dist * sin(((M_PI / 511.0) * i) + (M_PI/2 * position));
+					switch(position){
+						case 0:
+						points[counter].y += 0.13;
+						break;
+						case 1:
+						points[counter].x -= 0.13;
+						break;
+						case 2:
+						points[counter].y -= 0.13;
+						break;
+						case 3:
+						points[counter].x += 0.13;
+						break;
+						default: 
+						break;
+					}
+					//if(i % 4 == 0){ 
+					//ROS_INFO("PUSH i range: %d   dist: %f    x: %f  y: %f", i, dist, points.at(counter).x,points.at(counter).y);}
+					counter++;
+
+					//counter++;
+				}
+			}
+			ROS_INFO("LaserCallBack points SIZE: %d", points.size());
+			position++;
+			rotateLeft(M_PI/2.0);
+			
+
+		}
+		
+	}
+
+	
+
+
+void Align::sensorCallback(const create_fundamentals::SensorPacket::ConstPtr& msg)
+{
+	//ROS_INFO("left encoder: %f, right encoder: %f", msg->encoderLeft, msg->encoderRight);
+}
+
+
+
+
+int main(int argc, char **argv)
+{
+	Align a1;
+	ros::init(argc, argv, "Align");
+	ros::NodeHandle n;
+	
+	//ros::Subscriber sub2 = n.subscribe("sensor_packet", 1, &Align::sensorCallback, &a1);
+	a1.diffDrive = n.serviceClient<create_fundamentals::DiffDrive>("diff_drive");
+	
+	create_fundamentals::DiffDrive srv;
+	
+	
+	
+	ros::Subscriber sub1 = n.subscribe("scan_filtered", 1, &Align::laserCallback, &a1);
+	
+
+
+	
+	
+	ros::spin();
+	return 0;
+}
+
+
+			
+			
