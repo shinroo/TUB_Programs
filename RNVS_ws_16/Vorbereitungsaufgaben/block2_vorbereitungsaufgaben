@@ -1,0 +1,32 @@
+1.) Garantie dass Pakete gleichen Route folgen?
+	Datagramm - Nein
+	Byte-Strom - Ja
+    Verbingdungsaufbau benötigt?
+	Datagramm - Nein
+	Byte-Strom - Ja
+    Kommen Pakete korrekt an?
+	Datagramm - Nicht immer
+	Byte-Strom - Nicht immer (gibt aber checks)
+    Kommen Pakete in richtiger Reihenfolge an?
+	Datagramm - Nicht immer
+	Byte-Strom - Ja
+
+2.) 
+	Socket - erstellt Socket
+	Bind - gibt Socket eine lokale IP-Adresse
+	Listen - wartet auf einer Verbindung
+	Accept - nimmt eine Verbindung an
+	Connect - erstellt eine Verbindung
+	Send - schickt eine Nachricht
+	Recv - Empfängt eine Nachricht
+	Close - Bricht eine Verbindung ab
+
+	Datagram:
+	Sender: socket() -> sendto() -> recvfrom() -> close()
+	Receiver: socket() -> bind() -> recvfrom() -> sendto() -> close()
+	
+	Stream:
+	Initiator: socket() -> connect() -> write() -> read() -> close()
+	Partner: socket() -> bind() -> listen() -> accept() -> read() -> write() -> close()
+
+3.) Portnummern werden benutzt um Nachrichten an den richtigen Prozessen zu schicken, ermöglicht die Verbindung von mehreren Prozessen an einer Adresse

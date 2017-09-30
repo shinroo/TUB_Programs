@@ -1,0 +1,108 @@
+<<Notizen aus Vertiefungsunterlagen>>
+
+	<Client-Server Konzept>
+		-Servers bieten Dienste an Clients
+		-Clients schicken Service-Requests an Servers und bekommen Service-Replies zurück
+		-Client-Server Konzept bietet möglichkeit Prozesse auf verschiedenen Computern zu verteiln
+		-Zentrale Management von Daten, Zugriff auf spezialisierte Hardware usw..
+
+	<Protokolle des Internets>
+		Internet Protocol
+			-Für die Weitergabe von Datagrammen von einem Sender zu einem Empfänger gedacht
+			-Verbund aus unterschiedlichen Netzen (Struktur des Internets)
+			-Verschiedene Netze haben verschiedene Eigenschaften (Max Größe), kann nützlich sein Datagramme in mehrere kleinere aufzuteilen
+			-IP beherrscht also Adressierung, Wegfindung, Defragmentierung und Reassemblierung von Datagrammen
+				Adressierung
+					-32 Bit lange Adressen
+					-Adressen von Sender und Empfänger in jedem Datagramm
+					-Netzwerknummer (höherwertigen Bits) & Host Nummer (übrigen Bits)
+					-Klassen A-E je nach wie viele Bits für Netzwerknummer verwendet werden
+				Header eines IP Pakets
+					-fester Teil von 20 Byte und einen optionalen Teil mit flexibler Größe
+					-Informationen für IP erforderlich: Versionsfeld, Time To Live (TTL - bei 0 wird Paket gelöscht)
+					Prüfsumme wird bei jedem Router berechnet
+		User Datagram Protocol
+			-Protokoll zur Übertrangung von Datagrammen über ein paketorientiertes Netzwerk auf der Transportschicht
+			-Möglichkeit (wie bei IP) für verbindungslose Übertragung (Nicht zuverlässig-können verloren gehen oder in falscher Reihenfolge ankommen) 
+			-Für Erkennung von Übertragungsfehlern kann eine optionale Prüfsumme über IP Header, UDP Header und Daten berechnet werden
+			-Daten müssen den zugehörigen Prozessen zugeordnet werden, verwende dafür Port-Nummern
+			-Prozessen haben eigene Port-Nummern
+		Transmission Control Protocol
+			-Protokoll auf Transportschicht
+			-Verbindungsorientiert: Zuverlässig Datensttrom von einem Rechner auf einem anderen zu transportieren
+			-Basiert auf IP, welches unzuverlässig ist; verschieden Mechanismen werden benutzt um zuverlässigkeit zu garantieren
+			-Für Erkennung von Datenverlusten werden Bestätigunen
+			-Timers werden eingesetzt um Übertragungen zu kontrollieren
+			-Sequenznummern für Erkennung von falscher Reihenfolge/Duplikate
+			-Prüfsummen über IP Header, TCP Header und Daten
+			-Integrierten Fluss- und Staukontrolle
+			-Dreiwege Handshake für den Aufbau: Eine Seite wartet auf Verbindung, andere möchte Verbindung aufbauen und schickt Anfrage
+			Andere Seite kann entweder annehmen oder ablehnen, wenn angenommen müss bestätigt werden. Die Bestätigung müss dann ebenfalls
+			bestätigt werden
+			-TCP benutzt auch Port-Nummern um Prozesse zu unterscheiden (80 für Webserver)
+
+	<Berkeley Socket API>
+		-Internet Sockets mit UDP, Stream Sockets mit TCP und Raw Sockets
+		
+		socket();
+			Protokollfamilien (domain): PF_INET (IPv4), PF_INET6 (IPv6)
+			type: SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET or SOCK_RAW
+			protocol: normalerweise mit IPPROTO_IP (als 0 definiert) für default Protokoll 
+
+		close();
+			Terminiert einen Deskriptor, 0 bei Erfolg sonst -1
+
+		<TCP client/Server Befehle>
+
+		bind();
+			Weisst dem Socket eine lokale Adresse zu
+		listen();
+			Socket horcht auf Verbindungen
+			funktioniert nur mit Sockets vom Typ SOCK_STREAM oder SOCK_SEQPACKET
+		accept();
+			Nimmt eine Verbindung an
+			SOCK_STREAM und SOCK_SEQPACKET (verbindungsorientiert)
+		connect();
+			initialisiert eine Verbindung auf einem Socket
+		send();
+			Schickt eine Nachricht an einen anderen Socket
+		recv();
+			Empfängt eine Nachricht von einem anderen Socket
+		write();
+			Schreibt Anzahl von Bytes an den Deskriptor
+		read();
+			Ließt einen Deskriptor
+		
+		<UDP Client/Server Befehle>
+		
+		sendto();
+			Sendet eine Nachricht zu einem Socket
+		recvfrom();
+			Dient zum Empfangen einer Nachricht von einem Socket
+
+		<File Descriptor Polling>
+
+		select/pselect:
+		Drei listen:
+		-readfds: alle Deskriptoren an denen eine Eigabe erwartet wird
+		-writedfs: alle Deskriptoren, in die geschrieben werden soll
+		-exceptfds: Behandlung von Ausnahmen
+		Befehle:
+		FD_SET: füge ein Deskriptor zu einer Liste zu
+		FD_CLR: lösche den Deskriptor
+		FD_ZERO: lösche alle Deskriptoren
+		FD_ISSET: überprüfe ob Deskriptor zu einer Liste gehört
+
+	<Repräsentation der Daten>
+		-Reihenfolgen der Bytes, Big Endian (Byte den höchsten Wert repräsentiert an der ersten Stelle),
+		Little Endian
+		-Host byte order vs Network byte order
+			uint32_t htonl() 32 Bit Wert von Host -> Network byte order
+			uint16_t htons() ""
+			uint32_t ntohl() 32 Bit Wert von Network -> Host byte order
+			uint16_t ntohl() ""
+		-4 Byte IP Adressen werden wie folgt dargestellt
+			Dezimal_Byte1.Dezimal_Byte2.Dezimal_Byte3.Dezimal_Byte4
+			in_addr_t inet_addr(const char *cp) Dezimalschreibweise -> Byte Schreibweise
+			char* inet_ntoa(struct in_addr in) Byte Schreibweise -> Dezimalschreibweise
+
