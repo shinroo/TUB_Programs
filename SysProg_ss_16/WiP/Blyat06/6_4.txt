@@ -1,0 +1,9 @@
+Die in Aufgabe 6.4 gegebene FAT Tabelle enthält folgende Dateien:
+
+A:	4 -> 6 -> 2 -> NULL
+B:	3 -> 0 -> 5 -> 8 -> 7 -> NULL
+C:	1 -> 9 -> 5 -> 8 -> 7 -> NULL
+
+Das Problem ist das die Dateien B und C zum Teil überlappen. 
+Wenn die Dateien nicht geändert oder verschoben werden, ist das in Ordnung, aber sobald eine der zwei Dateien geändert oder verschoben wird kann es dazu führen, 
+dass die andere Datei unlesbar oder korrupt wird. 

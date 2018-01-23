@@ -1,0 +1,27 @@
+Systemprogrammierung SS16
+Praxis Aufgabe 2.6 Bitcoin
+
+In diesem Archiv finden Sie die Vorlage für ihr Programm. Bitte schauen
+Sie sich die Dateien blockheader.h, util.h und main.c genau an, sie enthalten
+die Erklärung der Funktion zur Berechnung der Bildausschnitte sowie zum
+Schreiben in die Datei.  Die Datei main.c soll von
+ihnen entsprechend der Aufgabenstellung parallelisiert ergänzt werden.
+
+Ändern Sie in main.c bitte nur die eigentliche Berechnung. Nehmen Sie
+auch keine Änderungen an den anderen Dateien vor, selbst wenn ihr
+Programm dadurch einfacher oder eleganter wird.
+
+
+
+Im Uni-Netz des IRB kann das Programm direkt
+nach dem Entpacken mit
+
+$ make
+
+übersetzt werden. Zum starten füren Sie:
+
+$ ./bitcoin 5
+
+aus. Wobei sich die Zahl auf die Anzahl der Prozesse bezieht die das
+Programm verwenden soll. Ihre Lösung soll sowohl mit einer geraden als auch mit
+ungeraden Anzahl funktionieren.

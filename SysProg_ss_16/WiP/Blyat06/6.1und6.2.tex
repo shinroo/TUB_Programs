@@ -1,0 +1,261 @@
+
+\documentclass{article}
+\makeatletter
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{caption} % for better vertical separation
+\usepackage{hyperref}
+\usepackage{hypcap} % fix the links
+\usepackage[margin=0.5in]{geometry}
+\usepackage[ansinew]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsfonts}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\begin{document}
+
+\LARGE{Systemprogrammierung, SS16}	
+
+\large{\"Ubungblatt 6, Theorie} \\
+
+
+\textbf{Gruppe}:
+\begin{itemize}
+	\item Robert Focke
+	\item Hristo Filaretov
+	\item Mikolaj Walukiewicz
+\end{itemize}
+
+
+\textbf{Quellen}:
+\begin{itemize}
+	\item Kao, Odej. "Systemprogrammierung". 2016. Vorlesungsfolien "6. Speicherverwaltung".
+\end{itemize}
+
+
+\section{Aufgabe}
+Relevante Tabelle: \ref{Optimal}, \ref{FIFO}, \ref{LFU}, \ref{LRU}
+
+\begin{table}[h]
+	\caption{Optimale L\"osung - nur 8 Seitenfehler}
+	\centering
+	\label{Optimal}
+	\begin{tabular}{|l|lllllllllllllll|}
+		\hline
+		Seite    & 1                & 2                & 3                & 4                & 3          & 5                & 1          & 6                & 2          & 6          & 5          & 4                & 3                & 2          & 1          \\ \hline
+		Kachel 1 & {\ul \textbf{1}} & 1                & 1                & 1                & 1          & 1                & \textbf{1} & {\ul \textbf{6}} & 6          & \textbf{6} & 6          & 6                & {\ul \textbf{3}}                & 3          & 3 \\ \cline{1-1}
+		Kachel 2 & -                & {\ul \textbf{2}} & 2                & 2                & 2          & 2                & 2          & 2                & \textbf{2} & 2          & 2          & 2                & 2                & \textbf{2} & 2          \\ \cline{1-1}
+		Kachel 3 & -                & -                & {\ul \textbf{3}} & 3                & \textbf{3} & {\ul \textbf{5}} & 5          & 5                & 5          & 5          & \textbf{5} & 5	 & 5 & 5          & {\ul \textbf{1} }          \\ \cline{1-1}
+		Kachel 4 & -                & -                & -                & {\ul \textbf{4}} & 4          & 4                & 4          & 4 & 4          & 4 & 4          & \textbf{4}                & 4 & 4          & 4          \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[h]
+	\caption{FIFO mit dem  n\"achsten auszulagernden Kachel - insgesamt 11 Seitenzugriffsfehler.}
+	\centering
+	\label{FIFO}
+	\begin{tabular}{|l|lllllllllllllll|}
+		\hline
+		Seite    & 1                & 2                & 3                & 4                & 3          & 5                & 1                & 6                & 2                & 6          & 5          & 4                & 3                & 2          & 1                \\ \hline
+		Kachel 1 & {\ul \textbf{1}} & 1                & 1                & 1                & 1          & {\ul \textbf{5}} & 5                & 5                & 5                & 5          & \textbf{5} & {\ul \textbf{4}} & 4                & 4          & 4                \\ \cline{1-1}
+		Kachel 2 & -                & {\ul \textbf{2}} & 2                & 2                & 2          & 2                & {\ul \textbf{1}} & 1                & 1                & 1          & 1          & 1                & {\ul \textbf{3}} & 3          & 3                \\ \cline{1-1}
+		Kachel 3 & -                & -                & {\ul \textbf{3}} & 3                & \textbf{3} & 3                & 3                & {\ul \textbf{6}} & 6                & \textbf{6} & 6          & 6                & 6                & 6          & {\ul \textbf{1}} \\ \cline{1-1}
+		Kachel 4 & -                & -                & -                & {\ul \textbf{4}} & 4          & 4                & 4                & 4                & {\ul \textbf{2}} & 2          & 2          & 2                & 2                & \textbf{2} & 2                \\ \hline
+		N. a. K. & 1                & 1                & 1                & 1                & 1          & 2                & 3                & 4                & 5                & 5          & 5          & 1                & 6                & 6          & 2                \\ \hline
+	\end{tabular}
+\end{table}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage[normalem]{ulem}
+% \useunder{\uline}{\ul}{}
+\begin{table}[h]
+	\caption{LFU - insgesamt 12 Seitenzugriffsfehler}
+	\label{LFU}
+	\centering
+	\begin{tabular}{|l|lllllllllllllll|}
+		\hline
+		\multicolumn{1}{|l|}{Seite}    & 1                & 2                & 3                & 4                & 3          & 5                & 1                & 6                & 2                & 6          & 5                & 4                & 3          & 2                & 1                \\ \hline
+		\multicolumn{1}{|l|}{Kachel 1} & {\ul \textbf{1}} & 1                & 1                & 1                & 1          & {\ul \textbf{5}} & 5                & 5                & {\ul \textbf{2}} & 2          & 2                & {\ul \textbf{4}} & 4          & 4                & {\ul \textbf{1}} \\ \cline{1-1}
+		\multicolumn{1}{|l|}{Kachel 2} & -                & {\ul \textbf{2}} & 2                & 2                & 2          & 2                & {\ul \textbf{1}} & 1                & 1                & 1          & {\ul \textbf{5}} & 5                & 5          & {\ul \textbf{2}} & 2                \\ \cline{1-1}
+		\multicolumn{1}{|l|}{Kachel 3} & -                & -                & {\ul \textbf{3}} & 3                & \textbf{3} & 3                & 3                & 3                & 3                & 3          & 3                & 3                & \textbf{3} & 3                & 3                \\ \cline{1-1}
+		\multicolumn{1}{|l|}{Kachel 4} & -                & -                & -                & {\ul \textbf{4}} & 4          & 4                & 4                & {\ul \textbf{6}} & 6                & \textbf{6} & 6                & 6                & 6          & 6                & 6                \\ \hline
+		LFU Queue                      & $1_1$              & $2_1$             & $3_1$             & $4_1$              & $3_2$       & $3_2$              & $3_2$              & $3_2$              & $3_2$              & $6_2$        & $6_2 $             & $6_2$              & $3_3$        & $3_3$              & $3_3$      \\
+		&                  & $1_1$               & $2_1$             & $3_1$              & $4_1$        & $5_1$              & $1_1$               & $6_1$              & $2_1$             & $3_2$        & $3_2$              & $3_2$              & $6_2$         & $6_2$               & $6_2$               \\
+		&                  &                  & $1_1$               & $2_1$              & $2_1$        & $4_1$              & $5_1$              & $1_1$               & $6_1$              & $2_1$        & $5_1$              & $4_1$              & $4_1$        & $2_1$             & $1_1$               \\
+		&                  &                  &                  & $1_1$               & $1_1$         & $2_1$              & $4_1$              & $5_1$              & $1_1$              & $1_1$         & $2_1$             & $5_1$             & $5_1$       & $4_1$              & $2_1$             \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[h]
+	\caption{LRU - insgesamt 12 Seitenzugriffsfehler.}
+	\centering
+	\label{LRU}
+	\begin{tabular}{|l|lllllllllllllll|}
+		\hline
+		\multicolumn{1}{|l|}{Seite}    & 1                & 2                & 3                & 4                & 3          & 5                & 1                & 6                & 2                & 6          & 5          & 4                & 3                & 2                & 1                \\ \hline
+		\multicolumn{1}{|l|}{Kachel 1} & {\ul \textbf{1}} & 1                & 1                & 1                & 1          & {\ul \textbf{5}} & 5                & 5                & 5                & 5          & \textbf{5} & 5                & 5                & 5                & {\ul \textbf{1}} \\ \cline{1-1}
+		\multicolumn{1}{|l|}{Kachel 2} & -                & {\ul \textbf{2}} & 2                & 2                & 2          & 2                & {\ul \textbf{1}} & 1                & 1                & 1          & 1          & {\ul \textbf{4}} & 4                & 4                & 4                \\ \cline{1-1}
+		\multicolumn{1}{|l|}{Kachel 3} & -                & -                & {\ul \textbf{3}} & 3                & \textbf{3} & 3                & 3                & 3                & {\ul \textbf{2}} & 2          & 2          & 2                & {\ul \textbf{3}} & 3                & 3                \\ \cline{1-1}
+		\multicolumn{1}{|l|}{Kachel 4} & -                & -                & -                & {\ul \textbf{4}} & 4          & 4                & 4                & {\ul \textbf{6}} & 6                & \textbf{6} & 6          & 6                & 6                & {\ul \textbf{2}} & 2                \\ \hline
+		LRU Queue                      & 1                & 2                & 3                & 4                & 3          & 5                & 1                & 6                & 2                & 6          & 5          & 4                & 3                & 2                & 1                \\
+		&                  & 1                & 2                & 3                & 4          & 3                & 5                & 1                & 6                & 2          & 6          & 5                & 4                & 3                & 2                \\
+		&                  &                  & 1                & 2                & 2          & 4                & 3                & 5                & 1                & 1          & 2          & 6                & 5                & 4                & 3                \\
+		&                  &                  &                  & 1                & 1          & 2                & 4                & 3                & 5                & 5          & 1          & 2                & 6                & 5                & 4               \\ \hline
+	\end{tabular}
+\end{table}
+\FloatBarrier
+\section{Aufgabe}
+
+Relevante Tabelle: \ref{ffit}, \ref{nfit}, \ref{bfit}, \ref{wfit}
+
+\begin{table}[h]
+	\caption{First fit}
+	\centering
+	\label{ffit}
+	\begin{tabular}{|l|
+			>{\columncolor[HTML]{343434}}l |l|l|
+			>{\columncolor[HTML]{343434}}l |l|l|
+			>{\columncolor[HTML]{343434}}l |l|l|
+			>{\columncolor[HTML]{343434}}l |c|l|
+			>{\columncolor[HTML]{343434}}l |}
+		\hline
+		\multicolumn{1}{|c|}{command} &  & \multicolumn{2}{c|}{5} &  & \multicolumn{2}{c|}{8} &  & \multicolumn{2}{c|}{14} &  & \multicolumn{2}{c|}{6} &  \\ \hline
+		A1=6 &  & \multicolumn{2}{c|}{5} &  & A1 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{000000} 2} &  & \multicolumn{2}{c|}{14} &  & \multicolumn{2}{c|}{6} &  \\ \hline
+		A2=3 &  & A2 & 2 &  & A1 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 2} &  & \multicolumn{2}{c|}{14} &  & \multicolumn{2}{c|}{6} &  \\ \hline
+		A3=10 &  & A2 & 2 &  & A1 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 2} &  & A3 & 4 &  & \multicolumn{2}{c|}{6} &  \\ \hline
+		free(A1) &  & A2 & 2 &  & \multicolumn{2}{c|}{8} &  & A3 & 4 &  & \multicolumn{2}{c|}{6} &  \\ \hline
+		A4=7 & {\color[HTML]{000000} } & A2 & 2 & {\color[HTML]{000000} } & A4 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &  & A3 & 4 &  & \multicolumn{2}{c|}{6} &  \\ \hline
+		A5=5 &  & A2 & 2 &  & A4 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &  & A3 & 4 &  & \multicolumn{1}{l|}{A5} & 1 &  \\ \hline
+		free(A3) &  & A2 & 2 &  & A4 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &  & \multicolumn{2}{c|}{14} &  & \multicolumn{1}{l|}{A5} & 1 &  \\ \hline
+		A6=12 & \cellcolor[HTML]{333333} & A2 & 2 & \cellcolor[HTML]{333333} & A4 & 1 & \cellcolor[HTML]{333333} & A6 & 2 & \cellcolor[HTML]{333333} & \multicolumn{1}{l|}{A5} & 1 & \cellcolor[HTML]{333333} \\ \hline
+	\end{tabular}
+\end{table}
+% Please add the following required packages to your document preamble:
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[h]
+	\centering
+	\caption{Next fit}
+	\label{nfit}
+	\begin{tabular}{|l|
+			>{\columncolor[HTML]{343434}}l |c|l|
+			>{\columncolor[HTML]{343434}}l |l|l|
+			>{\columncolor[HTML]{343434}}l |l|l|l|
+			>{\columncolor[HTML]{343434}}l |c|l|
+			>{\columncolor[HTML]{343434}}l |}
+		\hline
+		\multicolumn{1}{|c|}{command}                                         &                          & \multicolumn{2}{c|}{5} &                          & \multicolumn{2}{c|}{8}                                &                          & \multicolumn{3}{c|}{14}                           &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A1=6                                                            &                          & \multicolumn{2}{c|}{5} &                          & A1 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{000000} 2} &                          & \multicolumn{3}{c|}{14}                           &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A2=3                                                            &                          & \multicolumn{2}{c|}{5} &                          & A1 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 2} &                          & \multicolumn{1}{c|}{A2} & \multicolumn{2}{c|}{11} &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A3=10                                                           &                          & \multicolumn{2}{c|}{5} &                          & A1 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 2} &                          & A2                      & A3          & 1         &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		free(A1)                                                        &                          & \multicolumn{2}{c|}{5} &                          & \multicolumn{2}{c|}{8}                                &                          & A2                      & A3          & 1         &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A4=7                                                            & {\color[HTML]{000000} }  & \multicolumn{2}{c|}{5} & {\color[HTML]{000000} }  & A4 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &                          & A2                      & A3          & 1         &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A5=5                                                            &                          & \multicolumn{2}{c|}{5} &                          & A4 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &                          & A2                      & A3          & 1         &                          & \multicolumn{1}{l|}{A5} & 1 &                          \\ \hline
+		free(A3)                                                        &                          & \multicolumn{2}{c|}{5} &                          & A4 & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &                          & \multicolumn{1}{c|}{A2} & \multicolumn{2}{c|}{11} &                          & \multicolumn{1}{l|}{A5} & 1 &                          \\ \hline
+		\begin{tabular}[c]{@{}l@{}}A6=12\\ (Geht nicht!!!)\end{tabular} & \cellcolor[HTML]{333333} & \multicolumn{2}{c|}{5} & \cellcolor[HTML]{333333} & A4 & 1                                                & \cellcolor[HTML]{333333} & A2                      & \multicolumn{2}{c|}{11} & \cellcolor[HTML]{333333} & \multicolumn{1}{l|}{A5} & 1 & \cellcolor[HTML]{333333} \\ \hline
+	\end{tabular}
+\end{table}
+% Please add the following required packages to your document preamble:
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[h]
+	\centering
+	\caption{Best fit}
+	\label{bfit}
+	\begin{tabular}{|l|
+			>{\columncolor[HTML]{343434}}l |c|l|l|
+			>{\columncolor[HTML]{343434}}l |c|l|
+			>{\columncolor[HTML]{343434}}l |l|c|
+			>{\columncolor[HTML]{343434}}l |c|l|
+			>{\columncolor[HTML]{343434}}l |}
+		\hline
+		\multicolumn{1}{|c|}{command} &                          & \multicolumn{3}{c|}{5}           &                          & \multicolumn{2}{c|}{8}                                                     &                          & \multicolumn{2}{c|}{14} &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A1=6                    &                          & \multicolumn{3}{c|}{5}           &                          & \multicolumn{2}{c|}{8}                                                     &                          & \multicolumn{2}{c|}{14} &                          & \multicolumn{2}{c|}{A1}     &                          \\ \hline
+		A2=3                    &                          & \multicolumn{2}{c|}{A2} & 2      &                          & \multicolumn{2}{c|}{8}                                                     &                          & \multicolumn{2}{c|}{14} &                          & \multicolumn{2}{c|}{A1}     &                          \\ \hline
+		A3=10                   &                          & \multicolumn{2}{c|}{A2} & 2      &                          & \multicolumn{2}{c|}{8}                                                     &                          & A3          & 4         &                          & \multicolumn{2}{c|}{A1}     &                          \\ \hline
+		free(A1)                &                          & \multicolumn{2}{c|}{A2} & 2      &                          & \multicolumn{2}{c|}{8}                                                     &                          & A3          & 4         &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A4=7                    & {\color[HTML]{000000} }  & \multicolumn{2}{c|}{A2} & 2      & {\color[HTML]{000000} }  & \multicolumn{1}{l|}{A4} & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &                          & A3          & 4         &                          & \multicolumn{2}{c|}{6}      &                          \\ \hline
+		A5=5                    &                          & \multicolumn{2}{c|}{A2} & 2      &                          & \multicolumn{1}{l|}{A4} & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &                          & A3          & 4         &                          & \multicolumn{1}{l|}{A5} & 1 &                          \\ \hline
+		free(A3)                &                          & \multicolumn{2}{c|}{A2} & 2      &                          & \multicolumn{1}{l|}{A4} & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 1} &                          & \multicolumn{2}{c|}{14} &                          & \multicolumn{1}{l|}{A5} & 1 &                          \\ \hline
+		A6=12                   & \cellcolor[HTML]{333333} & \multicolumn{2}{c|}{A2} & 2      & \cellcolor[HTML]{333333} & \multicolumn{1}{l|}{A4} & 1                                                & \cellcolor[HTML]{333333} & A6          & 2         & \cellcolor[HTML]{333333} & \multicolumn{1}{l|}{A5} & 1 & \cellcolor[HTML]{333333} \\ \hline
+	\end{tabular}
+\end{table}
+% Please add the following required packages to your document preamble:
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[]
+	\centering
+	\caption{Worst fit}
+	\label{wfit}
+	\begin{tabular}{|l|
+			>{\columncolor[HTML]{343434}}l |c|l|l|
+			>{\columncolor[HTML]{343434}}l |c|l|
+			>{\columncolor[HTML]{343434}}l |c|c|l|
+			>{\columncolor[HTML]{343434}}l |c|l|
+			>{\columncolor[HTML]{343434}}l |}
+		\hline
+		\multicolumn{1}{|c|}{command} &                          & \multicolumn{3}{c|}{5} &                          & \multicolumn{2}{c|}{8}                                                     &                          & \multicolumn{3}{c|}{14}                          &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		A1=6                          &                          & \multicolumn{3}{c|}{5} &                          & \multicolumn{2}{c|}{8}                                                     &                          & A1                      & \multicolumn{2}{c|}{8} &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		A2=3                          &                          & \multicolumn{3}{c|}{5} &                          & A2                      & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 5} &                          & A1                      & \multicolumn{2}{c|}{8} &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		A3=10(Geht nicht!!!)          &                          & \multicolumn{3}{c|}{5} &                          & A2                      & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 5} &                          & \multicolumn{1}{l|}{A1} & \multicolumn{2}{c|}{8} &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		free(A1)                      &                          & \multicolumn{3}{c|}{5} &                          & A2                      & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 5} &                          & \multicolumn{3}{c|}{14}                          &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		A4=7                          & {\color[HTML]{000000} }  & \multicolumn{3}{c|}{5} & {\color[HTML]{000000} }  & \multicolumn{1}{l|}{A2} & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 5} &                          & \multicolumn{2}{l|}{A4}              & 7         &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		A5=5                          &                          & \multicolumn{3}{c|}{5} &                          & \multicolumn{1}{l|}{A2} & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 5} &                          & \multicolumn{1}{l|}{A4} & A5         & 2         &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		free(A3)(entf\"allt)            &                          & \multicolumn{3}{c|}{5} &                          & \multicolumn{1}{l|}{A2} & \cellcolor[HTML]{FFFFFF}{\color[HTML]{333333} 5} &                          & A4                      & A5         & 2         &                          & \multicolumn{2}{c|}{6} &                          \\ \hline
+		A6=12(Geht nicht!!!)            & \cellcolor[HTML]{333333} & \multicolumn{3}{c|}{5} & \cellcolor[HTML]{333333} & \multicolumn{1}{l|}{A2} & 5                                                & \cellcolor[HTML]{333333} & \multicolumn{1}{l|}{A4} & A5         & 2         & \cellcolor[HTML]{333333} & \multicolumn{2}{c|}{6} & \cellcolor[HTML]{333333} \\ \hline
+	\end{tabular}
+\end{table}
+
+\section{Aufgabe}
+
+Relevante Tabelle: \ref{FAT3}
+
+\begin{table}[]
+	\centering
+	\caption{FAT Tabelle}
+	\label{FAT3}
+	\begin{tabular}{|c|c|}
+		\hline
+		Block & N\"achster Block \\ \hline
+		0 & 5 \\ \hline
+		1 & 2 \\ \hline
+		2 & NULL \\ \hline
+		3 & NULL\\ \hline
+	Start C: 4 & 6 \\ \hline
+		5 & 19 \\ \hline
+		6 & 7 \\ \hline
+		7 & 20 \\ \hline
+		8 & NULL \\ \hline
+	Start A: 9 & 17 \\ \hline
+		10 & 0 \\ \hline
+		11 & NULL \\ \hline
+		12 & NULL \\ \hline
+	Start B: 13 & 10 \\ \hline
+		14 & NULL \\ \hline
+		15 & 12 \\ \hline
+	Start D: 16 & 15 \\ \hline
+		17 & 1 \\ \hline
+		18 & NULL \\ \hline
+		19 & 8 \\ \hline
+		20 & NULL \\ \hline
+	\end{tabular}
+\end{table}
+
+\section{Aufgabe}
+
+Die in Aufgabe 6.4 gegebene FAT Tabelle enthält folgende Dateien:
+
+$ A: 4 \rightarrow 6 \rightarrow 2 \rightarrow NULL $
+
+$ B: 3 \rightarrow 0 \rightarrow 5 \rightarrow 8 \rightarrow 7 \rightarrow NULL $
+
+$ C: 1 \rightarrow 9 \rightarrow 5 \rightarrow 8 \rightarrow 7 \rightarrow NULL $
+
+Das Problem ist das die Dateien B und C zum Teil \"Uberlappen.
+Wenn die Dateien nicht geändert oder verschoben werden, ist das in Ordnung,
+aber sobald eine der zwei Dateien geändert oder verschoben wird kann es dazu f\"uhren,
+dass die andere Datei unlesbar oder korrupt wird.
+
+\end{document}
