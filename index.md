@@ -36,6 +36,11 @@
 
 [Coursework](https://github.com/shinroo/TUB_Programs/tree/master/Robotics_ss_17)
 
+## Softwaretechnik und Programmierpardigmen
+## Software Engineering and Programming Paradigms
+
+[Coursework](https://github.com/shinroo/TUB_Programs/tree/master/SWTPP_ws_16)
+
 ## Systemprogrammierung
 ## Systems Programming
 
