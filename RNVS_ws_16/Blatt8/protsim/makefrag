@@ -1,0 +1,2 @@
+# subdirs in the right order (and only the ones we want)
+SUBDIRS=messages support common routing userapps networks nodes emulation techgi4

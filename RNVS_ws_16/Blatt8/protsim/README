@@ -1,0 +1,7 @@
+This is supplied to make the TechGI4 repository self-contained. The primary
+source code is in the protsim SVN repository. This source can be generated
+with the make_assignment.pl script in the protsim repository by using the
+assignments/techgi4_errorcontrol/techgi4_errorcontrol.mod module, e.g. as
+follows:
+
+make_assignment.pl path_to/protsim/assignments/techgi4_errorcontrol/techgi4_errorcontrol.mod protsim

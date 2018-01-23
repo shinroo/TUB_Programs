@@ -1,0 +1,7 @@
+all: $(TARGET)
+DistanceVectorMessage_m.cc: NetworkPacket_m.cc
+LinkStateAdvertisement_m.cc: NetworkPacket_m.cc
+LocalLinkChangeNotif_m.cc: NetworkPacket_m.cc
+LocalPacketNotif_m.cc: NetworkPacket_m.cc
+PingMessage_m.cc: NetworkPacket_m.cc
+ARQMessage_m.cc: NetworkPacket_m.cc

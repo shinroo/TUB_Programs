@@ -1,0 +1,201 @@
+/***************************************************************************
+ *
+ * This file is part of the ProtSim framework developed by TKN for a
+ * practical course on basics of simulation and Internet protocol functions
+ *
+ * Copyright:   (C)2004-2007 Telecommunication Networks Group (TKN) at
+ *              Technische Universitaet Berlin, Germany.
+ *
+ * Authors:     Lars Westerhoff, Guenter Schaefer
+ *
+ **************************************************************************/
+
+#include <cassert>
+#include <omnetpp.h>
+#include "ExternalApplication.h"
+#include "GoBackNMessageStruct.h"
+#include "../messages/NetworkPacket_m.h"
+#include "../messages/ARQMessage_m.h"
+
+class ErrorControlProxy: public ExternalApplication {
+public:
+    ErrorControlProxy() : ExternalApplication(NULL, NULL, 0) { }
+
+protected:
+    virtual void initialize();
+    virtual void finish();
+    virtual void handleMessage(cMessage * msg);
+
+private:
+    cOutVector sentDataSeqNumVector;
+    cOutVector sentAckSeqNumVector;
+    cOutVector receivedAckSeqNumVector;
+    cOutVector receivedDataSeqNumVector;
+    cOutVector corruptedDataSeqNumVector;
+    cOutVector corruptedAckSeqNumVector;
+}; // ErrorControlProxy
+
+Define_Module(ErrorControlProxy);
+
+void ErrorControlProxy::initialize() {
+    networkStack = dynamic_cast<NetworkStack*>(gate("out")->destinationGate()->ownerModule());
+    assert(networkStack);
+    // TODO: Vectors
+    scheduleAt(simTime()+1.0, new cMessage("Timer",eTIMER0));
+
+    sentDataSeqNumVector.setName("sentDataSeqNumVector");
+    sentAckSeqNumVector.setName("sentAckSeqNumVector");
+    receivedAckSeqNumVector.setName("receivedAckSeqNumVector");
+    receivedDataSeqNumVector.setName("receivedDataSeqNumVector");
+    corruptedDataSeqNumVector.setName("corruptedDataSeqNumVector");
+    corruptedAckSeqNumVector.setName("corruptedAckSeqNumVector");
+}
+
+void ErrorControlProxy::handleMessage(cMessage * msg) {
+    if (msg->kind() == eTIMER0) {
+        scheduleAt(simTime()+1.0, msg);
+    }
+    else if (msg->kind() == eEXTERNAL_MSG) {
+        ProtSimSocketRTScheduler::DataChunk* chunk = check_and_cast<ProtSimSocketRTScheduler::DataChunk*>(msg->controlInfo());
+        GoBackNMessageStruct* extData = reinterpret_cast<GoBackNMessageStruct*>(chunk->data());
+        if (extData->seqNo != -1) {
+            // data packet
+            char n[60];
+
+            ARQData* data = new ARQData("Data",eNETWORK_PACKET);
+            data->setBaseName("Data");
+            data->setLength(msg->length());
+            data->setSrcAppl(par("applAddr"));
+            data->setSrcNode(networkStack->getNodeAddr());
+            //fprintf(stderr,"Setting source: %ld.%ld\n",networkStack->getNodeAddr(),par("applAddr").longValue());
+            data->setDestAppl(extData->destAppl);
+            data->setDestNode(extData->destNode);
+            data->setId(eDATA);
+            data->setSeqNo(extData->seqNo);
+            snprintf(n,sizeof(n),"Data %ld %ld.%ld->%ld.%ld",
+                     data->getSeqNo(),
+                     ancestorPar("nodeAddr").longValue(),
+                     par("applAddr").longValue(),
+                     data->getDestNode(),
+                     data->getDestAppl());
+            data->setName(n);
+            msg->removeControlInfo();
+            data->setControlInfo(chunk);
+            sentDataSeqNumVector.record(data->getSeqNo());
+            send(data, "out");
+        }
+        else if (extData->seqNoExpected != -1) {
+            // acknowledgement
+            char n[60];
+
+            ARQAck  * ack = new ARQAck("Ack",eNETWORK_PACKET);
+            ack->setBaseName("Ack");
+            ack->setLength(msg->length());
+            ack->setSrcAppl(par("applAddr"));
+            ack->setSrcNode(networkStack->getNodeAddr());
+            //fprintf(stderr,"Setting source: %ld.%ld\n",networkStack->getNodeAddr(),par("applAddr").longValue());
+            ack->setDestAppl(extData->destAppl);
+            ack->setDestNode(extData->destNode);
+            ack->setId(eACK);
+            ack->setSeqNoExpected(extData->seqNoExpected);
+            snprintf(n,sizeof(n),"Ack %ld %ld.%ld->%ld.%ld",
+                     ack->getSeqNoExpected(),
+                     ancestorPar("nodeAddr").longValue(),
+                     par("applAddr").longValue(),
+                     ack->getDestNode(),
+                     ack->getDestAppl());
+            ack->setName(n);
+            sentAckSeqNumVector.record(ack->getSeqNoExpected());
+            send(ack,"out");
+        }
+        else {
+            assert(false);
+        }
+        delete msg;
+    }
+    else { // internal message
+        NetworkPacket* packet = check_and_cast<NetworkPacket*>(msg);
+        
+        if (packet->getId() == eDATA) {
+            ARQData* arqData = check_and_cast<ARQData*>(packet);
+            ProtSimSocketRTScheduler::DataChunk* chunk;
+            GoBackNMessageStruct* extData;
+
+            if (packet->controlInfo() == NULL) {
+                // This was generated by a ProtSim sender. Attach dummy data.
+                chunk = new ProtSimSocketRTScheduler::DataChunk(sizeof(GoBackNMessageStruct)+1024);
+                extData = reinterpret_cast<GoBackNMessageStruct*>(chunk->data());
+                for (size_t i = 0; i < 1024/64; ++i) {
+                    snprintf(extData->data+i*64, 64, "Line %6d%52s\n", extData->seqNo*(1024/64)+i, " ");
+                }
+            }
+            else {
+                chunk = check_and_cast<ProtSimSocketRTScheduler::DataChunk*>(packet->removeControlInfo());
+                extData = reinterpret_cast<GoBackNMessageStruct*>(chunk->data());
+            }
+
+            extData->srcNode = arqData->getSrcNode();
+            extData->srcAppl = arqData->getSrcAppl();
+            extData->destNode = arqData->getDestNode();
+            extData->destAppl = arqData->getDestAppl();
+            extData->seqNo = arqData->getSeqNo();
+            extData->seqNoExpected = -1;
+            extData->size = arqData->byteLength();
+            extData->hasErrors = arqData->hasBitError();
+            //fprintf(stderr,"Got source: %ld.%ld\n",arqData->getSrcNode(),arqData->getSrcAppl());
+            if (arqData->hasBitError()) {
+                corruptedDataSeqNumVector.record(arqData->getSeqNo());
+		// Now we play evil guy: Introduce errors
+		if (extData->size > sizeof(GoBackNMessageStruct))
+		    extData->data[0] ^= 0xff;
+		else {
+		    // No user data, than destroy the sequence numbers 
+		    extData->seqNo ^= 0xff;
+		    extData->seqNoExpected ^= 0xff;
+		}
+            }
+            else
+                receivedDataSeqNumVector.record(arqData->getSeqNo());
+            
+            sendExternal(chunk);
+        }
+        else if (packet->getId() == eACK) {
+            ARQAck* arqAck = check_and_cast<ARQAck*>(packet);
+            ProtSimSocketRTScheduler::DataChunk* chunk;
+            GoBackNMessageStruct* extData;
+
+            if (packet->controlInfo() == NULL) {
+                // This was generated by a ProtSim sender. Attach dummy data.
+                chunk = new ProtSimSocketRTScheduler::DataChunk(sizeof(GoBackNMessageStruct));
+            }
+            else {
+                chunk = check_and_cast<ProtSimSocketRTScheduler::DataChunk*>(packet->removeControlInfo());
+            }
+            
+            extData = reinterpret_cast<GoBackNMessageStruct*>(chunk->data());
+            extData->srcNode = arqAck->getSrcNode();
+            extData->srcAppl = arqAck->getSrcAppl();
+            extData->destNode = arqAck->getDestNode();
+            extData->destAppl = arqAck->getDestAppl();
+            extData->seqNo = -1;
+            extData->seqNoExpected = arqAck->getSeqNoExpected();
+            extData->size = arqAck->byteLength();
+            extData->hasErrors = arqAck->hasBitError();
+            
+            if (arqAck->hasBitError())
+                corruptedAckSeqNumVector.record(arqAck->getSeqNoExpected());
+            else
+                receivedAckSeqNumVector.record(arqAck->getSeqNoExpected());
+
+            sendExternal(chunk);
+        }
+        else {
+            assert(false);
+        }
+        delete msg;
+    }
+}
+
+void ErrorControlProxy::finish() {
+
+}

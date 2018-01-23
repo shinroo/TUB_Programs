@@ -1,0 +1,7 @@
+Ein Datagram-Socket Client erstellt  keine Verbindung,
+sondern schickt einfach ein Packet mithilfe sendto().
+Es kann passieren, dass die Nachricht irgendwie verschwindet
+und den Empfänger nicht erreicht.
+
+Ein Stream-Socket Client muss aber erst eine Verbindung mit dem Server erstellen,
+und dann nach dem Handshake können sie miteinander kommunizieren.

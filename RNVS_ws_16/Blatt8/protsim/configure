@@ -1,0 +1,49 @@
+#!/bin/bash
+
+error=0
+
+OPP_MAKEMAKE=opp_makemake
+
+# create omnetppconfig file
+$OPP_MAKEMAKE -f --genconfig omnetppconfig
+
+if [ $# -ge 1 ] ; then
+    case $1 in
+	cmdenv|CmdEnv|CMDENV) envir=CmdEnv
+	    ;;
+	tkenv|TkEnv|TKENV) envir=TkEnv
+	    ;;
+        doc)
+            (cd messages && $OPP_MAKEMAKE -f -n -c ../omnetppconfig -I../common && make depend && make) || exit 1
+            doxygen doxygen.cfg
+            (cd messages && make clean) || error=1
+            exit $error
+            ;;
+	*) echo "Unknown environment $1"
+	   exit 1
+	   ;;
+    esac
+else
+    envir=TkEnv
+fi
+
+mkdir -p /tmp/$USER-protsim
+test -L results || ln -s /tmp/$USER-protsim results
+
+subdirs=( messages support common routing userapps networks nodes )
+subdirs[${#subdirs[*]}]=emulation
+subdirs[${#subdirs[*]}]=techgi4
+
+cat <<EOF >makefrag
+# subdirs in the right order (and only the ones we want)
+SUBDIRS=${subdirs[@]}
+EOF
+
+for dir in "${subdirs[@]}"
+do
+  (cd $dir && $OPP_MAKEMAKE -f -n -c ../omnetppconfig -I../common && make depend) || error=1
+done
+
+($OPP_MAKEMAKE -f  -u $envir -c omnetppconfig -o protsim -w -r -x "${subdirs[@]}" && make depend ) || error=1
+
+exit $error
